@@ -92,8 +92,53 @@ def bfs(root):
     # No se encontró ninguna solución
     return None
 
+# ---------------------------------------------------------------------
+
+def node_label(node):
+    str = ''
+    for i in range(0, GRID_SIZE):
+        for j in range(0, GRID_SIZE):
+            str += f'{node.grid[i][j]} '
+        str += '\n'
+
+    # print(str)
+    return str
+
+def build_graphviz_tree(node, graph):
+    graph.node(str(node.id), node_label(node))
+    
+    for child in node.childs:
+        build_graphviz_tree(child, graph)
+        graph.edge(str(node.id), str(child.id))
+
+def build_graphviz_branch(node, graph):
+    if node == None:
+        return
+
+    graph.node(str(node.id), node_label(node))
+    build_graphviz_branch(node.parent, graph)
+    graph.edge(str(node.parent.id), str(node.id))
+
+def renderTree(root):
+    graph = graphviz.Digraph('Decision tree')
+    build_graphviz_tree(root, graph)
+    graph.render(directory='out', view=True)
+
+def renderBranch(leaf):
+    graph = graphviz.Digraph('Tree branch')
+    build_graphviz_branch(leaf, graph)
+    graph.render(directory='out', view=True)
+
+# ---------------------------------------------------------------------
 
 # Crear nodo inicial
 
 root = Node(INITIAL_GRID, None, 0)
 solution_node = bfs(root)
+
+if solution_node != None:
+    print("Solution found!")
+    renderBranch(solution_node)
+else:
+    print("Solution not found")
+    renderTree(root)
