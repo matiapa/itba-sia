@@ -1,9 +1,13 @@
 import copy
+import json
 import graphviz
 
-GRID_SIZE = 3
-INITIAL_GRID = [[8,3,5],[4,'x',1],[2,7,6]]
-MAX_DEPTH = 3
+conf = json.loads(open('conf.json', 'r').read())
+
+GRID_SIZE = conf['gridSize']
+INITIAL_GRID = conf['initialGrid']
+GOAL_GRIDS = conf['goalGrids']
+MAX_DEPTH = conf['maxDepth']
 
 class Node:
 
@@ -18,7 +22,7 @@ class Node:
         Node.LAST_ID += 1
 
     def __eq__(self, other):
-        return self.grid == other.grid
+        return other is Node and self.grid == other.grid
 
 
 def make_movement(node, i1, j1, i2, j2, expanded_nodes, frontier_nodes):
@@ -60,12 +64,6 @@ def expand_node(node, frontier_nodes, expanded_nodes):
                 if j < 2:
                     make_movement(node, i, j+1, i, j, expanded_nodes, frontier_nodes)
 
-def is_node_solution(node):
-    g = node.grid
-    return g[0][0] == '1' and g[0][1] == '2' and g[0][2] == '3' \
-        and g[1][0] == '4' and g[1][1] == '5' and g[1][2] == '6' \
-            and g[2][0] == '7' and g[2][1] == '8' and g[1][2] == 'x'
-
 def bfs(root):
     frontier_nodes = [root]
     expanded_nodes = []
@@ -79,7 +77,7 @@ def bfs(root):
             return None
 
         # Validamos si es un nodo solución
-        if is_node_solution(node):
+        if node.grid in GOAL_GRIDS:
             return node
 
         # Como no es solución, lo expandimos
@@ -100,8 +98,6 @@ def node_label(node):
         for j in range(0, GRID_SIZE):
             str += f'{node.grid[i][j]} '
         str += '\n'
-
-    # print(str)
     return str
 
 def build_graphviz_tree(node, graph):
@@ -112,12 +108,11 @@ def build_graphviz_tree(node, graph):
         graph.edge(str(node.id), str(child.id))
 
 def build_graphviz_branch(node, graph):
-    if node == None:
-        return
-
     graph.node(str(node.id), node_label(node))
-    build_graphviz_branch(node.parent, graph)
-    graph.edge(str(node.parent.id), str(node.id))
+
+    if node.parent != None:
+        build_graphviz_branch(node.parent, graph)
+        graph.edge(str(node.parent.id), str(node.id))
 
 def renderTree(root):
     graph = graphviz.Digraph('Decision tree')
@@ -125,7 +120,7 @@ def renderTree(root):
     graph.render(directory='out', view=True)
 
 def renderBranch(leaf):
-    graph = graphviz.Digraph('Tree branch')
+    graph = graphviz.Digraph('Solution branch')
     build_graphviz_branch(leaf, graph)
     graph.render(directory='out', view=True)
 
@@ -141,4 +136,4 @@ if solution_node != None:
     renderBranch(solution_node)
 else:
     print("Solution not found")
-    renderTree(root)
+    # renderTree(root)
