@@ -7,7 +7,9 @@ conf = json.loads(open('conf.json', 'r').read())
 GRID_SIZE = conf['gridSize']
 INITIAL_GRID = conf['initialGrid']
 GOAL_GRIDS = conf['goalGrids']
-MAX_DEPTH = conf['maxDepth']
+SEARCH_METHOD = conf['searchMethod']
+BPPL_LIMIT = conf['bpplLimit']
+PLOT_DECISION_TREE = conf['plotDecisionTree']
 
 class Node:
 
@@ -22,7 +24,16 @@ class Node:
         Node.LAST_ID += 1
 
     def __eq__(self, other):
-        return other is Node and self.grid == other.grid
+        return type(other) is Node and self.grid == other.grid
+
+
+def node_label(node):
+    str = ''
+    for i in range(0, GRID_SIZE):
+        for j in range(0, GRID_SIZE):
+            str += f'{node.grid[i][j]} '
+        str += '\n'
+    return str
 
 
 def make_movement(node, i1, j1, i2, j2, expanded_nodes, frontier_nodes):
@@ -38,7 +49,7 @@ def make_movement(node, i1, j1, i2, j2, expanded_nodes, frontier_nodes):
 
     if new_node not in expanded_nodes:
         node.childs.append(new_node)
-        frontier_nodes.append(new_node)
+        frontier_nodes.append(new_node)     
 
 
 def expand_node(node, frontier_nodes, expanded_nodes):
@@ -64,7 +75,7 @@ def expand_node(node, frontier_nodes, expanded_nodes):
                 if j < 2:
                     make_movement(node, i, j+1, i, j, expanded_nodes, frontier_nodes)
 
-def bfs(root):
+def uninformed_search(root):
     frontier_nodes = [root]
     expanded_nodes = []
   
@@ -73,8 +84,8 @@ def bfs(root):
         node = frontier_nodes.pop(0)
 
         # Ponemos una profundidad límite
-        if node.depth > (MAX_DEPTH - 1):
-            return None
+        if SEARCH_METHOD == "BPPL" and node.depth > (BPPL_LIMIT - 1):
+            continue
 
         # Validamos si es un nodo solución
         if node.grid in GOAL_GRIDS:
@@ -85,20 +96,18 @@ def bfs(root):
         expand_node(node, frontier_nodes, expanded_nodes)
         
         # Reordenamos los nodos frontera de menor a mayor profundidad (BPA)
-        frontier_nodes.sort(key = lambda node : node.depth)
+        if SEARCH_METHOD == "BPA":
+            frontier_nodes.sort(key = lambda node : node.depth)
+        elif SEARCH_METHOD == "BPP" or SEARCH_METHOD == "BPPL":
+            frontier_nodes.sort(key = lambda node : node.depth, reverse=True)
+        else:
+            print(f'Unknown search method: {SEARCH_METHOD}')
+            exit(-1)
         
     # No se encontró ninguna solución
     return None
 
 # ---------------------------------------------------------------------
-
-def node_label(node):
-    str = ''
-    for i in range(0, GRID_SIZE):
-        for j in range(0, GRID_SIZE):
-            str += f'{node.grid[i][j]} '
-        str += '\n'
-    return str
 
 def build_graphviz_tree(node, graph):
     graph.node(str(node.id), node_label(node))
@@ -129,11 +138,13 @@ def renderBranch(leaf):
 # Crear nodo inicial
 
 root = Node(INITIAL_GRID, None, 0)
-solution_node = bfs(root)
+solution_node = uninformed_search(root)
 
 if solution_node != None:
     print("Solution found!")
     renderBranch(solution_node)
 else:
     print("Solution not found")
-    # renderTree(root)
+
+if PLOT_DECISION_TREE:
+    renderTree(root)

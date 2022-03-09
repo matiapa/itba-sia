@@ -2,5 +2,7 @@
     "gridSize": 3,
     "initialGrid": [[8,3,5],[4,"x",1],[2,7,6]],
     "goalGrids": [ [[8,3,5],[7,"x",1],[4,2,6]] ],
-    "maxDepth": 1000
+    "searchMethod": "BPP",
+    "bpplLimit": 10,
+    "plotDecisionTree": false
 }
