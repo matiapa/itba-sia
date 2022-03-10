@@ -1,13 +1,15 @@
 # TODO: podriamos aprender a hacerla inmutable 
 from game_state import GameState
+import copy
+import numpy as np
 
 class EightGameState(GameState):
 
   offsets = {'f':-3 , 'b':3 , 'l':-1 , 'r':1}
+  goal_table = None
 
   def __init__(self, **kwargs):
-    self.table = kwargs.get('start_table', EightGameState.__new_table())
-    self.goal_table = kwargs.get('goal_table', [1, 2, 3, 4, 5, 6, 7, 8, 0])
+    self.table = kwargs.get('table', EightGameState.__new_table()) # TODO: deberia ser una tupla
     self.zero = kwargs.get('target', self.table.index(0))
     self.__swap(self, self.zero, kwargs.get('source', self.zero)) 
 
@@ -21,13 +23,17 @@ class EightGameState(GameState):
   def __swap(self, n, z):
       self.table[n], self.table[z] = self.table[z], self.table[n]
 
+  @staticmethod
+  def setGoalTable(table):
+    EightGameState.goal_table = table
+
   @property 
   def matrix(self): 
     return np.reshape(self.table, (3, 3))
 
   @property
   def isobjective(self):
-    return self.table == self.goal_table
+    return self.table == EightGameState.goal_table
 
   def make_move(self, m: str):
     if m not in self.offsets.keys():

@@ -1,8 +1,9 @@
 {
-    "gridSize": 3,
-    "initialGrid": [[8,3,5],[4,"x",1],[2,7,6]],
-    "goalGrids": [ [[8,3,5],[7,"x",1],[4,2,6]] ],
-    "searchMethod": "BPP",
-    "bpplLimit": 10,
-    "plotDecisionTree": false
+    "initialGrid": [1, 2, 3, 5, 6, 0, 4, 7, 8], # The grid config that will have the game on it's initial state
+    "goalGrid": [1, 2, 3, 4, 5, 6, 7, 8, 0],    # The grid config that must be achieved to win
+    "searchMethod": "bppv",                     # The search method to use, can be one of: bpa, bpp, bppv, heu_local, heu_global or heu_weighted
+    "bppvStartLimit": 10,                       # The initial depth limit to use if using BPPV as search method
+    "heuristic": "correctness",                 # The heuristic to use if using an informed search method
+    "heu_weight": 0.5,                          # The weight to use on f(n) if using weighted heuristic search
+    "plotDecisionTree": false                   # Whether to generate a PDF with the whole decision tree, this can be slow if it's too big
 }
