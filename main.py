@@ -4,6 +4,7 @@ from uninformed_solvers import *
 from visualization import *
 from heuristics import *
 import json
+import timeit
 
 # Leemos el archivo de configuración
 
@@ -53,22 +54,45 @@ else:
   print(f"Unknown search method: {SEARCH_METHOD}")
   exit(-1)
 
+# Mostramos los parámetros de la búsqueda
+
+print("> Search parameters")
+print(f"-  Search method: {SEARCH_METHOD}")
+if SEARCH_METHOD == 'bppv':
+  print(f"-  Initial depth limit: {BPPV_START_LIMIT}")
+elif 'heu' in SEARCH_METHOD:
+  print(f"-  Heuristic: {HEURISTIC}")
+  if SEARCH_METHOD == 'heu_weighted':
+    print(f"-  Weight: {HEU_WEIGHT}")
+
 # Comenzamos la iteración
+
+print(f"\n> Searching solution...")
 
 iterator = iter(solver)
 solved = False
 n = None
 
-print(f"Searching solution with '{SEARCH_METHOD}'...")
-
+start_time = timeit.default_timer()
 while not solved:
 # for i in range(30):
   n, solved = next(iterator)
+elapsed = timeit.default_timer() - start_time
 
 # Mostramos el resultado
 
-print("Solution found")
+print("\n> Solution found")
+print(f"-  Depth: {n.depth}")
+print(f"-  Cost: {n.cost}")
+print(f"-  Expanded nodes: {len(solver.explored)}")
+print(f"-  Frontier nodes: {len(solver.frontier)}")
+print(f"-  Processing time: {elapsed} ms")
 
+print("\n> Generating solution graph...")
 renderBranch(n)
+print("-  Graph generated at out/solution_branch.pdf")
+
 if PLOT_DECISION_TREE:
+  print("\n> Generating decision tree graph...")
   renderTree(solver.initial_node)
+  print("-  Graph generated at out/decision_tree.pdf")

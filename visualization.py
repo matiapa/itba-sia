@@ -24,11 +24,11 @@ def build_graphviz_branch(node, graph):
         graph.edge(str(node.parent.id), str(node.id))
 
 def renderTree(root):
-    graph = graphviz.Digraph('Decision tree')
+    graph = graphviz.Digraph('decision_tree')
     build_graphviz_tree(root, graph)
     graph.render(directory='out', view=True)
 
 def renderBranch(leaf):
-    graph = graphviz.Digraph('Solution branch')
+    graph = graphviz.Digraph('solution_branch')
     build_graphviz_branch(leaf, graph)
     graph.render(directory='out', view=True)
