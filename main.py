@@ -34,7 +34,7 @@ gs = EightGameState(table=INITIAL_GRID, target=zero, source=zero)
 
 # Peparamos el solver a utilizar
 
-heuristics = {'correctness': correctnes_heuristic}
+heuristics = {'correctness': correctnes_heuristic, 'manhattan': manhattan_heuristic, 'manhattan_squared': manhattan_squared_heuristic}
 
 solver = None
 if SEARCH_METHOD == 'bpa':
