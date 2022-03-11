@@ -8,5 +8,8 @@
         "initialGrid": [1, 2, 3, 5, 6, 0, 4, 7, 8], # The grid config that will have the game on it's initial state
         "goalGrid": [1, 2, 3, 4, 5, 6, 7, 8, 0],    # The grid config that must be achieved to win
         "heuristic": "correctness"                  # The heuristic to use if using an informed search method, can be one of: correctnes, manhattan or manhattan_squared
+    },
+    "canibal_game": {
+        "heuristic": "lefting_people"               # The heuristic to use if using an informed search method, currently can only be lefting_people
     }
 }

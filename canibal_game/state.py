@@ -19,8 +19,8 @@ class CanibalGameState(GameState):
         # Notation is 'src_missioners_canibals, so for example 'O_1_1'
         # means move 1 missioner and 1 canibal from origin to destiny
         return {
-            'O_2_0': 1, 'O_1_1': 1, 'O_0_2': 1, 'O_1_0': 1, 'O_0_1': 1,
-            'D_2_0': 1, 'D_1_1': 1, 'D_0_2': 1, 'D_1_0': 1, 'D_0_1': 1,
+            'O_2_0': 2, 'O_1_1': 2, 'O_0_2': 2, 'O_1_0': 1, 'O_0_1': 1,
+            'D_2_0': 2, 'D_1_1': 2, 'D_0_2': 2, 'D_1_0': 1, 'D_0_1': 1,
         }
 
     def make_move(self, m: str):

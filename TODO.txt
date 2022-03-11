@@ -1,0 +1,1 @@
+Hacer estáticos los métodos y propiedades de GameStates que son reglas del juego, y no cosas de instancia
