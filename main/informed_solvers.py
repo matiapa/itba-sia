@@ -12,14 +12,14 @@ class SolverHeuristic(Solver):
   def score(self, node): 
     return node.heuristic
 
-  def new_node(self, new_state, parent, depth, cost):
-    n = self.HeuristicNode(new_state, parent, parent.depth+1 if parent != None else 0, cost, self.h(new_state))
+  def new_node(self, new_state, parent, depth, cost, src_action):
+    n = self.HeuristicNode(new_state, parent, parent.depth+1 if parent != None else 0, cost, src_action, self.h(new_state))
     return n
 
   class HeuristicNode(Node):
 
-    def __init__(self, state, n, depth, cost, heuristic):
-      super().__init__(state, n, depth, cost)
+    def __init__(self, state, n, depth, cost, src_action, heuristic):
+      super().__init__(state, n, depth, cost, src_action)
       self.heuristic = heuristic
 
 class SolverLocalHeuristic(SolverHeuristic):

@@ -16,7 +16,7 @@ class Solver():
 
     def __init__(self, game_state: GameState):
       self.initial_state = game_state
-      self.root = self.new_node(self.initial_state, None, 0, 0) 
+      self.root = self.new_node(self.initial_state, None, 0, 0, '') 
 
     @property 
     def initial_node(self): 
@@ -50,19 +50,18 @@ class Solver():
       for m in game_moves.keys(): 
         new_state = n.game_state.make_move(m)
         if new_state is not None:
-          node = self.new_node(new_state, n, n.depth + 1, n.cost + game_moves[m])
-          if self.should_explore(node):  
+          node = self.new_node(new_state, n, n.depth + 1, n.cost + game_moves[m], m)
+          if self.should_explore(node):
             n.add(node) 
             self.push_to_heap(node)
     
-      # print(n.game_state)
       return n, False
 
     def should_explore(self, node): 
       return node.game_state not in self.explored
 
-    def new_node(self, new_state, parent, depth, cost):
-      return Node(new_state, parent, parent.depth+1 if parent != None else 0, cost)
+    def new_node(self, new_state, parent, depth, cost, src_action):
+      return Node(new_state, parent, parent.depth+1 if parent != None else 0, cost, src_action)
 
     def check_frontier(self):
       if len(self.frontier) == 0:  # TODO: aca podriamos aplicar lo de la profundidad en una extension del metodo

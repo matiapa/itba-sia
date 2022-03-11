@@ -72,13 +72,20 @@ print(f"\n> Searching solution...")
 
 iterator = iter(solver)
 solved = False
+failure_reason = ''
 n = None
 
 start_time = timeit.default_timer()
 elapsed_time = 0
-while not solved and (elapsed_time <= SEARCH_TIMEOUT or SEARCH_TIMEOUT < 0):
-  n, solved = next(iterator)
-  elapsed_time = timeit.default_timer() - start_time
+
+try:
+  while not solved and (elapsed_time <= SEARCH_TIMEOUT or SEARCH_TIMEOUT < 0):
+    n, solved = next(iterator)
+    elapsed_time = timeit.default_timer() - start_time
+  if not solved:
+    failure_reason = 'Run out of time'
+except StopIteration:
+  failure_reason = 'No more frontier nodes'
 
 # Mostramos el resultado
 
@@ -90,6 +97,7 @@ if solved:
   print(f"-  Frontier nodes: {len(solver.frontier)}")
 else:
   print("\n> Solution not found")
+  print(f"\n-  Failure reason: {failure_reason}")
 print(f"-  Processing time: {elapsed_time} ms")
 
 if solved:
