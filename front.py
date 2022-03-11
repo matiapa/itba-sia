@@ -17,15 +17,42 @@ background = pygame.Surface(SCREEN_SIZE)
 background.fill(pygame.Color(BABY_BLUE))
 manager = pygame_gui.UIManager(SCREEN_SIZE, 'theme.json')
 
-# pygame_gui.elements.ui_label.UILabel(manager=manager,
-#                                         text="Rompecabezas de 8 dígitos",
-#                                         relative_rect=pygame.Rect((500, 10), (300, 70)),
-#                                         object_id="#title_box"
-#                                         )
+# Botones (Resolver & Random)
+solve_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((800, 600), (350, 70)),
+                                             text='Solve',
+                                             manager=manager,
+                                             object_id="#solve_btn")
+
+random_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((135, 600), (350, 70)),
+                                             text='Random',
+                                             manager=manager,
+                                             object_id="#solve_btn")
+# Busqueda (label & dropdown)                               
+dropdown_layout_rect = pygame.Rect((850, 150), (280, 60))
+algorithmOptions = ["BPA", "BPP", "BPPV", "Heuristica Local", "Heuristica Global","A*"]
+algorithmDropDown = pygame_gui.elements.UIDropDownMenu(options_list=algorithmOptions,
+                                                       starting_option=algorithmOptions[1],
+                                                       relative_rect=dropdown_layout_rect,
+                                                       manager=manager)
+pygame_gui.elements.ui_label.UILabel(parent_element=algorithmDropDown,
+                                     manager=manager,
+                                     text="Search: ",
+                                     relative_rect=pygame.Rect((650, 150), (280, 60)))
+
+# Heuristica (label & dropdown)                   
+dropdown_layout_rect2 = pygame.Rect((850, 270), (280, 60))            
+heuristicsOptions = ["Manhattan Distance", "Misplaced Tiles", "Cuadratic Manhattan"]
+heuristicsDropDown = pygame_gui.elements.UIDropDownMenu(options_list=heuristicsOptions,
+                                                       starting_option=heuristicsOptions[1],
+                                                       relative_rect=dropdown_layout_rect2,
+                                                       manager=manager)
+pygame_gui.elements.ui_label.UILabel(parent_element=heuristicsDropDown,
+                                     manager=manager,
+                                     text="Heuristic: ",
+                                     relative_rect=pygame.Rect((650, 270), (280, 60)))
 
 def draw_blocks():
     for i in range(3):
-        # if block['block'] != 0:
         for j in range(3):
             rect = pygame.Rect(i*15 + (i+1)*120, j*15 + (j)*120 + 150, 120, 120)
             pygame.draw.rect(screen, NAVY_BLUE, rect)
@@ -33,14 +60,10 @@ def draw_blocks():
             textRect = textSurf.get_rect()
             textRect.center = rect.left+60, rect.top+60
             screen.blit(textSurf, textRect)
-            # else:
-            #     pygame.draw.rect(screen, WHITE, pygame.Rect(30, 30, 60, 60))
 
 screen.blit(background, (0, 0))
 pygame.display.update()
 clock = pygame.time.Clock()
-# puzzle = Puzzle.new(250, 220, 330, 330)
-# puzzle.initialize()
 
 crashed = False
 while not crashed:
@@ -50,13 +73,11 @@ while not crashed:
         if event.type == pygame.QUIT:
             crashed = True
             
-        manager.process_events(event)
-        
+    
         
     manager.update(time_delta)
     screen.blit(background, (0, 0))
     screen.blit(title, (350, 35))
     manager.draw_ui(screen)
-    blocks = {}
     draw_blocks()
     pygame.display.update()
