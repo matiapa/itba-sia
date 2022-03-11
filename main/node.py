@@ -5,7 +5,7 @@ class Node:
     LAST_ID = 0
     LAST_EXPLORED_ORDER = 0
 
-    def __init__(self, game_state: GameState, parent, depth, cost):
+    def __init__(self, game_state: GameState, parent, depth, cost, src_action):
         self.game_state = game_state
         self.children = [] # TODO: idealmente es un set pero I'll allow it :) 
         self.parent = parent
@@ -13,6 +13,7 @@ class Node:
         self.cost = cost
         self.id = Node.LAST_ID
         self.explore_order = -1
+        self.src_action = src_action
         Node.LAST_ID += 1
 
     def add(self, node):
