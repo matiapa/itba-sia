@@ -1,5 +1,5 @@
-from solver import Solver
-from game_state import GameState
+from main.solver import Solver
+from main.game_state import GameState
 from heapq import *
 
 class SolverBPA(Solver): 

@@ -1,6 +1,6 @@
-from solver import Solver
-from game_state import GameState
-from node import Node
+from main.game_state import GameState
+from main.solver import Solver
+from main.node import Node
 from heapq import *
 
 class SolverHeuristic(Solver): 

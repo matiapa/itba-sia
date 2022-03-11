@@ -1,5 +1,5 @@
-from game_state import GameState
-from node import Node
+from main.game_state import GameState
+from main.node import Node
 from heapq import *
 
 class Solver():

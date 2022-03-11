@@ -1,4 +1,4 @@
-from game_state import GameState
+from main.game_state import GameState
 
 class Node:
 

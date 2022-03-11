@@ -6,4 +6,5 @@
     "heuristic": "correctness",                 # The heuristic to use if using an informed search method, can be one of: correctnes, manhattan or manhattan_squared
     "heu_weight": 0.5,                          # The weight to use on f(n) if using weighted heuristic search
     "plotDecisionTree": false                   # Whether to generate a PDF with the whole decision tree, this can be slow if it's too big
+    "timeout": 60000                               # Search timeout in milliseconds, use -1 for no timoeut
 }

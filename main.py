@@ -1,8 +1,8 @@
-from eight_game_state import EightGameState
-from informed_solvers import *
-from uninformed_solvers import *
-from visualization import *
-from heuristics import *
+from main.informed_solvers import *
+from main.uninformed_solvers import *
+from main.visualization import *
+from eight_game.state import EightGameState
+from eight_game.heuristics import *
 import json
 import timeit
 
@@ -17,6 +17,7 @@ BPPV_START_LIMIT = conf['bppvStartLimit']
 HEURISTIC = conf['heuristic']
 HEU_WEIGHT = conf['heu_weight']
 PLOT_DECISION_TREE = conf['plotDecisionTree']
+SEARCH_TIMEOUT = conf['timeout']
 
 # Preparamos el estado inicial del juego
 
@@ -74,23 +75,27 @@ solved = False
 n = None
 
 start_time = timeit.default_timer()
-while not solved:
-# for i in range(30):
+elapsed_time = 0
+while not solved and (elapsed_time <= SEARCH_TIMEOUT or SEARCH_TIMEOUT < 0):
   n, solved = next(iterator)
-elapsed = timeit.default_timer() - start_time
+  elapsed_time = timeit.default_timer() - start_time
 
 # Mostramos el resultado
 
-print("\n> Solution found")
-print(f"-  Depth: {n.depth}")
-print(f"-  Cost: {n.cost}")
-print(f"-  Expanded nodes: {len(solver.explored)}")
-print(f"-  Frontier nodes: {len(solver.frontier)}")
-print(f"-  Processing time: {elapsed} ms")
+if solved:
+  print("\n> Solution found")
+  print(f"-  Depth: {n.depth}")
+  print(f"-  Cost: {n.cost}")
+  print(f"-  Expanded nodes: {len(solver.explored)}")
+  print(f"-  Frontier nodes: {len(solver.frontier)}")
+else:
+  print("\n> Solution not found")
+print(f"-  Processing time: {elapsed_time} ms")
 
-print("\n> Generating solution graph...")
-renderBranch(n)
-print("-  Graph generated at out/solution_branch.pdf")
+if solved:
+  print("\n> Generating solution graph...")
+  renderBranch(n)
+  print("-  Graph generated at out/solution_branch.pdf")
 
 if PLOT_DECISION_TREE:
   print("\n> Generating decision tree graph...")

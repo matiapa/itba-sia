@@ -1,5 +1,5 @@
 # TODO: podriamos aprender a hacerla inmutable 
-from game_state import GameState
+from main.game_state import GameState
 import copy
 import numpy as np
 

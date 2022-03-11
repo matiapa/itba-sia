@@ -1,4 +1,4 @@
-from informed_solvers import SolverHeuristic
+from main.informed_solvers import SolverHeuristic
 import graphviz
 
 def node_label(node): 
@@ -26,9 +26,9 @@ def build_graphviz_branch(node, graph):
 def renderTree(root):
     graph = graphviz.Digraph('decision_tree')
     build_graphviz_tree(root, graph)
-    graph.render(directory='out', view=True)
+    graph.render(directory='out')
 
 def renderBranch(leaf):
     graph = graphviz.Digraph('solution_branch')
     build_graphviz_branch(leaf, graph)
-    graph.render(directory='out', view=True)
+    graph.render(directory='out')
