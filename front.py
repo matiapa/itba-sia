@@ -10,7 +10,7 @@ SCREEN_SIZE = (1280, 720)
 
 pygame.init()
 font = pygame.font.Font('Google Sans Text Medium.ttf',40)
-title = font.render('Rompecabezas de 8 dígitos', True, NAVY_BLUE)
+title = font.render('8 digit Puzzle', True, NAVY_BLUE)
 screen = pygame.display.set_mode(SCREEN_SIZE)
 pygame.display.set_caption("8 Puzzle")
 background = pygame.Surface(SCREEN_SIZE)
@@ -37,7 +37,7 @@ algorithmDropDown = pygame_gui.elements.UIDropDownMenu(options_list=algorithmOpt
 pygame_gui.elements.ui_label.UILabel(parent_element=algorithmDropDown,
                                      manager=manager,
                                      text="Search: ",
-                                     relative_rect=pygame.Rect((650, 150), (280, 60)))
+                                     relative_rect=pygame.Rect((620, 150), (280, 60)))
 
 # Heuristica (label & dropdown)                   
 dropdown_layout_rect2 = pygame.Rect((850, 270), (280, 60))            
@@ -49,7 +49,7 @@ heuristicsDropDown = pygame_gui.elements.UIDropDownMenu(options_list=heuristicsO
 pygame_gui.elements.ui_label.UILabel(parent_element=heuristicsDropDown,
                                      manager=manager,
                                      text="Heuristic: ",
-                                     relative_rect=pygame.Rect((650, 270), (280, 60)))
+                                     relative_rect=pygame.Rect((620, 270), (280, 60)))
 
 def draw_blocks():
     for i in range(3):
@@ -72,7 +72,8 @@ while not crashed:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             crashed = True
-            
+        
+        manager.process_events(event)
     
         
     manager.update(time_delta)

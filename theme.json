@@ -27,8 +27,8 @@
       },
       "font":
       {
-          "name": "google",
-          "size": "14",
+          "name": "fira_code",
+          "size": "24",
           "bold": "1",
           "italic": "0"
       }
@@ -44,8 +44,8 @@
       },
       "font":
       {
-         "name": "google",
-         "size": "17",
+         "name": "fira_code",
+         "size": "24",
          "bold": "0",
          "italic": "1"
       }
@@ -105,8 +105,8 @@
       },
       "font":
       {
-         "name": "google",
-         "size": "14",
+         "name": "fira_code",
+         "size": "24",
          "bold": "0",
          "italic": "0"
       },
@@ -123,7 +123,7 @@
    {
       "font":
       {
-         "name": "google",
+         "name": "fira_code",
          "size": "50",
          "bold": "1",
          "italic": "0"
@@ -133,7 +133,7 @@
    {  
       "font":
       {
-         "name": "google",
+         "name": "fira_code",
          "size": "40",
          "bold": "1",
          "italic": "0"
@@ -155,7 +155,7 @@
    {
       "font":
       {
-         "name": "google",
+         "name": "fira_code",
          "size": "13",
          "bold": "1",
          "italic": "0"
