@@ -1,4 +1,3 @@
-from turtle import color, fillcolor
 from main.informed_solvers import SolverHeuristic
 import graphviz
 

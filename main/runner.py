@@ -1,7 +1,6 @@
 from main.informed_solvers import *
 from main.uninformed_solvers import *
 from main.visualization import *
-import json
 import timeit
 
 class Runner:
@@ -38,7 +37,7 @@ class Runner:
     elif self.config['searchMethod'] == 'bpp':
       self.solver = SolverBPP(gs) 
     elif self.config['searchMethod'] == 'bppv':
-      self.solver = SolverBPPV(gs, self.config['bbpvStartLimit'])
+      self.solver = SolverBPPV(gs, self.config['bppvStartLimit'])
     elif self.config['searchMethod'] == 'heu_local':
       self.solver = SolverLocalHeuristic(gs, heuristics[self.config['heuristic']])
     elif self.config['searchMethod'] == 'heu_global':
@@ -54,11 +53,11 @@ class Runner:
     print("> Search parameters")
     print(f"-  Search method: {self.config['searchMethod']}")
     if self.config['searchMethod'] == 'bppv':
-      print(f"-  Initial depth limit: {self.BPPV_START_LIMIT}")
+      print(f"-  Initial depth limit: {self.config['bppvStartLimit']}")
     elif 'heu' in self.config['searchMethod']:
       print(f"-  Heuristic: {self.config['heuristic']}")
       if self.config['searchMethod'] == 'heu_weighted':
-        print(f"-  Weight: {self.HEU_WEIGHT}")
+        print(f"-  Weight: {self.config['heuWeight']}")
 
   """
   Este es el método que se debe ejecutar para buscar una solución y
@@ -121,18 +120,21 @@ class Runner:
     result['processingTime'] = elapsed_time
     print(f"-  Processing time: {elapsed_time} ms")
 
-    result['solution'] = self.__get_solution_sequence(n)
-    result['solution'].reverse()
+    try:
+      result['solution'] = self.__get_solution_sequence(n)
+      result['solution'].reverse()
 
-    if solved:
-      print("\n> Generating solution graph...")
-      renderBranch(n)
-      print("-  Graph generated at out/solution_branch.pdf")
+      if solved:
+        print("\n> Generating solution graph...")
+        renderBranch(n)
+        print("-  Graph generated at out/solution_branch.pdf")
 
-    if self.config['plotDecisionTree']:
-      print("\n> Generating decision tree graph...")
-      renderTree(self.solver.initial_node)
-      print("-  Graph generated at out/decision_tree.pdf")
+      if self.config['plotDecisionTree']:
+        print("\n> Generating decision tree graph...")
+        renderTree(self.solver.initial_node)
+        print("-  Graph generated at out/decision_tree.pdf")
+    except RecursionError:
+      print("-  Couldn't generate solution path, too many nodes")
 
     return result
 
