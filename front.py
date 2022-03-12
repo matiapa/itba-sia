@@ -80,6 +80,13 @@ def state_to_matrix(state):
         res.append(state[i])
     return np.reshape(res, (3, 3))
 
+def initial_grid(): 
+    c = json.loads(open('conf.json', 'r').read())
+    ret = {}
+    ret['move'] = ''
+    ret['state'] = np.reshape(c['eight_game']['initialGrid'], (3,3))
+    return ret
+
 def solve(grid, config):
     conf = json.loads(open('conf.json', 'r').read())
     conf['searchMethod'] = config['algorithm']
@@ -93,9 +100,8 @@ def solve(grid, config):
     conf['goalGrid'] = conf['eight_game']['goalGrid']
 
     result = EightGameRunner(conf).run()
-
+    vals = []
     if 'solution' in result:
-        vals = []
         for grid in result['solution']:
             val = {}
             val['move'] = grid['move']
@@ -111,7 +117,10 @@ def solve(grid, config):
                                                                                       action_long_desc=report_msg,
                                                                                       window_title=' Search Report',
                                                                                       )
-    return ret[-1]
+    if not vals:
+        return initial_grid()
+    else:
+        return vals[-1]
 
 def display(grid):
     for i in range(3):
@@ -141,41 +150,44 @@ pygame.display.update()
 clock = pygame.time.Clock()
 algorithm = algorithmOptions[0]
 heuristic = None
-ret = [
-    {
-        'move': '',
-        'state': [[1, 2, 3], [5, 6, 0], [4, 7, 8]]
-    },
-    {
-        'move': 'r',
-        'state': [[1, 2, 3], [5, 0, 6], [4, 7, 8]]
-    },
-    {
-        'move': 'r',
-        'state': [[1, 2, 3], [0, 5, 6], [4, 7, 8]]
-    },
-    {
-        'move': 'u',
-        'state': [[1, 2, 3], [4, 5, 6], [0, 7, 8]]
-    },
-    {
-        'move': 'l',
-        'state': [[1, 2, 3], [4, 5, 6], [7, 0, 8]]
-    },
-    {
-        'move': 'l',
-        'state': [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
-    }
-]
-grid = ret[0]
+# ret = [
+#     {
+#         'move': '',
+#         'state': [[1, 2, 3], [5, 6, 0], [4, 7, 8]]
+#     },
+#     {
+#         'move': 'r',
+#         'state': [[1, 2, 3], [5, 0, 6], [4, 7, 8]]
+#     },
+#     {
+#         'move': 'r',
+#         'state': [[1, 2, 3], [0, 5, 6], [4, 7, 8]]
+#     },
+#     {
+#         'move': 'u',
+#         'state': [[1, 2, 3], [4, 5, 6], [0, 7, 8]]
+#     },
+#     {
+#         'move': 'l',
+#         'state': [[1, 2, 3], [4, 5, 6], [7, 0, 8]]
+#     },
+#     {
+#         'move': 'l',
+#         'state': [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+#     }
+# ]
+# grid = ret[0]
 
+
+grid = initial_grid()
+print(grid)
 
 def randomize():
     a = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     random.shuffle(a)
     grid_displayed = np.reshape(a, (3, 3))
     random_grid = {
-        'move': 'c',
+        'move': '',
         'state': grid_displayed
     }
     display(random_grid)
