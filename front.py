@@ -1,3 +1,4 @@
+from genericpath import exists
 import pygame
 import pygame_gui
 import random
@@ -92,14 +93,15 @@ def solve(grid, config):
     conf['goalGrid'] = conf['eight_game']['goalGrid']
 
     result = EightGameRunner(conf).run()
-    vals = []
-    for grid in result['solution']:
-        val = {}
-        val['move'] = grid['move']
-        val['state'] = state_to_matrix(grid['state'])
-        vals.append(val)
 
-    animate(vals)
+    if 'solution' in result:
+        vals = []
+        for grid in result['solution']:
+            val = {}
+            val['move'] = grid['move']
+            val['state'] = state_to_matrix(grid['state'])
+            vals.append(val)
+        animate(vals)
 
     report_msg = '<b>Result: </b>'+result['status']+'<br/><b>Depth:</b>'+str(result['depth'])+'<br/><b>Cost:</b>'+str(result['cost'])+ \
         '<br/><b>Expanded nodes:</b>'+str(result['expandedNodes'])+'<br/><b>Frontier nodes:</b>' + \
