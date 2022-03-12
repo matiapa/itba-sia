@@ -25,8 +25,8 @@ def manhattan_heuristic(state):
     if number == 0:
       continue
 
-    x1 = position % 3
-    y1 = int(position / 3)
+    x1 = int(position) % 3
+    y1 = int(int(position) / 3)
 
     x2 = (number-1) % 3
     y2 = int((number-1) / 3)
@@ -49,8 +49,8 @@ def manhattan_squared_heuristic(state):
     if number == 0:
       continue
 
-    x1 = position % 3
-    y1 = int(position / 3)
+    x1 = int(position) % 3
+    y1 = int(int(position) / 3)
 
     x2 = (number-1) % 3
     y2 = int((number-1) / 3)
