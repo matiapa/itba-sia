@@ -121,7 +121,8 @@ class Runner:
     result['processingTime'] = elapsed_time
     print(f"-  Processing time: {elapsed_time} ms")
 
-    result['solution'] = get_branch_states_data(n)
+    result['solution'] = self.__get_solution_sequence(n)
+    result['solution'].reverse()
 
     if solved:
       print("\n> Generating solution graph...")
@@ -134,3 +135,11 @@ class Runner:
       print("-  Graph generated at out/decision_tree.pdf")
 
     return result
+
+  def __get_solution_sequence(self, node):
+    sequence = [{'move': node.src_action, 'state': node.state.data}]
+
+    if node.parent != None:
+      sequence += self.__get_solution_sequence(node.parent)
+
+    return sequence
