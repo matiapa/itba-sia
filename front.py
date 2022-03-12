@@ -63,8 +63,8 @@ pygame_gui.elements.ui_label.UILabel(parent_element=algorithmDropDown,
 
 # Heuristica (label & dropdown)
 dropdown_layout_rect2 = pygame.Rect((850, 270), (280, 60))
-heuristicsOptions = ["Manhattan Distance",
-                     "Misplaced Tiles", "Cuadratic Manhattan"]
+heuristicsOptions = ["manhattan",
+                     "correctness", "manhattan_squared"]
 heuristicsDropDown = pygame_gui.elements.UIDropDownMenu(options_list=heuristicsOptions,
                                                         starting_option=heuristicsOptions[0],
                                                         relative_rect=dropdown_layout_rect2,
@@ -91,11 +91,11 @@ def solve(grid, config):
     conf = json.loads(open('conf.json', 'r').read())
     conf['searchMethod'] = config['algorithm']
     conf['heuristic'] = config['heuristic']
+    print(config)
     flatarray = []
     for i in range(3):
         for j in range(3):
             flatarray.append(grid['state'][i][j])
-    print(flatarray)
     conf['initialGrid'] = conf['eight_game']['initialGrid']
     conf['goalGrid'] = conf['eight_game']['goalGrid']
 
@@ -142,42 +142,14 @@ def display(grid):
 def animate(grids):
     for grid in grids:
         display(grid)
-        time.sleep(1)
+        time.sleep(0.2)
 
 
 screen.blit(background, (0, 0))
 pygame.display.update()
 clock = pygame.time.Clock()
 algorithm = algorithmOptions[0]
-heuristic = None
-# ret = [
-#     {
-#         'move': '',
-#         'state': [[1, 2, 3], [5, 6, 0], [4, 7, 8]]
-#     },
-#     {
-#         'move': 'r',
-#         'state': [[1, 2, 3], [5, 0, 6], [4, 7, 8]]
-#     },
-#     {
-#         'move': 'r',
-#         'state': [[1, 2, 3], [0, 5, 6], [4, 7, 8]]
-#     },
-#     {
-#         'move': 'u',
-#         'state': [[1, 2, 3], [4, 5, 6], [0, 7, 8]]
-#     },
-#     {
-#         'move': 'l',
-#         'state': [[1, 2, 3], [4, 5, 6], [7, 0, 8]]
-#     },
-#     {
-#         'move': 'l',
-#         'state': [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
-#     }
-# ]
-# grid = ret[0]
-
+heuristic = heuristicsOptions[0]
 
 grid = initial_grid()
 print(grid)

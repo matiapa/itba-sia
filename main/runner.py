@@ -43,7 +43,7 @@ class Runner:
     elif self.config['searchMethod'] == 'heu_global':
       self.solver = SolverGlobalHeuristic(gs, heuristics[self.config['heuristic']])
     elif self.config['searchMethod'] == 'heu_weighted':
-      self.solver = SolverWeightHeuristic(gs, heuristics[self.config['heuristic']], self.config['heuWeight'])
+      self.solver = SolverWeightHeuristic(gs, heuristics[self.config['heuristic']], self.config['heu_weight'])
     else:
       print(f"Unknown search method: {self.config['searchMethod']}")
       exit(-1)
@@ -57,7 +57,7 @@ class Runner:
     elif 'heu' in self.config['searchMethod']:
       print(f"-  Heuristic: {self.config['heuristic']}")
       if self.config['searchMethod'] == 'heu_weighted':
-        print(f"-  Weight: {self.config['heuWeight']}")
+        print(f"-  Weight: {self.config['heu_weight']}")
 
   """
   Este es el método que se debe ejecutar para buscar una solución y
