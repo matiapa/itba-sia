@@ -5,15 +5,18 @@ import json
 
 class CanibalGameRunner(Runner):
 
-  def read_config(self):
-    super().read_config()
-    conf = json.loads(open('conf.json', 'r').read())
-    self.HEURISTIC = conf['canibal_game']['heuristic']
-
   def get_heuristics(self):
       return {'lefting_people': lefting_people_heuristic}
 
   def create_initial_state(self):
     return CanibalGameState()
 
-CanibalGameRunner().run()
+
+def get_config_from_file():
+  conf = json.loads(open('conf.json', 'r').read())
+  conf['heuristic'] = conf['canibal_game']['heuristic']
+  return conf
+
+result = CanibalGameRunner(get_config_from_file()).run()
+
+# print(result)

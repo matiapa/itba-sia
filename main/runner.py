@@ -7,16 +7,10 @@ import timeit
 class Runner:
 
   """
-  El game runner puede overridear este método y leer configuraciones adicionales.
-  Si tiene heurísticas, debe cargar la heurística seleccionada en self.HEURISTIC
+  Recibe un parámetro con configuraciones sobre la búsqueda y el juego
   """
-  def read_config(self):
-    conf = json.loads(open('conf.json', 'r').read())
-    self.SEARCH_METHOD = conf['searchMethod']
-    self.BPPV_START_LIMIT = conf['bppvStartLimit']
-    self.HEU_WEIGHT = conf['heu_weight']
-    self.PLOT_DECISION_TREE = conf['plotDecisionTree']
-    self.SEARCH_TIMEOUT = conf['timeout']
+  def __init__(self, config):
+    self.config = config
 
   """
   El game runner debe retornar un estado inicial para su juego
@@ -39,41 +33,39 @@ class Runner:
     heuristics = self.get_heuristics()
 
     self.solver = None
-    if self.SEARCH_METHOD == 'bpa':
+    if self.config['searchMethod'] == 'bpa':
       self.solver = SolverBPA(gs)
-    elif self.SEARCH_METHOD == 'bpp':
+    elif self.config['searchMethod'] == 'bpp':
       self.solver = SolverBPP(gs) 
-    elif self.SEARCH_METHOD == 'bppv':
-      self.solver = SolverBPPV(gs, self.BPPV_START_LIMIT)
-    elif self.SEARCH_METHOD == 'heu_local':
-      self.solver = SolverLocalHeuristic(gs, heuristics[self.HEURISTIC])
-    elif self.SEARCH_METHOD == 'heu_global':
-      self.solver = SolverGlobalHeuristic(gs, heuristics[self.HEURISTIC])
-    elif self.SEARCH_METHOD == 'heu_weighted':
-      self.solver = SolverWeightHeuristic(gs, heuristics[self.HEURISTIC], self.HEU_WEIGHT)
+    elif self.config['searchMethod'] == 'bppv':
+      self.solver = SolverBPPV(gs, self.config['bbpvStartLimit'])
+    elif self.config['searchMethod'] == 'heu_local':
+      self.solver = SolverLocalHeuristic(gs, heuristics[self.config['heuristic']])
+    elif self.config['searchMethod'] == 'heu_global':
+      self.solver = SolverGlobalHeuristic(gs, heuristics[self.config['heuristic']])
+    elif self.config['searchMethod'] == 'heu_weighted':
+      self.solver = SolverWeightHeuristic(gs, heuristics[self.config['heuristic']], self.config['heuWeight'])
     else:
-      print(f"Unknown search method: {self.SEARCH_METHOD}")
+      print(f"Unknown search method: {self.config['searchMethod']}")
       exit(-1)
 
     # Mostramos los parámetros de la búsqueda
 
     print("> Search parameters")
-    print(f"-  Search method: {self.SEARCH_METHOD}")
-    if self.SEARCH_METHOD == 'bppv':
+    print(f"-  Search method: {self.config['searchMethod']}")
+    if self.config['searchMethod'] == 'bppv':
       print(f"-  Initial depth limit: {self.BPPV_START_LIMIT}")
-    elif 'heu' in self.SEARCH_METHOD:
-      print(f"-  Heuristic: {self.HEURISTIC}")
-      if self.SEARCH_METHOD == 'heu_weighted':
+    elif 'heu' in self.config['searchMethod']:
+      print(f"-  Heuristic: {self.config['heuristic']}")
+      if self.config['searchMethod'] == 'heu_weighted':
         print(f"-  Weight: {self.HEU_WEIGHT}")
 
   """
   Este es el método que se debe ejecutar para buscar una solución y
-  posteriormente visualizar los resultados
+  posteriormente visualizar los resultados.
   """
   def run(self):
     # Leemos la configuración y creamos el estado inicial
-
-    self.read_config()
 
     gs = self.create_initial_state()
 
@@ -95,7 +87,7 @@ class Runner:
 
     try:
       # for i in range(0,5):
-      while not solved and (elapsed_time <= self.SEARCH_TIMEOUT or self.SEARCH_TIMEOUT < 0):
+      while not solved and ('searchTimeout' not in self.config or elapsed_time <= self.config['searchTimeout']):
         n, solved = next(iterator)
         elapsed_time = timeit.default_timer() - start_time
       if not solved:
@@ -105,23 +97,40 @@ class Runner:
 
     # Mostramos el resultado
 
+    result = {}
+
     if solved:
+      result['status'] = 'success'
+      result['depth'] = n.depth
+      result['cost'] = n.cost
+      result['expandedNodes'] = len(self.solver.explored)
+      result['frontierNodes'] = len(self.solver.explored)
+
       print("\n> Solution found")
       print(f"-  Depth: {n.depth}")
       print(f"-  Cost: {n.cost}")
       print(f"-  Expanded nodes: {len(self.solver.explored)}")
       print(f"-  Frontier nodes: {len(self.solver.frontier)}")
     else:
+      result['status'] = 'failed'
+      result['reason'] = failure_reason
+
       print("\n> Solution not found")
       print(f"\n-  Failure reason: {failure_reason}")
+
+    result['processingTime'] = elapsed_time
     print(f"-  Processing time: {elapsed_time} ms")
+
+    result['solution'] = get_branch_states_data(n)
 
     if solved:
       print("\n> Generating solution graph...")
       renderBranch(n)
       print("-  Graph generated at out/solution_branch.pdf")
 
-    if self.PLOT_DECISION_TREE:
+    if self.config['plotDecisionTree']:
       print("\n> Generating decision tree graph...")
       renderTree(self.solver.initial_node)
       print("-  Graph generated at out/decision_tree.pdf")
+
+    return result

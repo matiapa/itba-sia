@@ -36,3 +36,11 @@ def renderBranch(leaf):
     graph = graphviz.Digraph('solution_branch')
     build_graphviz_branch(leaf, graph)
     graph.render(directory='out')
+
+def get_branch_states_data(node):
+  states_data = [node.state.data]
+
+  if node.parent != None:
+    states_data += get_branch_states_data(node.parent)
+
+  return states_data
