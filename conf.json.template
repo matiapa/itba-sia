@@ -1,8 +1,8 @@
 {
     "searchMethod": "bppv",                     # The search method to use, can be one of: bpa, bpp, bppv, heu_local, heu_global or heu_weighted
+    "searchTimeout": 60000                      # Search timeout in milliseconds, use -1 for no timeout,
     "bppvStartLimit": 10,                       # The initial depth limit to use if using BPPV as search method
-    "heu_weight": 0.5,                          # The weight to use on f(n) if using weighted heuristic search
-    "timeout": 60000                            # Search timeout in milliseconds, use -1 for no timeout,
+    "heuWeight": 0.5,                           # The weight to use on f(n) if using weighted heuristic search
     "plotDecisionTree": false                   # Whether to generate a PDF with the whole decision tree, this can be slow if it's too big
     "eight_game": {
         "initialGrid": [1, 2, 3, 5, 6, 0, 4, 7, 8], # The grid config that will have the game on it's initial state
