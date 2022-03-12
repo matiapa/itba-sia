@@ -30,6 +30,6 @@ def get_config_from_file():
     conf['goalGrid'] = conf['eight_game']['goalGrid']
     return conf
 
-result = EightGameRunner(get_config_from_file()).run()
-
-# print(result)
+if __name__ == "__main__":
+    EightGameRunner(get_config_from_file()).run()
+    # print(result)
