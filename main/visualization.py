@@ -37,10 +37,10 @@ def renderBranch(leaf):
     build_graphviz_branch(leaf, graph)
     graph.render(directory='out')
 
-def get_branch_states_data(node):
-  states_data = [node.state.data]
+def get_solution_sequence(node):
+  sequence = [{'move': node.src_action, 'state': node.state.data}]
 
   if node.parent != None:
-    states_data += get_branch_states_data(node.parent)
+    sequence += get_solution_sequence(node.parent)
 
-  return states_data
+  return sequence
