@@ -17,6 +17,6 @@ def get_config_from_file():
   conf['heuristic'] = conf['canibal_game']['heuristic']
   return conf
 
-result = CanibalGameRunner(get_config_from_file()).run()
-
-# print(result)
+if __name__ == "__main__":
+  result = CanibalGameRunner(get_config_from_file()).run()
+  # print(result)
