@@ -1,4 +1,3 @@
-from genericpath import exists
 import pygame
 import pygame_gui
 import random
@@ -17,11 +16,11 @@ BLACK = 0, 0, 0
 
 SCREEN_SIZE = (1280, 720)
 
-circle = pygame.image.load('circle_emoji.png')
-up = pygame.image.load('up.png')
-down = pygame.image.load('down.png')
-left = pygame.image.load('left.png')
-right = pygame.image.load('right.png')
+circle = pygame.image.load('front/circle_emoji.png')
+up = pygame.image.load('front/up.png')
+down = pygame.image.load('front/down.png')
+left = pygame.image.load('front/left.png')
+right = pygame.image.load('front/right.png')
 circle = pygame.transform.scale(circle, (80, 80))
 up = pygame.transform.scale(up, (80, 80))
 down = pygame.transform.scale(down, (80, 80))
@@ -30,13 +29,13 @@ right = pygame.transform.scale(right, (80, 80))
 moves_emojis = {'': circle, 'f': up, 'b': down, 'l': left, 'r': right}
 
 pygame.init()
-font = pygame.font.Font('Google Sans Text Medium.ttf', 40)
+font = pygame.font.Font('front/Google Sans Text Medium.ttf', 40)
 title = font.render('8 digit Puzzle', True, NAVY_BLUE)
 screen = pygame.display.set_mode(SCREEN_SIZE)
 pygame.display.set_caption("8 Puzzle")
 background = pygame.Surface(SCREEN_SIZE)
 background.fill(pygame.Color(BABY_BLUE))
-manager = pygame_gui.UIManager(SCREEN_SIZE, 'theme.json')
+manager = pygame_gui.UIManager(SCREEN_SIZE, 'front/theme.json')
 
 # Botones (Resolver & Random)
 solve_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((800, 600), (350, 70)),
