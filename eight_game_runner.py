@@ -31,5 +31,5 @@ def get_config_from_file():
     return conf
 
 if __name__ == "__main__":
-    EightGameRunner(get_config_from_file()).run()
+    result = EightGameRunner(get_config_from_file()).run()
     # print(result)
