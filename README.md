@@ -4,9 +4,10 @@ Este programa implementa los siguientes métodos de búsqueda:
 - No informados: Búsqueda en ancho (BPA), búsqueda en profundidad (BPP) y búsqueda en profundidad variable (BPPV)
 - Informados: Heurística global, heurística local, método A*
 
-Ofrece además dos interfaces Solver y GameState que permiten implementar rápidamente un problema que pueda ser solucionado
-usándo los métodos de búsqueda, así como una interfaz Runner que facilita la implementación de scripts que provean parámetros
-de configuración y muestren el resultado de la búsqueda.
+Ofrece además varias interfaces que facilitan la extensión del programa:
+- Solver: Utilizada para implementar nuevos métodos de búsqueda.
+- GameState: Utilizada par implementar nuevos problemas, con sus estados, acciones y reglas.
+- Runner: Utilizada para implementar scripts que provean parámetros de configuración y muestren el resultado de la búsqueda.
 
 Están ya implementados dos juegos a modo de problema: [EigthGame](https://www.cut-the-knot.org/SimpleGames/EightDigitPuzzle.shtml) y [CanibalGame](https://es.wikipedia.org/wiki/Acertijo_de_los_misioneros_y_los_can%C3%ADbales). Además, para el juego EightGame se implementó un frontend que facilita su visualización.
 

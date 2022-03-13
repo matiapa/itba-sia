@@ -1,0 +1,112 @@
+@startuml
+
+abstract class Solver {
+    tree_root: Node
+    explored_nodes: Node[]
+    frontier_nodes: Node[]
+    __init__(game_state):
+    score(node)
+    should_explore(node)
+    mark_explored(node)
+    new_node(new_state, parent, depth, cost, src_action)
+    push_to_heap(node)
+}
+
+class SolverHeuristic {
+    __init__(game_state, heuristic)
+    score(node)
+    new_node(new_state, parent, depth, cost, src_action)
+}
+
+class SolverLocalHeuristic {
+    push_to_heap(node)
+}
+
+class SolverGlobalHeuristic {
+    push_to_heap(node)
+}
+
+class SolverWeightHeuristic {
+    __init__(game_state, heuristic, weight)
+    score(node)
+    push_to_heap(node)
+}
+
+class SolverBPA {
+    score(node)
+}
+
+class SolverBPP {
+    score(node)
+}
+
+class SolverBPPV {
+    max_depth: Integer
+    __init__(game_state, start_limit):
+    should_explore(node)
+    mark_explored(node)
+    push_to_heap(node)
+}
+
+class Node {
+    game_state: GameState
+    children: Node[]
+    parent: Node
+    depth, cost, explore_order, id: Integer
+    src_action: String
+    __init__(game_state, parent, depth, cost, src_action)
+    add_children(node)
+    mark_explored()
+}
+
+class HeuristicNode {
+    __init__(state, n, depth, cost, src_action, heuristic)
+}
+
+interface GameState {
+    is_objective()
+    game_moves()
+    make_move(action)
+    data()
+    __str__()
+    __hash__()
+    __eq__()
+}
+
+class EightGameState {
+    table: Integer[]
+}
+
+class CanibalGameState {
+    origin_canibals: Integer
+    origin_missioners: Integer
+    destination_canibals: Integer
+    destination_missioners: Integer
+    boat_position: Character
+}
+
+Solver <|-- SolverHeuristic
+
+SolverHeuristic <|-- SolverLocalHeuristic
+
+SolverHeuristic <|-- SolverGlobalHeuristic
+
+SolverHeuristic <|-- SolverWeightHeuristic
+
+Solver <|-- SolverBPA
+
+Solver <|-- SolverBPP
+
+SolverBPP <|-- SolverBPPV
+
+Node <|-- HeuristicNode
+
+GameState <|-- EightGameState
+
+GameState <|-- CanibalGameState
+
+Solver *-- Node
+
+Node *-- GameState
+
+@enduml
