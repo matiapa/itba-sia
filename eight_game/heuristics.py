@@ -21,6 +21,7 @@ def manhattan_heuristic(state):
   distance_sum = 0
 
   for position in table.keys():
+    print("para el numero " + str(table[position]) + " en la posicion " + str(position))
     number = table[position]
     if number == 0:
       continue
@@ -31,7 +32,7 @@ def manhattan_heuristic(state):
     x2 = (number-1) % 3
     y2 = int((number-1) / 3)
     
-    distance_sum += x2-x1 + y2-y1
+    distance_sum += abs(x2-x1) + abs(y2-y1)
   
   return distance_sum
 
