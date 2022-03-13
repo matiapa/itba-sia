@@ -8,7 +8,7 @@ def correctnes_heuristic(state):
 
   for position in table.keys():
     number = table[position]
-    count += 1 if number != 0 and int(position) != number else 0
+    count += 1 if number != 0 and int(position)+1 != number else 0
 
   return count
 
