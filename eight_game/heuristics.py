@@ -40,7 +40,7 @@ manhattan_squared_heuristic: Se comporta igual que manhattan_heuristic
 pero eleva las distancias al cuadrado para penalizar más las fichas
 lejanas. Es una heurística no admisible.
 """
-def manhattan_heuristic(state): 
+def manhattan_squared_heuristic(state): 
   table = state.data
   distance_sum = 0
 
