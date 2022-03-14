@@ -90,31 +90,35 @@ def solve(grid, config):
     conf = json.loads(open('conf.json', 'r').read())
     conf['searchMethod'] = config['algorithm']
     conf['heuristic'] = config['heuristic']
-    print(config)
+    print(grid)
     flatarray = []
     for i in range(3):
         for j in range(3):
             flatarray.append(grid['state'][i][j])
-    conf['initialGrid'] = conf['eight_game']['initialGrid']
+    print(flatarray)
+    conf['initialGrid'] = flatarray
     conf['goalGrid'] = conf['eight_game']['goalGrid']
 
     result = EightGameRunner(conf).run()
     vals = []
-    if 'solution' in result:
-        for grid in result['solution']:
+    if 'solution' in result and result['status'] != 'failed':
+        for g in result['solution']:
             val = {}
-            val['move'] = grid['move']
-            val['state'] = state_to_matrix(grid['state'])
+            val['move'] = g['move']
+            val['state'] = state_to_matrix(g['state'])
             vals.append(val)
         animate(vals)
 
-    report_msg = '<b>Result: </b>'+result['status']+'<br/><b>Depth:</b>'+str(result['depth'])+'<br/><b>Cost:</b>'+str(result['cost'])+ \
+    if result['status'] == 'failed':
+        report_msg = '<b>Result: </b>' + result['status'] + '<br>' + '<b>Reason: </b>' + str(result['reason']) + '<br>' + '<b>Time: </b>' + str(result['processingTime']) + ' seconds' + '<br>'
+    else:
+        report_msg = '<b>Result: </b>'+result['status']+'<br/><b>Depth:</b>'+str(result['depth'])+'<br/><b>Cost:</b>'+str(result['cost'])+ \
         '<br/><b>Expanded nodes:</b>'+str(result['expandedNodes'])+'<br/><b>Frontier nodes:</b>' + \
-        str(result['frontierNodes'])+'<br/><b>Time:</b>'+str(result['processingTime'])+'seconds'
-    confirmation_win = pygame_gui.windows.ui_confirmation_dialog.UIConfirmationDialog(rect=pygame.Rect((600, 300), (180, 80)),
+        str(result['frontierNodes'])+'<br/><b>Time:</b>'+str(result['processingTime'])+' seconds'
+    confirmation_win = pygame_gui.windows.ui_confirmation_dialog.UIConfirmationDialog(rect=pygame.Rect((600, 300), (360, 300)),
                                                                                       manager=manager,
                                                                                       action_long_desc=report_msg,
-                                                                                      window_title=' Search Report',
+                                                                                      window_title='Search report',
                                                                                       )
     if not vals:
         return initial_grid()

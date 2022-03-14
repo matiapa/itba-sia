@@ -118,7 +118,7 @@ class Runner:
       print(f"\n-  Failure reason: {failure_reason}")
 
     result['processingTime'] = elapsed_time
-    print(f"-  Processing time: {elapsed_time} ms")
+    print(f"-  Processing time: {elapsed_time} seconds")
 
     try:
       result['solution'] = self.__get_solution_sequence(n)
