@@ -9,6 +9,8 @@ Ofrece además varias interfaces que facilitan la extensión del programa:
 - GameState: Utilizada par implementar nuevos problemas, con sus estados, acciones y reglas.
 - Runner: Utilizada para implementar scripts que provean parámetros de configuración y muestren el resultado de la búsqueda.
 
+Les recomendamos leer el Jupyter Notebook con una explicación más profunda de la implementación realizada por el grupo. 
+
 Están ya implementados dos juegos a modo de problema: [EigthGame](https://www.cut-the-knot.org/SimpleGames/EightDigitPuzzle.shtml) y [CanibalGame](https://es.wikipedia.org/wiki/Acertijo_de_los_misioneros_y_los_can%C3%ADbales). Además, para el juego EightGame se implementó un frontend que facilita su visualización.
 
 # Utilización
