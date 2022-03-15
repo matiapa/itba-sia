@@ -11,7 +11,7 @@ Ofrece además varias interfaces que facilitan la extensión del programa:
 
 Están ya implementados dos juegos a modo de problema: [EigthGame](https://www.cut-the-knot.org/SimpleGames/EightDigitPuzzle.shtml) y [CanibalGame](https://es.wikipedia.org/wiki/Acertijo_de_los_misioneros_y_los_can%C3%ADbales). Además, para el juego EightGame se implementó un frontend que facilita su visualización.
 
-# Utlización
+# Utilización
 
 ## Dependencias
 
@@ -60,13 +60,13 @@ Se muestran a continuación dos configuraciones posibles a modo de ejemplo.
 ## Ejecución
 Ejecutar EightGame en la consola
 ```
-python eight_game_runner.py
+python3 eight_game_runner.py
 ```
 Ejecutar CanibalGame en la consola
 ```
-python eight_game_runner.py
+python3 eight_game_runner.py
 ```
 Ejecutar EightGame con el frontend
 ```
-python eight_game_front.py
+python3 eight_game_front.py
 ```
