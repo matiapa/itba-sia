@@ -33,7 +33,7 @@ class Algorithm:
         # Create an initial population of silly beings
 
         self.population = []
-
+        
         for _ in range(0, self.init_pop_size):
             individual = self.ind_factory.instantiate(genes = None)
             self.population.append(individual)
@@ -43,7 +43,7 @@ class Algorithm:
         while not self.stop_criteria.should_stop(population = self.population, fitness = self.fitness):
             new_population : List[Individual] = []
 
-            while len(new_population) < 2 * len(self.population):
+            while len(new_population) < self.init_pop_size:
                 # Choose two individuals and make them create new life
                 parents = random.sample(population = self.population, k = 2)
                 i1, i2 = self.cross.apply(i1 = parents[0], i2 = parents[1], factory = self.ind_factory)
@@ -57,4 +57,5 @@ class Algorithm:
                 new_population.append(i2)
 
             # Select the glorious beings that will thrive and survive
-            self.population = self.selection.apply(individuals = new_population, fitness = self.fitness)
+            self.population = self.selection.apply(individuals = self.population + new_population, fitness = self.fitness)
+
