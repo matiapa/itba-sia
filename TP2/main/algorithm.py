@@ -1,17 +1,16 @@
 from typing import List
 from fitness import Fitness
 from individual import Individual, IndividualFactory
+from main.pairing.pairing import Pairing
 from mutation import Mutation
 from cross import Cross
 from selection import Selection
-
-import random
-
 from stop_criteria import StopCriteria
 
 class Algorithm:
 
     ind_factory: IndividualFactory
+    pairing: Pairing
     cross: Cross
     mutation: Mutation
     fitness: Fitness
@@ -19,9 +18,10 @@ class Algorithm:
     stop_criteria: StopCriteria
     
 
-    def __init__(self, ind_factory: IndividualFactory, cross: Cross, mutation: Mutation, fitness: Fitness, selection: Selection, \
-            stop_criteria: StopCriteria, init_pop_size: int) -> None:
+    def __init__(self, ind_factory: IndividualFactory, pairing: Pairing, cross: Cross, mutation: Mutation, fitness: Fitness, \
+            selection: Selection, stop_criteria: StopCriteria, init_pop_size: int) -> None:
         self.ind_factory = ind_factory
+        self.pairing = pairing
         self.cross = cross
         self.mutation = mutation
         self.fitness = fitness
@@ -43,10 +43,14 @@ class Algorithm:
         while not self.stop_criteria.should_stop(population = self.population, fitness = self.fitness):
             new_population : List[Individual] = []
 
-            while len(new_population) < self.init_pop_size:
-                # Choose two individuals and make them create new life
-                parents = random.sample(population = self.population, k = 2)
-                i1, i2 = self.cross.apply(i1 = parents[0], i2 = parents[1], factory = self.ind_factory)
+            # Make pairs of individuals that will love each other for eternity
+            pairs = self.pairing.apply(self.population, self.fitness)
+            if len(pairs) != len(self.population) / 2:
+                raise RuntimeError("Invalid pairing method, it must return exactly N/2 pairs being N the population size")
+
+            for pair in pairs:
+                # Give the individuals the miracle of creating new beings
+                i1, i2 = self.cross.apply(i1 = pair[0], i2 = pair[1], factory = self.ind_factory)
 
                 # Mutate the new ones and hope they wont become parasites
                 self.mutation.apply(i1)
