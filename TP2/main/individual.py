@@ -1,6 +1,5 @@
-from typing import Any, Generic, List
-
-from fitness import Fitness
+from tokenize import Number
+from typing import Any, ClassVar, Generic, List
 
 class Individual():
 
@@ -9,14 +8,24 @@ class Individual():
     def __init__(self, genes: List[float]) -> None:
         if genes is None:
             genes = self.__initialize_genes()
+
+        if len(genes) != self.genome_size():
+            raise RuntimeError("The amount of given genes differs from specified genome size")
+
         self.genes = genes
+
+    """
+    Returns the amount of genes the individals that this kind of individual must have
+    """
+    @staticmethod
+    def genome_size() -> int:
+        raise NotImplementedError
 
     """
     Creates a random gene set, method used for creating an initial population
     """
     def __initialize_genes(self):
         raise NotImplementedError
-
 
 class IndividualFactory():
 
