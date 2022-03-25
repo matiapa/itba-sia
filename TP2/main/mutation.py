@@ -21,9 +21,9 @@ class SampleMutation(Mutation):
 
 class BagMutation(Mutation):
     
-        def apply(self, individual: Individual, p: float) -> Individual:
-            for i in range(len(individual.genes)):
-                if np.random.uniform(0, 1) < p:
-                    individual.genes[i] = 1 if individual.genes[i] == 0 else 0
-            
-            return individual
+    def apply(self, individual: Individual, p: float) -> Individual:
+        for i in range(len(individual.genes)):
+            if np.random.uniform(0, 1) < p:
+                individual.genes[i] = 1 if individual.genes[i] == 0 else 0
+        
+        return individual
