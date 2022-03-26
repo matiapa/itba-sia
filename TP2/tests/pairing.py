@@ -1,3 +1,6 @@
+import sys
+sys.path.append("..")
+
 from main.fitness import Fitness
 from main.individual import Individual
 from main.pairing.elitist_pairing import ElitistPairing
