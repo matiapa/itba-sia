@@ -1,4 +1,8 @@
-from main.individual import Individual
+import sys
+sys.path.append("..")
+
+from typing import List
+from main.individual import Individual, IndividualFactory
 from main.crossing.multiple_cross import MultipleCross
 
 class TestIndividual(Individual):
@@ -11,10 +15,20 @@ class TestIndividual(Individual):
         return None
 
     def __str__(self) -> str:
-        return f"{self.genes[0]}"
+        return f"{self.genes}"
 
+class TestIndividualFactory(IndividualFactory):
+    
+    def instantiate(self, genes: List[float]) -> Individual:
+       return TestIndividual(genes)
 
-individuals = [
-    TestIndividual(genes = [0, 1, 0, 1, 0, 1]),
-    TestIndividual(genes = [1, 0, 1, 0, 1, 0])
-]
+i1 = TestIndividual(genes = [0, 1, 0, 1, 0, 1])
+i2 = TestIndividual(genes = [1, 0, 1, 0, 1, 0])
+
+print(i1)
+print(i2)
+
+n1, n2 = MultipleCross().apply(i1, i2, factory=TestIndividualFactory(), npoints=2)
+
+print(n1)
+print(n2)
