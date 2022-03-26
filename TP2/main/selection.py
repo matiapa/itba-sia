@@ -38,19 +38,9 @@ class RouletteSelection(Selection):
     Selects individuals based on their relative fitness
     """
     def apply(self, individuals: List[Individual], fitness: Fitness) -> List[Individual]:
-        max = sum(fitness.apply(individual) for individual in individuals)
-        r = np.random.uniform(0, 1)
-        q_j, j = fitness.apply(individuals[0]) / max, 0
-        q_j_next = q_j
-        for individual in individuals[1:]:
-            q_j = q_j_next if j > 0 else q_j
-            j+=1
-            q_j_next += fitness.apply(individual) / max
-            if q_j < r <= q_j_next:
-                return individuals[j]
-
-        # TODO: ver que devolver si no hay ningun individuo que cumpla la condicion
-        return individuals[-1]
+        max = sum(fitness.apply(individual) for individual in individuals) 
+        probabilities = [fitness.apply(individual) / max for individual in individuals]
+        return choice(individuals, size=len(individuals)//2, replace=False, p=probabilities)
 
 # TODO
 class RankSelection(Selection):
