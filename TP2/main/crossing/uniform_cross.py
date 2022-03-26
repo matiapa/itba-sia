@@ -1,7 +1,7 @@
 from main.individual import Individual, IndividualFactory
 from main.crossing.cross import Cross
 
-from typing import List, Tuple
+from typing import Tuple
 import numpy as np
 
 """
@@ -18,8 +18,8 @@ class SimpleCross(Cross):
         # Note that individuals of same type have the same genome size
         genome_size = i1.genome_size()
 
-        n1_genes = i1.genes
-        n2_genes = i2.genes
+        n1_genes = i1.genes.copy()
+        n2_genes = i2.genes.copy()
 
         for i in range(0, genome_size):
             n = np.random.uniform(0, 1)
@@ -27,4 +27,4 @@ class SimpleCross(Cross):
                 n1_genes[i] = i2.genes[i]
                 n2_genes[i] = i1.genes[i]
 
-        return factory.instantiate(ni_genes), factory.instantiate(ni_genes)
+        return factory.instantiate(n1_genes), factory.instantiate(n2_genes)

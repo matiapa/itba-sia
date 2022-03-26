@@ -1,11 +1,12 @@
-from typing import List
-from fitness import Fitness
-from individual import Individual, IndividualFactory
+from main.crossing.cross import Cross
 from main.pairing.pairing import Pairing
-from mutation import Mutation
-from cross import Cross
-from main.selection import Selection
+from main.selection.selection import Selection
+from main.fitness import Fitness
+from main.mutation import Mutation
 from main.stop_criteria import StopCriteria
+
+from typing import List
+from individual import Individual, IndividualFactory
 
 class Algorithm:
 
