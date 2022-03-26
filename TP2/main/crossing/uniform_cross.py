@@ -1,6 +1,7 @@
+from main.individual import Individual, IndividualFactory
+from main.crossing.cross import Cross
+
 from typing import List, Tuple
-from individual import Individual, IndividualFactory
-from cross import Cross
 import numpy as np
 
 """
@@ -15,7 +16,7 @@ class SimpleCross(Cross):
             raise RuntimeError("Individuals must be of the same type")
 
         # Note that individuals of same type have the same genome size
-        genome_size = i1.genome_size  
+        genome_size = i1.genome_size()
 
         n1_genes = i1.genes
         n2_genes = i2.genes

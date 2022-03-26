@@ -1,0 +1,5 @@
+Fitness maximo local vs tiempo | Por seleccion, cruza
+
+Fitness maximo global vs p, sigma
+
+Desvío del fitness local vs tiempo | Para cada cruza

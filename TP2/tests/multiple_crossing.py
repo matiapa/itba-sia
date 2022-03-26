@@ -25,10 +25,9 @@ class TestIndividualFactory(IndividualFactory):
 i1 = TestIndividual(genes = [0, 1, 0, 1, 0, 1])
 i2 = TestIndividual(genes = [1, 0, 1, 0, 1, 0])
 
-print(i1)
-print(i2)
+n1, n2 = MultipleCross().apply(i1, i2, factory=TestIndividualFactory(), npoints=2, points=[2,4])
 
-n1, n2 = MultipleCross().apply(i1, i2, factory=TestIndividualFactory(), npoints=2)
-
-print(n1)
-print(n2)
+if n1.genes == [1,0,0,1,1,0] and n2.genes == [0,1,1,0,0,1]:
+    print("Passed!")
+else:
+    print("Failed")

@@ -4,8 +4,8 @@ from individual import Individual, IndividualFactory
 from main.pairing.pairing import Pairing
 from mutation import Mutation
 from cross import Cross
-from selection import Selection
-from stop_criteria import StopCriteria
+from main.selection import Selection
+from main.stop_criteria import StopCriteria
 
 class Algorithm:
 

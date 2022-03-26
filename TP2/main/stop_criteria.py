@@ -1,8 +1,7 @@
+from main.fitness import Fitness
+from main.individual import Individual
+
 from typing import List
-from fitness import Fitness
-
-from individual import Individual
-
 
 class StopCriteria:
 

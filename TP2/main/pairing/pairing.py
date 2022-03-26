@@ -1,6 +1,7 @@
-from typing import List, Tuple
 from main.fitness import Fitness
 from main.individual import Individual
+
+from typing import List, Tuple
 
 class Pairing:
 

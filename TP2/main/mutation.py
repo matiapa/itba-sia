@@ -1,4 +1,4 @@
-from individual import Individual
+from main.individual import Individual
 import numpy as np
 
 class Mutation:

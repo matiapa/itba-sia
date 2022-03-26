@@ -1,8 +1,8 @@
+from main.fitness import Fitness
+from main.individual import Individual
+
 from typing import List
-from fitness import Fitness
-from individual import Individual
 import numpy as np
-from numpy.random import choice
 
 class Selection:
 

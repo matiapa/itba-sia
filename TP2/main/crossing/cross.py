@@ -1,6 +1,5 @@
+from main.individual import Individual, IndividualFactory
 from typing import List, Tuple
-from individual import Individual, IndividualFactory
-
 class Cross:
 
     """
