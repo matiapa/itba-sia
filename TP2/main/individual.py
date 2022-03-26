@@ -1,7 +1,7 @@
 from tokenize import Number
 from typing import Any, ClassVar, Generic, List
 
-class Individual():
+class Individual:
 
     genes: List[float]
 

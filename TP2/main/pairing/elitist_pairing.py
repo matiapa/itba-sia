@@ -1,4 +1,5 @@
 from functools import reduce
+from math import floor
 from typing import List, Tuple
 from main.fitness import Fitness
 from main.individual import Individual
@@ -12,14 +13,14 @@ class ElitistPairing(Pairing):
     """
 
     def apply(self, population: List[Individual], fitness: Fitness) -> List[Tuple[Individual, Individual]]:
-        
-        fitness_sum = reduce(lambda f1, f2: f1 + f2, map(lambda i : fitness.apply(i), population), 0)
 
-        probabilities = map(lambda i : fitness.apply(i) / fitness_sum, population)
+        fitness_sum = sum(fitness.apply(individual) for individual in population)
+        
+        probabilities = [fitness.apply(individual) / fitness_sum for individual in population]
 
         pairs : List[Tuple[Individual, Individual]] = []
 
-        for _ in range(0, len(population) / 2):
+        for _ in range(0, len(population) // 2):
             pair = choice(population, size=2, replace=False, p=probabilities)
             pairs.append((pair[0], pair[1]))
 

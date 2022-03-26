@@ -2,6 +2,7 @@ from typing import List
 from fitness import Fitness
 from individual import Individual
 import numpy as np
+from numpy.random import choice
 
 class Selection:
 
@@ -17,7 +18,7 @@ class EliteSelection(Selection):
     Selects the best individuals for each generation
     """
     def apply(self, individuals: List[Individual], fitness: Fitness) -> List[Individual]:
-        sorted(individuals, key=fitness.apply)
+        sorted(individuals, key=fitness.apply, reverse=True)
         return individuals[:len(individuals)//2]
 
 # TODO implement
