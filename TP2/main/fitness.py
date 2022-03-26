@@ -1,4 +1,4 @@
-from main.individual import Individual
+from individual import Individual
 
 class Fitness:
 
