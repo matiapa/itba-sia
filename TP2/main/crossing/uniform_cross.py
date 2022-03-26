@@ -9,7 +9,7 @@ Each gene is mixed with its counterpart with a probability 'p'
 """
 class SimpleCross(Cross):
 
-    def apply(self, i1: Individual, i2: Individual, factory: IndividualFactory, p: int) -> Tuple[Individual, Individual]:
+    def apply(self, i1: Individual, i2: Individual, factory: IndividualFactory, p: float) -> Tuple[Individual, Individual]:
 
         # You should not cross a worm with a human!
         if type(i1) != type(i2):
