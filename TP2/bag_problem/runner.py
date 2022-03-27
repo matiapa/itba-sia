@@ -32,23 +32,22 @@ def print_details(n : int):
 
 
 fitness = BagFitness()
-BagIndividual.bag_genome_size = 3
+BagIndividual.bag_genome_size = 100
 
 algorithm = Algorithm(
     ind_factory = BagIndividualFactory(), pairing = ElitistPairing(), cross = SimpleCross(p=0.5),
     mutation = BinaryMutation(p=0.05),    fitness = fitness,          selection = EliteSelection(),
-    stop_criteria = IterationStopCriteria(n=5),    init_pop_size = 10
+    init_pop_size = 100
 )
+iterator = iter(algorithm)
 
-individuals : List[Individual] = algorithm.run()
+generation = 0
+while generation < 5:
+    individuals : List[BagIndividual] = next(iterator)
 
-scores = [fitness.apply(i) for i in individuals]
-i_max = argmax(scores)
+    scores = [fitness.apply(i) for i in individuals]
+    i_max = argmax(scores)
+    
+    print(f'{generation}: {round(scores[i_max], 6)}')
 
-print_details(n=i_max)
-# for i in range(0, len(individuals)):
-#     print_details(i)
-
-# Pairing: 16.0018 ms
-# Reproduction: 42.9955 ms
-# Selection: 2.998 ms
+    generation += 1
