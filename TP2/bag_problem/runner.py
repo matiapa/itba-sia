@@ -32,7 +32,7 @@ def print_details(n : int):
 
 
 fitness = BagFitness()
-BagIndividual.bag_genome_size = 100
+BagIndividual.bag_genome_size = 5
 
 algorithm = Algorithm(
     ind_factory = BagIndividualFactory(), pairing = ElitistPairing(), cross = SimpleCross(p=0.5),
@@ -42,12 +42,14 @@ algorithm = Algorithm(
 iterator = iter(algorithm)
 
 generation = 0
-while generation < 5:
+while generation < 10:
     individuals : List[BagIndividual] = next(iterator)
 
     scores = [fitness.apply(i) for i in individuals]
     i_max = argmax(scores)
     
-    print(f'{generation}: {round(scores[i_max], 6)}')
+    print(individuals[0].genes)
+
+    print(f'{generation}: {round(scores[i_max], 9)}')
 
     generation += 1
