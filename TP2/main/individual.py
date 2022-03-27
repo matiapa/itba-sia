@@ -7,7 +7,7 @@ class Individual:
 
     def __init__(self, genes: List[float]) -> None:
         if genes is None:
-            genes = self.__initialize_genes()
+            genes = self._initialize_genes()
 
         if len(genes) != self.genome_size():
             raise RuntimeError("The amount of given genes differs from specified genome size")
@@ -24,7 +24,7 @@ class Individual:
     """
     Creates a random gene set, method used for creating an initial population
     """
-    def __initialize_genes(self):
+    def _initialize_genes(self) -> List[float]:
         raise NotImplementedError
 
 class IndividualFactory():

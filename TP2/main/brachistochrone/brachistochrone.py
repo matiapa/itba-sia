@@ -12,7 +12,7 @@ from matplotlib import pyplot as plt
 
 #     def __init__(self, genes: List[float]) -> None:
 #         if genes is None:
-#             genes = self.__initialize_genes()
+#             genes = self._initialize_genes()
 
 #         if len(genes) != self.genome_size():
 #             raise RuntimeError("The amount of given genes differs from specified genome size")
@@ -34,7 +34,7 @@ from matplotlib import pyplot as plt
 #     """
 #     Creates a random gene set, method used for creating an initial population
 #     """
-#     def __initialize_genes(self):
+#     def _initialize_genes(self):
 #         self.genes = [ np.pi * x / 2 -  ( np.pi / 4) for x in  np.random.rand(23)]
 
 #     @property

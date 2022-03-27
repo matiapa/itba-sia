@@ -13,7 +13,14 @@ For example:
 """
 class MultipleCross(Cross):
 
-    def apply(self, i1: Individual, i2: Individual, factory: IndividualFactory, npoints: int, points: List[int] = []) -> Tuple[Individual, Individual]:
+    npoints: int
+    points: List[int] = []
+
+    def __init__(self, npoints: int, points: List[int] = []):
+        self.npoints = npoints
+        self.points = points
+
+    def apply(self, i1: Individual, i2: Individual, factory: IndividualFactory) -> Tuple[Individual, Individual]:
 
         # You should not cross a worm with a human!
         if type(i1) != type(i2):
@@ -23,21 +30,21 @@ class MultipleCross(Cross):
         genome_size = i1.genome_size()
 
         # If no cutting points were given, generate a list of random ones
-        if len(points) == 0:
-            points = list(np.random.choice(range(1, genome_size-1), size=npoints, replace=False))
+        if len(self.points) == 0:
+            self.points = list(np.random.choice(range(1, genome_size-1), size=self.npoints, replace=False))
 
-        points.append(0)
-        points.append(genome_size)
-        points.sort()
+        self.points.append(0)
+        self.points.append(genome_size)
+        self.points.sort()
 
         # Fill up the genomes of the new individuals
 
         n1_genes = []
         n2_genes = []
 
-        for i in range(0, len(points)-1):
-            p1 = points[i]
-            p2 = points[i+1]
+        for i in range(0, len(self.points)-1):
+            p1 = self.points[i]
+            p2 = self.points[i+1]
 
             n1_src = i1 if i % 2 else i2
             n2_src = i2 if i % 2 else i1

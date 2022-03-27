@@ -30,10 +30,10 @@ class Algorithm:
         self.init_pop_size = init_pop_size
         self.stop_criteria = stop_criteria
     
-    def run(self):
+    def run(self) -> List[Individual]:
         # Create an initial population of silly beings
 
-        self.population = []
+        self.population : List[Individual] = []
         
         for _ in range(0, self.init_pop_size):
             individual = self.ind_factory.instantiate(genes = None)
@@ -41,7 +41,8 @@ class Algorithm:
 
         # Evolve until Singularity happens or the universe reaches thermal death
 
-        while not self.stop_criteria.should_stop(population = self.population, fitness = self.fitness):
+        generation = 0
+        while not self.stop_criteria.should_stop(population = self.population, fitness = self.fitness, generation = generation):
             new_population : List[Individual] = []
 
             # Make pairs of individuals that will love each other for eternity
@@ -64,3 +65,6 @@ class Algorithm:
             # Select the glorious beings that will thrive and survive
             self.population = self.selection.apply(individuals = self.population + new_population, fitness = self.fitness)
 
+            generation += 1
+
+        return self.population

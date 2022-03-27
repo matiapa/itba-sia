@@ -10,20 +10,32 @@ class Mutation:
     def apply(self, individual: Individual) -> None:
         raise NotImplementedError()
 
-class SampleMutation(Mutation):
+class NormalMutation(Mutation):
 
-    def apply(self, individual: Individual, p: float, sigma: float) -> Individual:
+    p: float
+    sigma: float
+
+    def __init__(self, p: float, sigma: float):
+        self.p = p
+        self.sigma = sigma
+
+    def apply(self, individual: Individual) -> Individual:
         for i in range(len(individual.genes)):
-            if np.random.uniform(0, 1) < p:
-                individual.genes[i] += np.random.normal(0, sigma)
+            if np.random.uniform(0, 1) < self.p:
+                individual.genes[i] += np.random.normal(0, self.sigma)
         
         return individual
 
-class BagMutation(Mutation):
+class BinaryMutation(Mutation):
+
+    p: float
+
+    def __init__(self, p: float):
+        self.p = p
     
-    def apply(self, individual: Individual, p: float) -> Individual:
+    def apply(self, individual: Individual) -> Individual:
         for i in range(len(individual.genes)):
-            if np.random.uniform(0, 1) < p:
+            if np.random.uniform(0, 1) < self.p:
                 individual.genes[i] = 1 if individual.genes[i] == 0 else 0
         
         return individual

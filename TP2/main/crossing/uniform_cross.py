@@ -9,7 +9,12 @@ Each gene is mixed with its counterpart with a probability 'p'
 """
 class SimpleCross(Cross):
 
-    def apply(self, i1: Individual, i2: Individual, factory: IndividualFactory, p: float) -> Tuple[Individual, Individual]:
+    p: float
+
+    def __init__(self, p: float) -> None:
+        self.p = p
+
+    def apply(self, i1: Individual, i2: Individual, factory: IndividualFactory) -> Tuple[Individual, Individual]:
 
         # You should not cross a worm with a human!
         if type(i1) != type(i2):
@@ -23,7 +28,7 @@ class SimpleCross(Cross):
 
         for i in range(0, genome_size):
             n = np.random.uniform(0, 1)
-            if n < p:
+            if n < self.p:
                 n1_genes[i] = i2.genes[i]
                 n2_genes[i] = i1.genes[i]
 

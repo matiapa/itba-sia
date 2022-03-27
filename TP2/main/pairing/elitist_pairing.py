@@ -29,6 +29,7 @@ class ElitistPairing(Pairing):
 
     # The following code is equivalent to the previous one, numpy automatically updates the
     # weights of the elements after taking one out by using: w = [x / sum(w) for x in w]
+    # Source: https://python-course.eu/numerical-programming/weighted-probabilities.php
     #
     # def __choose(self, fitness, population):
     #     fitness_sum = sum(fitness.apply(individual) for individual in population)

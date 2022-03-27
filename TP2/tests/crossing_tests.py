@@ -12,7 +12,7 @@ class TestIndividual(Individual):
     def genome_size() -> int:
         return 6
 
-    def __initialize_genes(self):
+    def _initialize_genes(self):
         return None
 
     def __str__(self) -> str:
