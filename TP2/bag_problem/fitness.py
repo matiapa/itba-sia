@@ -33,4 +33,4 @@ class BagFitness(Fitness):
         if weight_sum <= self.max_weight:
             return benefit_sum
         else:
-            return -1
+            return 0

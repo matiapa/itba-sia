@@ -4,12 +4,14 @@ from main.individual import Individual, IndividualFactory
 
 class BagIndividual(Individual):
 
+    bag_genome_size: int
+
     @staticmethod
     def genome_size() -> int:
-        return 100
+        return BagIndividual.bag_genome_size
 
     def _initialize_genes(self) -> List[float]:
-        return [1 if random() > 0.5 else 0 for i in range(0,100)]
+        return [1 if random() > 0.5 else 0 for i in range(0, BagIndividual.bag_genome_size)]
 
 class BagIndividualFactory(IndividualFactory):
 

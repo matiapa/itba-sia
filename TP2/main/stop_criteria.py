@@ -11,3 +11,13 @@ class StopCriteria:
     """
     def should_stop(self, population: List[Individual], fitness: Fitness, generation: int) -> bool:
         raise NotImplementedError
+
+class IterationStopCriteria(StopCriteria):
+
+    n: int
+
+    def __init__(self, n: int) -> None:
+        self.n = n
+
+    def should_stop(self, population: List[Individual], fitness: Fitness, generation: int) -> bool:
+        return generation > self.n
