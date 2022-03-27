@@ -12,6 +12,7 @@ from main.pairing.elitist_pairing import ElitistPairing
 from main.selection.roulette_selection import RouletteSelection
 from main.selection.elite_selection import EliteSelection
 from main.stop_criteria import IterationStopCriteria
+from main.selection.boltzmann_selection import BoltzmannSelection
 
 from typing import List
 from numpy import argmax
@@ -32,23 +33,25 @@ def print_details(n : int):
 
 
 fitness = BagFitness()
-BagIndividual.bag_genome_size = 5
+BagIndividual.bag_genome_size = 100
 
 algorithm = Algorithm(
     ind_factory = BagIndividualFactory(), pairing = ElitistPairing(), cross = SimpleCross(p=0.5),
-    mutation = BinaryMutation(p=0.05),    fitness = fitness,          selection = EliteSelection(),
+    mutation = BinaryMutation(p=0.1),    fitness = fitness,          selection = BoltzmannSelection(tc=0, to=100, k=0.1),
     init_pop_size = 100
 )
 iterator = iter(algorithm)
 
 generation = 0
-while generation < 10:
+while generation < 100:
     individuals : List[BagIndividual] = next(iterator)
 
     scores = [fitness.apply(i) for i in individuals]
     i_max = argmax(scores)
     
-    print(individuals[0].genes)
+    # for i in individuals:
+    #     print(i, end=' ')
+    # print('')
 
     print(f'{generation}: {round(scores[i_max], 9)}')
 
