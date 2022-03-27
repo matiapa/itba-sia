@@ -27,7 +27,7 @@ def uniform_cross_test():
     i1 = TestIndividual(genes = [0, 0, 0, 0, 0, 0])
     i2 = TestIndividual(genes = [1, 1, 1, 1, 1, 1])
 
-    n1, n2 = SimpleCross().apply(i1, i2, factory=TestIndividualFactory(), p=1)
+    n1, n2 = SimpleCross(p=1).apply(i1, i2, factory=TestIndividualFactory())
 
     if n1.genes == i2.genes and n2.genes == i1.genes:
         print("Passed!")
@@ -38,7 +38,7 @@ def multiple_cross_test():
     i1 = TestIndividual(genes = [0, 1, 0, 1, 0, 1])
     i2 = TestIndividual(genes = [1, 0, 1, 0, 1, 0])
 
-    n1, n2 = MultipleCross().apply(i1, i2, factory=TestIndividualFactory(), npoints=2, points=[2,4])
+    n1, n2 = MultipleCross(npoints=2, points=[2,4]).apply(i1, i2, factory=TestIndividualFactory())
 
     if n1.genes == [1,0,0,1,1,0] and n2.genes == [0,1,1,0,0,1]:
         print("Passed!")
