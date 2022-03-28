@@ -6,7 +6,7 @@ from main.selection.selection import Selection
 from main.fitness import Fitness
 from main.mutation import Mutation
 from main.stop_criteria import StopCriteria
-from individual import Individual, IndividualFactory
+from main.individual import Individual, IndividualFactory
 
 import time
 import numpy
