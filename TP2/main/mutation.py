@@ -10,6 +10,24 @@ class Mutation:
     def apply(self, individual: Individual) -> None:
         raise NotImplementedError()
 
+
+class UniformIntegerMutation(Mutation):
+
+    p: float
+    _range: float
+
+    def __init__(self, p: float, _range: float):
+        self.p = p
+        self._range = _range
+    
+    def apply(self, individual: Individual) -> Individual:
+        for i in range(len(individual.genes)):
+            if np.random.uniform(0, 1) < self.p:
+                m = round(np.random.uniform(-self._range, self._range))
+                individual.genes[i] += m
+        
+        return individual
+
 class NormalMutation(Mutation):
 
     p: float

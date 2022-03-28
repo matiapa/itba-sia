@@ -1,8 +1,9 @@
 import sys
 sys.path.append("..")
+sys.path.append("../..")
 
-from fitness import BagFitness
-from individual import BagIndividualFactory, BagIndividual
+from problems.bag_problem.fitness import BagFitness
+from problems.bag_problem.individual import BagIndividualFactory, BagIndividual
 
 from main.algorithm import Algorithm
 from main.crossing.uniform_cross import SimpleCross
@@ -35,15 +36,17 @@ def print_details(n : int):
 fitness = BagFitness()
 BagIndividual.bag_genome_size = 100
 
+# BoltzmannSelection(tc=0, to=100, k=0.1)
+
 algorithm = Algorithm(
     ind_factory = BagIndividualFactory(), pairing = ElitistPairing(), cross = SimpleCross(p=0.5),
-    mutation = BinaryMutation(p=0.1),    fitness = fitness,          selection = BoltzmannSelection(tc=0, to=100, k=0.1),
-    init_pop_size = 100
+    mutation = BinaryMutation(p=0.1), fitness = fitness, selection = EliteSelection(),
+    init_pop_size = 10
 )
 iterator = iter(algorithm)
 
 generation = 0
-while generation < 100:
+while generation < 5000:
     individuals : List[BagIndividual] = next(iterator)
 
     scores = [fitness.apply(i) for i in individuals]
@@ -53,6 +56,7 @@ while generation < 100:
     #     print(i, end=' ')
     # print('')
 
+    # print(f'{generation}: {individuals[i_max].genes}')
     print(f'{generation}: {round(scores[i_max], 9)}')
 
     generation += 1

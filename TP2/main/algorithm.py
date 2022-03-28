@@ -51,26 +51,40 @@ class Algorithm:
 
 
     def __next__(self):
-        new_population : List[Individual] = []
-
         # Make pairs of individuals that will love each other for eternity
 
         pairs = self.pairing.apply(self.population, self.fitness)
         if len(pairs) != len(self.population) / 2:
             raise RuntimeError("Invalid pairing method, it must return exactly N/2 pairs being N the population size")
-
+        
         # Create new beings from the previous pairs
 
+        # print('PARENTS')
+        # for i in self.population:
+        #     print(f'{i.genes[0], i.genes[1], self.fitness.apply(i)}', end=' ')
+        # print('')
+
         # s = time.time_ns()
+        new_population = []
         for pair in pairs:
             n1, n2 = self.reproduce(pair)
             new_population.append(n1)
             new_population.append(n2)
+        self.population += new_population
         # print(f'Reproduction: {(time.time_ns() - s) / 1e6} ms')
+
+        # print('CHILDRENS')
+        # for i in new_population:
+        #     print(f'{i.genes[0], i.genes[1], self.fitness.apply(i)}', end=' ')
+        # print('')
 
         # Select the glorious beings that will thrive and survive
 
-        self.population = self.selection.apply(individuals = self.population + new_population, fitness = self.fitness)
+        # for i in self.population:
+        #     print(f'{i.genes[0], i.genes[1], round(self.fitness.apply(i), 6)}', end=' ')
+        # print('')
+
+        self.population = self.selection.apply(individuals = self.population, fitness = self.fitness)
 
         self.generation += 1
 

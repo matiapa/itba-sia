@@ -44,8 +44,10 @@ def animate_2D(size):
     grid = create_grid_2D(size, 0)
     img_plot = ax.imshow(grid, interpolation='nearest', cmap=ListedColormap(['black', 'white']))
 
+    plt.savefig(f'out/first.png')
     ani = animation.FuncAnimation(fig, frames=20, func=animate_step_2D, interval=1000)
     ani.save('out/animation_2D.gif')
+    plt.savefig(f'out/last.png')
 
 # ------------------------------------ 3D ANIMATION ------------------------------------
 
@@ -70,7 +72,7 @@ def animate_step_3D(frame):
         ax.set_zlabel("z")
         ax.voxels(filled, edgecolors='gray', shade=False)
 
-    plt.savefig(f'out/{frame}.png')
+    # plt.savefig(f'out/{frame}.png')
 
 def animate_3D(size):
     global grid_size, img_plot, ax
