@@ -12,7 +12,7 @@ import time
 import numpy
 import multiprocessing
 from joblib import Parallel, delayed
-from typing import List, Tuple
+from typing import List, Set, Tuple
 
 class Algorithm:
 
@@ -40,12 +40,13 @@ class Algorithm:
     def __iter__(self):
         # Create an initial population of silly beings
 
-        self.population : List[Individual] = []
+        self.population : Set[Individual] = set()
         self.generation = 0
 
-        for _ in range(0, self.init_pop_size):
+        while len(self.population) < self.init_pop_size:
             individual = self.ind_factory.instantiate(genes = None)
-            self.population.append(individual)
+            if individual not in self.population:
+                self.population.add(individual)
 
         return self
 
@@ -55,36 +56,21 @@ class Algorithm:
 
         pairs = self.pairing.apply(self.population, self.fitness)
         if len(pairs) != len(self.population) / 2:
-            raise RuntimeError("Invalid pairing method, it must return exactly N/2 pairs being N the population size")
+            raise RuntimeError("Invalid pairing method, it must return exactly N/2 pairs being N the given population size")
         
-        # Create new beings from the previous pairs
+        # Create new beings and incorporate them to our population
 
-        # print('PARENTS')
-        # for i in self.population:
-        #     print(f'{i.genes[0], i.genes[1], self.fitness.apply(i)}', end=' ')
-        # print('')
-
-        # s = time.time_ns()
-        new_population = []
         for pair in pairs:
             n1, n2 = self.reproduce(pair)
-            new_population.append(n1)
-            new_population.append(n2)
-        self.population += new_population
-        # print(f'Reproduction: {(time.time_ns() - s) / 1e6} ms')
-
-        # print('CHILDRENS')
-        # for i in new_population:
-        #     print(f'{i.genes[0], i.genes[1], self.fitness.apply(i)}', end=' ')
-        # print('')
+            self.population.add(n1)
+            self.population.add(n2)
 
         # Select the glorious beings that will thrive and survive
-
-        # for i in self.population:
-        #     print(f'{i.genes[0], i.genes[1], round(self.fitness.apply(i), 6)}', end=' ')
-        # print('')
-
+        
         self.population = self.selection.apply(individuals = self.population, fitness = self.fitness)
+        if len(self.population) != self.init_pop_size:
+            print(len(self.population))
+            raise RuntimeError("Invalid selection method, it must return exactly N/2 individuals being N the given population size")
 
         self.generation += 1
 
@@ -92,14 +78,17 @@ class Algorithm:
 
 
     def reproduce(self, pair: Tuple[Individual, Individual]):
-        
-
         # Give the individuals the miracle of creating new beings
         i1, i2 = self.cross.apply(i1 = pair[0], i2 = pair[1], factory = self.ind_factory)
 
         # Mutate the new ones and hope they wont become parasites
-        self.mutation.apply(i1)
-        self.mutation.apply(i2)
 
-        # Incorporate them to our new population
+        self.mutation.apply(i1)
+        while i1 in self.population:
+            self.mutation.apply(i1)
+        
+        self.mutation.apply(i2)
+        while i2 in self.population or i2 == i1:
+            self.mutation.apply(i2)
+
         return [i1, i2]

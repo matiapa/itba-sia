@@ -1,7 +1,7 @@
 from main.fitness import Fitness
 from main.individual import Individual
 from main.selection.selection import Selection
-from typing import List
+from typing import Set
 import numpy as np 
 
 class SoftmaxSelection(Selection):
@@ -9,8 +9,8 @@ class SoftmaxSelection(Selection):
     """
     Selects individuals based on their relative fitness
     """
-    def apply(self, individuals: List[Individual], fitness: Fitness) -> List[Individual]:
+    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
         max = sum( np.exp(fitness.apply(individual)) for individual in individuals) 
         probabilities = [ np.exp(fitness.apply(individual)) / max for individual in individuals]
-        return np.random.choice(individuals, size=len(individuals)//2, replace=False, p=probabilities)
-
+        np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=False, p=probabilities)
+        return set(np_array)

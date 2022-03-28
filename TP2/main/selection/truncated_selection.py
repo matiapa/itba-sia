@@ -1,7 +1,7 @@
 from main.fitness import Fitness
 from main.individual import Individual
 from main.selection.selection import Selection
-from typing import List
+from typing import Set
 import numpy as np 
 
 # TODO
@@ -15,6 +15,7 @@ class TruncatedSelection(Selection):
     """
     Selects individuals using Truncated Method
     """
-    def apply(self, individuals: List[Individual], fitness: Fitness) -> List[Individual]:
-        individuals = sorted(individuals, key=fitness.apply) # me quedan los peores primero, y los saco con el [self.k:]
-        np.random.choice(individuals[self.k:], size=len(individuals)//2, replace=False) # Me da un poco de dudas 
+    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
+        individuals = sorted(individuals, key=fitness.apply)
+        np_array = np.random.choice(individuals[self.k:], size=len(individuals)//2, replace=False)
+        return set(np_array)

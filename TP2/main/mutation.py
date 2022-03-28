@@ -20,14 +20,12 @@ class UniformIntegerMutation(Mutation):
         self.p = p
         self._range = _range
     
-    def apply(self, individual: Individual) -> Individual:
+    def apply(self, individual: Individual) -> None:
         for i in range(len(individual.genes)):
             if np.random.uniform(0, 1) < self.p:
                 m = round(np.random.uniform(-self._range, self._range))
                 individual.genes[i] += m
         
-        return individual
-
 class NormalMutation(Mutation):
 
     p: float
@@ -37,12 +35,10 @@ class NormalMutation(Mutation):
         self.p = p
         self.sigma = sigma
 
-    def apply(self, individual: Individual) -> Individual:
+    def apply(self, individual: Individual) -> None:
         for i in range(len(individual.genes)):
             if np.random.uniform(0, 1) < self.p:
                 individual.genes[i] += np.random.normal(0, self.sigma)
-        
-        return individual
 
 class BinaryMutation(Mutation):
 
@@ -51,9 +47,7 @@ class BinaryMutation(Mutation):
     def __init__(self, p: float):
         self.p = p
     
-    def apply(self, individual: Individual) -> Individual:
+    def apply(self, individual: Individual) -> None:
         for i in range(len(individual.genes)):
             if np.random.uniform(0, 1) < self.p:
                 individual.genes[i] = 1 if individual.genes[i] == 0 else 0
-        
-        return individual

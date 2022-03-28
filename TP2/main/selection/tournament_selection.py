@@ -2,7 +2,7 @@ from ast import In
 from main.selection.selection import Selection
 from main.fitness import Fitness
 from main.individual import Individual
-from typing import List
+from typing import Set
 import numpy as np 
 
 # TODO
@@ -24,16 +24,12 @@ class TournamentSelection(Selection):
     """
     Selects individuals using Tournament Method
     """
-    def apply(self, individuals: List[Individual], fitness: Fitness) -> List[Individual]:
-        selex = [] 
+    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
+        selex = set() 
         for x in range(len(individuals)/2): 
-            pairs = np.random.choice(individuals, size=4, replace=False) # PREGUNTA: deberia ser con replace true? 
+            pairs = np.random.choice(list(individuals), size=4, replace=False) # PREGUNTA: deberia ser con replace true? 
             semi1 = self.compete(pairs[0], pairs[1])
             semi2 = self.compete(pairs[2], pairs[3])
             winner = self.compete(semi1, semi2)
-            selex.append(winner)
+            selex.add(winner)
         return selex 
-
-
-
-

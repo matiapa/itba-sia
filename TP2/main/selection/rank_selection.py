@@ -1,7 +1,7 @@
 from main.fitness import Fitness
 from main.individual import Individual
 from main.selection.selection import Selection
-from typing import List
+from typing import Set
 
 # TODO
 class RankSelection(Selection):
@@ -9,5 +9,5 @@ class RankSelection(Selection):
     """
     Selects individuals using Rank Method
     """
-    def apply(self, individuals: List[Individual], fitness: Fitness) -> List[Individual]:
+    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
         ...

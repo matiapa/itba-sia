@@ -96,7 +96,7 @@ def animate_3D(size):
 
 # ------------------------------------ MAIN CODE ------------------------------------
 
-df = pd.read_csv('output.csv')
+df = pd.read_csv('out/output.csv')
 df.set_index(['t'])
 
 animate_2D(size = 100)

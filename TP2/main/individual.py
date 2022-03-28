@@ -1,5 +1,4 @@
-from tokenize import Number
-from typing import Any, ClassVar, Generic, List
+from typing import List
 
 class Individual:
 
@@ -26,6 +25,12 @@ class Individual:
     """
     def _initialize_genes(self) -> List[float]:
         raise NotImplementedError
+
+    def __eq__(self, __o: object) -> bool:
+        return self.genes == __o.genes
+
+    def __hash__(self) -> int:
+        return hash(str(self.genes))
 
 class IndividualFactory():
 

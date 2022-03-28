@@ -4,7 +4,7 @@ from main.pairing.pairing import Pairing
 
 from functools import reduce
 from math import floor
-from typing import List, Tuple
+from typing import List, Set, Tuple
 from numpy.random import choice
 
 class ElitistPairing(Pairing):
@@ -13,7 +13,7 @@ class ElitistPairing(Pairing):
     Chooses pairs of individuals randomly, but prioritizing those with higher fitness score
     """
 
-    def apply(self, population: List[Individual], fitness: Fitness) -> List[Tuple[Individual, Individual]]:
+    def apply(self, population: Set[Individual], fitness: Fitness) -> List[Tuple[Individual, Individual]]:
 
         fitness_sum = sum(fitness.apply(individual) for individual in population)
         
@@ -22,7 +22,7 @@ class ElitistPairing(Pairing):
         pairs : List[Tuple[Individual, Individual]] = []
 
         for _ in range(0, len(population) // 2):
-            pair = choice(population, size=2, replace=False, p=probabilities)
+            pair = choice(list(population), size=2, replace=False, p=probabilities)
             pairs.append((pair[0], pair[1]))
 
         return pairs

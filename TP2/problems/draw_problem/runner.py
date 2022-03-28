@@ -12,7 +12,7 @@ from main.pairing.elitist_pairing import ElitistPairing
 from main.selection.elite_selection import EliteSelection
 from main.selection.roulette_selection import RouletteSelection
 
-from typing import List
+from typing import Set
 
 fitness = BorderFitness()
 
@@ -23,7 +23,7 @@ algorithm = Algorithm(
 )
 iterator = iter(algorithm)
 
-f = open("output.csv", "w")
+f = open("out/output.csv", "w")
 f.write('t,x,y,a\n')
 
 for i in algorithm.population:
@@ -31,7 +31,7 @@ for i in algorithm.population:
 t = 1
 
 while t < 100:
-    individuals : List[PointIndividual] = next(iterator)
+    individuals : Set[PointIndividual] = next(iterator)
 
     for i in individuals:
         f.write(f'{t},{i.genes[0]},{i.genes[1]},1\n')

@@ -1,11 +1,11 @@
 from main.fitness import Fitness
 from main.individual import Individual
-from typing import List
+from typing import List, Set
 
 class Selection:
 
     """
     Selects half of the individuals for surviving to the next generation
     """
-    def apply(self, individuals: List[Individual], fitness: Fitness) -> List[Individual]:
+    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
         raise NotImplementedError()
