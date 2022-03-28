@@ -10,7 +10,7 @@ class ReactiveIndividual(Individual):
         return 11
 
     def _initialize_genes(self) -> List[float]:
-        return [round(np.random.uniform(-5, 5), 4) for _ in range(0, 11)]
+        return [round(np.random.uniform(-50, 50), 4) for _ in range(0, 11)]
         
     def __str__(self) -> str:
         return " W " + str(self.W) + " w " + str(self.w) + " w_0 " + str(self.w_0)
