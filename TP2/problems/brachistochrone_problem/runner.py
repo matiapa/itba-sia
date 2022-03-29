@@ -7,7 +7,7 @@ from problems.brachistochrone_problem.individual import BrachistochroneIndividua
 from problems.brachistochrone_problem.plotter import plot_individual
 
 from main.algorithm import Algorithm
-from main.crossing.uniform_cross import SimpleCross
+from main.crossing.uniform_cross import UniformCross
 from main.individual import Individual
 from main.mutation import NormalMutation
 from main.pairing.elitist_pairing import ElitistPairing
@@ -29,7 +29,7 @@ BrachistochroneIndividual.angle_limit = 0.1
 algorithm = Algorithm(
     ind_factory = BrachistochroneIndividualFactory(), 
     pairing = ElitistPairing(), 
-    cross = SimpleCross(p=0),
+    cross = UniformCross(p=0),
     mutation = NormalMutation(p=1, sigma=0.1), 
     fitness = fitness, 
     selection = RouletteSelection(),
