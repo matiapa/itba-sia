@@ -8,7 +8,7 @@ from individual import ReactiveIndividual, ReactiveIndividualFactory
 from typing import List
 
 from main.algorithm import Algorithm
-from main.crossing.uniform_cross import SimpleCross
+from main.crossing.uniform_cross import UniformCross
 from main.mutation import UniformIntegerMutation
 from main.pairing.elitist_pairing import ElitistPairing
 from main.selection.elite_selection import EliteSelection
@@ -21,7 +21,7 @@ from main.algorithm import Algorithm
 fitness = ReactiveFitness()
 
 algorithm = Algorithm(
-    ind_factory = ReactiveIndividualFactory(), pairing = ElitistPairing(), cross = SimpleCross(p=0),
+    ind_factory = ReactiveIndividualFactory(), pairing = ElitistPairing(), cross = UniformCross(p=0),
     mutation = UniformIntegerMutation(p=1, _range=5), fitness = fitness, selection = RankSelection(),
     init_pop_size = 100
 )

@@ -7,7 +7,7 @@ import numpy as np
 """
 Each gene is mixed with its counterpart with a probability 'p'
 """
-class SimpleCross(Cross):
+class UniformCross(Cross):
 
     p: float
 

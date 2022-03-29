@@ -6,7 +6,7 @@ from problems.bag_problem.fitness import BagFitness
 from problems.bag_problem.individual import BagIndividualFactory, BagIndividual
 
 from main.algorithm import Algorithm
-from main.crossing.uniform_cross import SimpleCross
+from main.crossing.uniform_cross import UniformCross
 from main.individual import Individual
 from main.mutation import BinaryMutation
 from main.pairing.elitist_pairing import ElitistPairing
@@ -39,15 +39,17 @@ BagIndividual.bag_genome_size = 100
 # BoltzmannSelection(tc=0, to=100, k=0.1)
 
 algorithm = Algorithm(
-    ind_factory = BagIndividualFactory(), pairing = ElitistPairing(), cross = SimpleCross(p=0.5),
+    ind_factory = BagIndividualFactory(), pairing = ElitistPairing(), cross = UniformCross(p=0.5),
     mutation = BinaryMutation(p=0.1), fitness = fitness, selection = EliteSelection(),
-    init_pop_size = 10
+    init_pop_size = 100
 )
 iterator = iter(algorithm)
 
 generation = 0
+individuals : List[BagIndividual] = []
+
 while generation < 5000:
-    individuals : List[BagIndividual] = next(iterator)
+    individuals : List[BagIndividual] = list(next(iterator))
 
     scores = [fitness.apply(i) for i in individuals]
     i_max = argmax(scores)
@@ -60,3 +62,9 @@ while generation < 5000:
     print(f'{generation}: {round(scores[i_max], 9)}')
 
     generation += 1
+
+scores = [fitness.apply(i) for i in individuals]
+i_max = argmax(scores)
+
+print("Best genome:")
+print(individuals[i_max].genes)

@@ -6,7 +6,7 @@ from problems.draw_problem.fitness import BorderFitness
 from problems.draw_problem.individual import PointIndividual, PointIndividualFactory
 
 from main.algorithm import Algorithm
-from main.crossing.uniform_cross import SimpleCross
+from main.crossing.uniform_cross import UniformCross
 from main.mutation import UniformIntegerMutation
 from main.pairing.elitist_pairing import ElitistPairing
 from main.selection.elite_selection import EliteSelection
@@ -17,7 +17,7 @@ from typing import Set
 fitness = BorderFitness()
 
 algorithm = Algorithm(
-    ind_factory = PointIndividualFactory(), pairing = ElitistPairing(), cross = SimpleCross(p=0),
+    ind_factory = PointIndividualFactory(), pairing = ElitistPairing(), cross = UniformCross(p=0.5),
     mutation = UniformIntegerMutation(p=1, _range=5), fitness = fitness, selection = EliteSelection(),
     init_pop_size = 100
 )

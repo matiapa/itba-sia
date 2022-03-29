@@ -4,7 +4,7 @@ sys.path.append("..")
 from typing import List
 from main.individual import Individual, IndividualFactory
 from main.crossing.multiple_cross import MultipleCross
-from main.crossing.uniform_cross import SimpleCross
+from main.crossing.uniform_cross import UniformCross
 
 class TestIndividual(Individual):
 
@@ -27,7 +27,7 @@ def uniform_cross_test():
     i1 = TestIndividual(genes = [0, 0, 0, 0, 0, 0])
     i2 = TestIndividual(genes = [1, 1, 1, 1, 1, 1])
 
-    n1, n2 = SimpleCross(p=1).apply(i1, i2, factory=TestIndividualFactory())
+    n1, n2 = UniformCross(p=1).apply(i1, i2, factory=TestIndividualFactory())
 
     if n1.genes == i2.genes and n2.genes == i1.genes:
         print("Passed!")
