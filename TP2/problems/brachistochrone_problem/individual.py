@@ -6,9 +6,9 @@ class BrachistochroneIndividual(Individual):
 
     genome_size: int
     angle_limit = 0.01
-    h0 = 1
+    h0 = 0
     hf = 0
-    horizontal_length = 10
+    horizontal_length = np.pi*2
     q_control_points = 100
     step = 0
 

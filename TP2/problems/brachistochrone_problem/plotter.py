@@ -3,16 +3,16 @@ from matplotlib import pyplot as plt
 import numpy as np 
 
 
-# def cicloid(step): 
-#     xs = []
-#     ys = [] 
-
-#     for t in range(10000):
-#         t = t/10000
-#         xs.append() 
-
-
-#     return [], []
+def cicloid(): 
+    
+    xs = [] 
+    ys = [] 
+    x = 0 
+    while x<2*np.pi:
+        xs.append(x-np.sin(x))
+        ys.append(-1*(1-np.cos(x)))
+        x += 0.1
+    return xs, ys
 
 def plot_individual(individual: BrachistochroneIndividual): 
     controls = [individual.h0]
@@ -22,15 +22,11 @@ def plot_individual(individual: BrachistochroneIndividual):
         theta += delta_theta
         controls.append(controls[-1]+np.tan(theta)*individual.step)
         steps.append(steps[-1]+individual.step)
-    steps.append(steps[-1]+individual.h0)
+    steps.append(steps[-1]+individual.step)
     controls.append(individual.hf)
     
     plt.plot(steps, controls, '-')
 
-
-    # plt.plot(steps, )
-
-
-
-
+    h, h2 = cicloid()
+    plt.plot(h, h2, 'r-')
     plt.show()

@@ -22,7 +22,7 @@ from numpy import argmax
 
 
 fitness = BrachistochroneFitness()
-BrachistochroneIndividual.q_control_points = 25
+BrachistochroneIndividual.q_control_points = 2000
 BrachistochroneIndividual.angle_limit = 0.1
 
 
@@ -41,12 +41,12 @@ generation = 0
 print("OKEY")
 best = None
 best_fit = 0.09
-while generation < 500:
+while generation < 1000:
     # print('STARTING')
-    individuals : List[BrachistochroneIndividual] = list(next(iterator))
+    # individuals : List[BrachistochroneIndividual] = list(next(iterator))
 
-    scores = [fitness.apply(i) for i in individuals]
-    i_max = argmax(scores)
+    # scores = [fitness.apply(i) for i in individuals]
+    # i_max = argmax(scores)
 
     # print(generation, individuals[i_max])
 
@@ -61,9 +61,16 @@ while generation < 500:
     # print(scores)
     # if (max(scores) > 1): 
     #     plot_individual(individuals[i_max])
-    if max(scores) > best_fit: 
-        best_fit = max(scores)
-        best = individuals[i_max]
+    # if max(scores) > best_fit: 
+    #     best_fit = max(scores)
+    #     best = individuals[i_max]
+
+    r = BrachistochroneIndividual(None)
+    random_fitness = fitness.apply(r)
+    if  random_fitness > best_fit: 
+        best = r
+        best_fit = random_fitness
+        print(best_fit)
 
     generation += 1
 
