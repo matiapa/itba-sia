@@ -9,6 +9,10 @@ inputs = {
 }
 
 def g(x):
+    if x > 5:
+        return 1
+    elif x < -5:
+        return 0
     return exp(x)/(1+exp(x))
 
 
@@ -21,7 +25,6 @@ def F(W, w, w_0, xi):
     x = sum((W[j]*y(j, w, w_0, xi)) for j in range(1, 3)) - W[0]
     return g(x)
 
-
 def E(W, w, w_0):
     xi = inputs["xi"]
     dseta = inputs["dseta"]
@@ -29,4 +32,4 @@ def E(W, w, w_0):
 
 class ReactiveFitness(Fitness):
     def apply(self, i: ReactiveIndividual):
-        return 1/E(i.W, i.w, i.w_0)
+        return 1/exp(E(i.W, i.w, i.w_0))
