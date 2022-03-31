@@ -13,7 +13,6 @@ from main.mutation import NormalMutation
 from main.pairing.elitist_pairing import ElitistPairing
 from main.selection.roulette_selection import RouletteSelection
 from main.selection.elite_selection import EliteSelection
-from main.stop_criteria import IterationStopCriteria
 from main.selection.boltzmann_selection import BoltzmannSelection
 
 from typing import List
