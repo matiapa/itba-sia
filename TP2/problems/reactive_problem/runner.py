@@ -23,7 +23,7 @@ algorithm = Algorithm(
     cross=SimpleCross(),
     mutation=UniformIntegerMutation(p=1, _range=5), 
     fitness=fitness, 
-    selection=RouletteSelection(),
+    selection=RankSelection(),
     init_pop_size=100
 )
 iterator = iter(algorithm)
