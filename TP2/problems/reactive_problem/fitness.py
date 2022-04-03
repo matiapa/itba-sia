@@ -1,5 +1,7 @@
 from math import exp
-
+import sys
+sys.path.append("..")
+sys.path.append("../..")
 from main.fitness import Fitness
 from individual import ReactiveIndividual
 
@@ -9,10 +11,6 @@ inputs = {
 }
 
 def g(x):
-    # if x > 5:
-    #     return 1
-    # elif x < -5:
-    #     return 0
     return exp(x)/(1+exp(x))
 
 
@@ -34,3 +32,6 @@ def E(W, w, w_0):
 class ReactiveFitness(Fitness):
     def apply(self, i: ReactiveIndividual):
         return 3 - E(i.W, i.w, i.w_0)
+
+    def error(self, i: ReactiveIndividual):
+        return E(i.W, i.w, i.w_0)

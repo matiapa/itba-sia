@@ -55,7 +55,7 @@ class Algorithm:
 
         s = time.time_ns()
         pairs = self.pairing.apply(self.population, self.fitness)
-        if len(pairs) != len(self.population) / 2:
+        if len(pairs) != len(self.population) // 2:
             raise RuntimeError("Invalid pairing method, it must return exactly N/2 pairs being N the given population size")
         print(f'Pairing took: {(time.time_ns() - s) / 1e6} ms')
         
@@ -76,6 +76,7 @@ class Algorithm:
         self.population = self.selection.apply(individuals = self.population, fitness = self.fitness)
         if len(self.population) != self.init_pop_size:
             print(len(self.population))
+            print(self.init_pop_size)
             raise RuntimeError("Invalid selection method, it must return exactly N/2 individuals being N the given population size")
         print(f'Selection took: {(time.time_ns() - s) / 1e6} ms\n')
 
