@@ -49,7 +49,7 @@ for k in range(q_experiments):
     experiments_avg.append([])
     while t < iterations_per_experiment:
         individuals: List[ReactiveIndividual] = next(iterators[k])
-        experiments[k].append(max([fitness.error(indi)
+        experiments[k].append(min([fitness.error(indi)
                               for indi in individuals]))
         experiments_avg[k].append(sum([fitness.error(indi) 
                             for indi in individuals])/len(individuals))
