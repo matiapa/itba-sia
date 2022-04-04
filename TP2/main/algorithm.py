@@ -1,4 +1,5 @@
 import threading
+from concurrent.futures import ThreadPoolExecutor
 from time import time
 from turtle import back
 from main.crossing.cross import Cross
@@ -40,6 +41,9 @@ class Algorithm:
         return str(self.cross) + '\n' + str(self.mutation) + '\n' + 'Poblacion inicial: ' + str(self.init_pop_size) + '\n' + 'Con reemplazo: ' + str(self.replace)
 
     def __iter__(self):
+        if self.population != None:
+            return self
+            
         # Create an initial population of silly beings
 
         self.population: Set[Individual] = set()
@@ -63,10 +67,6 @@ class Algorithm:
         print(f'Pairing took: {(time.time_ns() - s) / 1e6} ms')
 
         # Create new beings and incorporate them to our population
-
-        s = time.time_ns()
-        threads = [threading.Thread(target=self.reproduce, args=[])
-                   for i in range(0, 8)]
 
         for pair in pairs:
             n1, n2 = self.reproduce(pair)
