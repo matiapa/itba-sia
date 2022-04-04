@@ -26,7 +26,7 @@ class Algorithm:
 
     def __init__(
         self, ind_factory: IndividualFactory, pairing: Pairing, cross: Cross, mutation: Mutation,
-        fitness: Fitness, selection: Selection, init_pop_size: int, replace: bool
+        fitness: Fitness, selection: Selection, init_pop_size: int
     ) -> None:
         self.ind_factory = ind_factory
         self.pairing = pairing
@@ -35,10 +35,9 @@ class Algorithm:
         self.fitness = fitness
         self.selection = selection
         self.init_pop_size = init_pop_size
-        self.replace = replace
 
     def __str__(self):
-        return str(self.cross) + '\n' + str(self.mutation) + '\n' + 'Poblacion inicial: ' + str(self.init_pop_size) + '\n' + 'Con reemplazo: ' + str(self.replace)
+        return str(self.cross) + '\n' + str(self.mutation) + '\n' + 'Poblacion inicial: ' + str(self.init_pop_size) + '\n' + 'Con reemplazo: ' + 'no'
 
     def __iter__(self):
         # if self.population != None:
@@ -78,7 +77,7 @@ class Algorithm:
 
         s = time.time_ns()
         self.population = self.selection.apply(
-            individuals=self.population, fitness=self.fitness, replace=self.replace)
+            individuals=self.population, fitness=self.fitness)
         if len(self.population) != self.init_pop_size:
             print(len(self.population))
             print(self.init_pop_size)

@@ -19,11 +19,11 @@ sys.path.append("..")
 sys.path.append("../..")
 
 fitness = ReactiveFitness()
-
+# , RouletteSelection(),
+#               RankSelection(),  TournamentSelection(0.6), 
+#               BoltzmannSelection(25, 100, 0.005), TruncatedSelection(5)
 # TournamentSelection(0.6),
-selections = [EliteSelection(), RouletteSelection(),
-              RankSelection(),  TournamentSelection(0.6), 
-              BoltzmannSelection(25, 100, 0.005), TruncatedSelection(5)]
+selections = [EliteSelection()]
 
 q_experiments = len(selections)
 
@@ -43,8 +43,7 @@ for i in range(len(selections)):
         mutation=UniformMutation(p=0.5, _range=0.1),
         fitness=fitness,
         selection=selections[i],
-        init_pop_size=100,
-        replace=False
+        init_pop_size=100
     ))
     iterators.append(iter(algorithms[i]))
 
