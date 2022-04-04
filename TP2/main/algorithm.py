@@ -41,8 +41,8 @@ class Algorithm:
         return str(self.cross) + '\n' + str(self.mutation) + '\n' + 'Poblacion inicial: ' + str(self.init_pop_size) + '\n' + 'Con reemplazo: ' + str(self.replace)
 
     def __iter__(self):
-        if self.population != None:
-            return self
+        # if self.population != None:
+        #     return self
             
         # Create an initial population of silly beings
 
