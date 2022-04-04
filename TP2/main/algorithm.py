@@ -13,6 +13,7 @@ import numpy
 import multiprocessing
 from typing import List, Set, Tuple
 
+
 class Algorithm:
 
     ind_factory: IndividualFactory
@@ -20,11 +21,10 @@ class Algorithm:
     cross: Cross
     mutation: Mutation
     fitness: Fitness
-    selection: Selection    
-
+    selection: Selection
 
     def __init__(
-        self, ind_factory: IndividualFactory, pairing: Pairing, cross: Cross, mutation: Mutation, \
+        self, ind_factory: IndividualFactory, pairing: Pairing, cross: Cross, mutation: Mutation,
         fitness: Fitness, selection: Selection, init_pop_size: int, replace: bool
     ) -> None:
         self.ind_factory = ind_factory
@@ -36,20 +36,21 @@ class Algorithm:
         self.init_pop_size = init_pop_size
         self.replace = replace
 
-    
+    def __str__(self):
+        return str(self.cross) + '\n' + str(self.mutation) + '\n' + 'Poblacion inicial: ' + str(self.init_pop_size) + '\n' + 'Con reemplazo: ' + str(self.replace)
+
     def __iter__(self):
         # Create an initial population of silly beings
 
-        self.population : Set[Individual] = set()
+        self.population: Set[Individual] = set()
         self.generation = 0
 
         while len(self.population) < self.init_pop_size:
-            individual = self.ind_factory.instantiate(genes = None)
+            individual = self.ind_factory.instantiate(genes=None)
             if individual not in self.population:
                 self.population.add(individual)
 
         return self
-
 
     def __next__(self):
         # Make pairs of individuals that will love each other for eternity
@@ -57,13 +58,15 @@ class Algorithm:
         s = time.time_ns()
         pairs = self.pairing.apply(self.population, self.fitness)
         if len(pairs) != len(self.population) // 2:
-            raise RuntimeError("Invalid pairing method, it must return exactly N/2 pairs being N the given population size")
+            raise RuntimeError(
+                "Invalid pairing method, it must return exactly N/2 pairs being N the given population size")
         print(f'Pairing took: {(time.time_ns() - s) / 1e6} ms')
-        
+
         # Create new beings and incorporate them to our population
 
         s = time.time_ns()
-        threads = [threading.Thread(target=self.reproduce, args=[]) for i in range(0,8)]
+        threads = [threading.Thread(target=self.reproduce, args=[])
+                   for i in range(0, 8)]
 
         for pair in pairs:
             n1, n2 = self.reproduce(pair)
@@ -72,30 +75,33 @@ class Algorithm:
         print(f'Reproduction took: {(time.time_ns() - s) / 1e6} ms')
 
         # Select the glorious beings that will thrive and survive
-        
+
         s = time.time_ns()
-        self.population = self.selection.apply(individuals = self.population, fitness = self.fitness, replace = self.replace)
+        self.population = self.selection.apply(
+            individuals=self.population, fitness=self.fitness, replace=self.replace)
         if len(self.population) != self.init_pop_size:
             print(len(self.population))
             print(self.init_pop_size)
-            raise RuntimeError("Invalid selection method, it must return exactly N/2 individuals being N the given population size")
+            print(self.selection)
+            raise RuntimeError(
+                "Invalid selection method, it must return exactly N/2 individuals being N the given population size")
         print(f'Selection took: {(time.time_ns() - s) / 1e6} ms\n')
 
         self.generation += 1
 
         return self.population
 
-
     def reproduce(self, pair: Tuple[Individual, Individual]) -> Tuple[Individual, Individual]:
         # Give the individuals the miracle of creating new beings
-        i1, i2 = self.cross.apply(i1 = pair[0], i2 = pair[1], factory = self.ind_factory)
+        i1, i2 = self.cross.apply(
+            i1=pair[0], i2=pair[1], factory=self.ind_factory)
 
         # Mutate the new ones and hope they wont become parasites
 
         self.mutation.apply(i1)
         while i1 in self.population:
             self.mutation.apply(i1)
-        
+
         self.mutation.apply(i2)
         while i2 in self.population or i2 == i1:
             self.mutation.apply(i2)

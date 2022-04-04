@@ -8,7 +8,7 @@ import numpy as np
 class TruncatedSelection(Selection):
 
     def __str__(self):
-        return "Truncated"
+        return "Truncated" + ' (k = ' + str(self.k) + ')'
 
     def __init__(self, k: float): 
         self.k = k 

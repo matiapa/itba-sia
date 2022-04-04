@@ -16,6 +16,9 @@ class MultipleCross(Cross):
     npoints: int
     points: List[int] = []
 
+    def __str__(self):
+        return "MultipleCross" + ' (npoints = ' + str(self.npoints) + ')'
+
     def __init__(self, npoints: int, points: List[int] = []):
         self.npoints = npoints
         self.points = points

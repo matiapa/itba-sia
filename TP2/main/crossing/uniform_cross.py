@@ -11,6 +11,9 @@ class UniformCross(Cross):
 
     p: float
 
+    def __str__(self):
+        return "UniformCross" + ' (p = ' + str(self.p) + ')'
+
     def __init__(self, p: float) -> None:
         self.p = p
 
