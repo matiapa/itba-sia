@@ -1,5 +1,19 @@
-Fitness maximo local vs tiempo | Por seleccion, cruza
+Hechos:
+    Fitness promedio y mínimo vs generación | Por seleccion:  (DAGOS) 
+        Se estudia como evoluciona el sistema en el tiempo para cáda método de seleccion
 
-Fitness maximo global vs p, sigma
+    Fitness máximo vs (p, desvío|rango) | Mutación normal y uniforme:  (MATI)
+        Se estudia la efectividad del método de mutación normal para distintos valores de probabilidad y desvío, fijando cruza simple y selección elitista
+        Se estudia la efectividad del método de mutación uniforme para distintos valores de probabilidad y rango, fijando cruza simple y selección elitista
+        Son dos heatmaps donde p y desvío|rango son los ejes
 
-Desvío del fitness local vs tiempo | Para cada cruza
+Pendientes:
+    Fitness maximo local vs generación | Por seleccion, cruza:  (MATI)
+        Se estudia como evoluciona el sistema en el tiempo para cáda método de seleccion, fijando cruza simple
+        Se estudia como evoluciona el sistema en el tiempo para cáda método de cruza, fijando selección elitista
+        Son dos lineplots con 6 curvas y 3 curvas respectivamente
+
+    Desvío del fitness local vs tiempo | Para cada cruza
+
+    ¿Gráficos variando el tamaño de población?
+

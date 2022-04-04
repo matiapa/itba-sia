@@ -3,7 +3,7 @@ import sys
 sys.path.append("..")
 sys.path.append("../..")
 from main.fitness import Fitness
-from individual import ReactiveIndividual
+from problems.reactive_problem.individual import ReactiveIndividual
 
 inputs = {
     "xi": [[4.4793, -4.0765, -4.0765], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.8830]],

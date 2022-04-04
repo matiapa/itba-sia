@@ -12,7 +12,7 @@ from main.individual import Individual, IndividualFactory
 import time
 import numpy
 import multiprocessing
-from typing import List, Set, Tuple
+from typing import Set, Tuple
 
 class Algorithm:
 
@@ -26,7 +26,7 @@ class Algorithm:
 
     def __init__(
         self, ind_factory: IndividualFactory, pairing: Pairing, cross: Cross, mutation: Mutation, \
-        fitness: Fitness, selection: Selection, init_pop_size: int, replace: bool
+        fitness: Fitness, selection: Selection, init_pop_size: int
     ) -> None:
         self.ind_factory = ind_factory
         self.pairing = pairing
@@ -35,13 +35,9 @@ class Algorithm:
         self.fitness = fitness
         self.selection = selection
         self.init_pop_size = init_pop_size
-        self.replace = replace
 
-    
+
     def __iter__(self):
-        if self.population != None:
-            return self
-            
         # Create an initial population of silly beings
 
         self.population : Set[Individual] = set()
@@ -62,7 +58,7 @@ class Algorithm:
         pairs = self.pairing.apply(self.population, self.fitness)
         if len(pairs) != len(self.population) // 2:
             raise RuntimeError("Invalid pairing method, it must return exactly N/2 pairs being N the given population size")
-        print(f'Pairing took: {(time.time_ns() - s) / 1e6} ms')
+        # print(f'Pairing took: {(time.time_ns() - s) / 1e6} ms')
         
         # Create new beings and incorporate them to our population
 
@@ -70,17 +66,17 @@ class Algorithm:
             n1, n2 = self.reproduce(pair)
             self.population.add(n1)
             self.population.add(n2)
-        print(f'Reproduction took: {(time.time_ns() - s) / 1e6} ms')
+        # print(f'Reproduction took: {(time.time_ns() - s) / 1e6} ms')
 
         # Select the glorious beings that will thrive and survive
         
         s = time.time_ns()
-        self.population = self.selection.apply(individuals = self.population, fitness = self.fitness, replace = self.replace)
+        self.population = self.selection.apply(individuals = self.population, fitness = self.fitness)
         if len(self.population) != self.init_pop_size:
             print(len(self.population))
             print(self.init_pop_size)
             raise RuntimeError("Invalid selection method, it must return exactly N/2 individuals being N the given population size")
-        print(f'Selection took: {(time.time_ns() - s) / 1e6} ms\n')
+        # print(f'Selection took: {(time.time_ns() - s) / 1e6} ms\n')
 
         self.generation += 1
 

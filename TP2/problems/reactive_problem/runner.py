@@ -9,7 +9,7 @@ from main.selection.roulette_selection import RouletteSelection
 from main.selection.rank_selection import RankSelection
 from main.selection.elite_selection import EliteSelection
 from main.pairing.elitist_pairing import ElitistPairing
-from main.mutation import UniformIntegerMutation
+from main.mutation import UniformIntegerMutation, UniformMutation
 from main.crossing.simple_cross import SimpleCross
 from main.algorithm import Algorithm
 from typing import List
@@ -22,7 +22,7 @@ algorithm = Algorithm(
     ind_factory=ReactiveIndividualFactory(), 
     pairing=ElitistPairing(), 
     cross=SimpleCross(),
-    mutation=UniformIntegerMutation(p=1, _range=5), 
+    mutation=UniformMutation(p=0.5, _range=0.1), 
     fitness=fitness, 
     selection=RankSelection(),
     init_pop_size=100
