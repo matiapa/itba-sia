@@ -12,7 +12,7 @@ class RouletteSelection(Selection):
     """
     Selects individuals based on their relative fitness
     """
-    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
+    def apply(self, individuals: Set[Individual], fitness: Fitness, replace: bool) -> Set[Individual]:
         max = sum(fitness.apply(individual) for individual in individuals) 
         probabilities = [fitness.apply(individual) / max for individual in individuals]
         np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=False, p=probabilities)

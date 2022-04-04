@@ -23,8 +23,8 @@ class BoltzmannSelection(Selection):
     """
     Selects individuals using Boltzmann Method
     """
-    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
+    def apply(self, individuals: Set[Individual], fitness: Fitness, replace: bool) -> Set[Individual]:
         max = sum(np.exp(fitness.apply(individual)/self.temperature) for individual in individuals) 
         probabilities = [np.exp(fitness.apply(individual)/self.temperature) / max for individual in individuals]
-        np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=False, p=probabilities)
+        np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=replace, p=probabilities)
         return set(np_array)

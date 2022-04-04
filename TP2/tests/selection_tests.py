@@ -42,7 +42,7 @@ def test_elite():
         print(individual)
     print()
     # select individuals
-    selected_individuals = EliteSelection().apply(individuals = individuals, fitness = fitness)
+    selected_individuals = EliteSelection().apply(individuals = individuals, fitness = fitness, replace=False)
     print("Individuos seleccionados")
     for individual in selected_individuals:
         print(individual)
@@ -58,7 +58,7 @@ def test_roulette():
     # select individuals
     populations = []
     for _ in range (0, 100):
-        selected_individuals = RouletteSelection().apply(individuals = individuals, fitness = fitness)
+        selected_individuals = RouletteSelection().apply(individuals = individuals, fitness = fitness, replace = True)
         populations.append(selected_individuals)
 
     count = 0

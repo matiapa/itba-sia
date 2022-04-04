@@ -17,7 +17,7 @@ class TruncatedSelection(Selection):
     """
     Selects individuals using Truncated Method
     """
-    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
+    def apply(self, individuals: Set[Individual], fitness: Fitness, replace: bool) -> Set[Individual]:
         individuals = sorted(individuals, key=fitness.apply)
-        np_array = np.random.choice(individuals[self.k:], size=len(individuals)//2, replace=False)
+        np_array = np.random.choice(individuals[self.k:], size=len(individuals)//2, replace=replace)
         return set(np_array)

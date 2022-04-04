@@ -26,12 +26,12 @@ class TournamentSelection(Selection):
     """
     Selects individuals using Tournament Method
     """
-    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
+    def apply(self, individuals: Set[Individual], fitness: Fitness, replace: bool) -> Set[Individual]:
         selex = set() 
-        for x in range(len(individuals)//2): 
-            pairs = np.random.choice(list(individuals), size=4, replace=False) # PREGUNTA: deberia ser con replace true? 
+        while len(selex) < len(individuals)//2: 
+            pairs = np.random.choice(list(individuals), size=4, replace=replace) # PREGUNTA: deberia ser con replace true? 
             semi1 = self.compete(pairs[0], pairs[1], fitness)
             semi2 = self.compete(pairs[2], pairs[3], fitness)
             winner = self.compete(semi1, semi2, fitness)
             selex.add(winner)
-        return selex 
+        return selex

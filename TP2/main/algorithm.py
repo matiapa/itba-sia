@@ -25,7 +25,7 @@ class Algorithm:
 
     def __init__(
         self, ind_factory: IndividualFactory, pairing: Pairing, cross: Cross, mutation: Mutation, \
-        fitness: Fitness, selection: Selection, init_pop_size: int
+        fitness: Fitness, selection: Selection, init_pop_size: int, replace: bool
     ) -> None:
         self.ind_factory = ind_factory
         self.pairing = pairing
@@ -34,6 +34,7 @@ class Algorithm:
         self.fitness = fitness
         self.selection = selection
         self.init_pop_size = init_pop_size
+        self.replace = replace
 
     
     def __iter__(self):
@@ -73,7 +74,7 @@ class Algorithm:
         # Select the glorious beings that will thrive and survive
         
         s = time.time_ns()
-        self.population = self.selection.apply(individuals = self.population, fitness = self.fitness)
+        self.population = self.selection.apply(individuals = self.population, fitness = self.fitness, replace = self.replace)
         if len(self.population) != self.init_pop_size:
             print(len(self.population))
             print(self.init_pop_size)
