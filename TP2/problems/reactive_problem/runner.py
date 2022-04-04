@@ -1,3 +1,4 @@
+from multiprocessing import freeze_support
 import sys
 sys.path.append("..")
 sys.path.append("../..")
@@ -41,3 +42,15 @@ while t < 500:
         print("Funcion F: 1 ", F(i.W, i.w, i.w_0, inputs["xi"][1]), end="\n")
         print("Funcion F: 2 ", F(i.W, i.w, i.w_0, inputs["xi"][2]), end="\n")
     t += 1
+
+
+# algorithmParallel = AlgorithmParallel(
+#     ind_factory = ReactiveIndividualFactory(), pairing = ElitistPairing(), cross = UniformCross(p=0),
+#     mutation = UniformIntegerMutation(p=1, _range=5), fitness = fitness, selection = RankSelection(),
+#     init_pop_size = 100,
+#     join_gens=100
+# )
+
+# freeze_support()
+
+# algorithmParallel.run_multiple()

@@ -1,3 +1,5 @@
-out/
-__pycache__/
+.idea
+.vscode
+__pycache__
+out
 conf.json
