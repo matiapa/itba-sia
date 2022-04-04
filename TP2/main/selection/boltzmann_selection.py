@@ -6,7 +6,8 @@ import numpy as np
 
 
 class BoltzmannSelection(Selection):
-
+    def __str__(self):
+        return "Boltzmann"
 
     def __init__(self, tc: float, to: float, k: float): 
         self.tc = tc 

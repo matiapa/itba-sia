@@ -7,6 +7,8 @@ import numpy as np
 # TODO
 class TruncatedSelection(Selection):
 
+    def __str__(self):
+        return "Truncated"
 
     def __init__(self, k: float): 
         self.k = k 

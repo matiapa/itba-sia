@@ -5,6 +5,9 @@ from typing import Set
 
 class EliteSelection(Selection):
 
+    def __str__(self):
+        return "Elite"
+        
     """
     Selects the best individuals for each generation
     """

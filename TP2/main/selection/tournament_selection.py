@@ -7,6 +7,8 @@ import numpy as np
 
 # TODO
 class TournamentSelection(Selection):
+    def __str__(self):
+        return "Tournament"
 
     def __init__(self, u: float): 
         if u < 0.5 or u>1: 

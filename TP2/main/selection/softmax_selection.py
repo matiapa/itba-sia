@@ -6,6 +6,7 @@ import numpy as np
 
 class SoftmaxSelection(Selection):
 
+    
     """
     Selects individuals based on their relative fitness
     """

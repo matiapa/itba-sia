@@ -6,6 +6,8 @@ import numpy as np
 
 class RankSelection(Selection):
 
+    def __str__(self):
+        return "Rank"
     """
     Selects individuals using Rank Method
     """

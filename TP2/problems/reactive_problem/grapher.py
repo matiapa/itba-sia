@@ -11,6 +11,7 @@ from main.selection.rank_selection import RankSelection
 from main.selection.roulette_selection import RouletteSelection
 from main.selection.boltzmann_selection import BoltzmannSelection
 from main.selection.truncated_selection import TruncatedSelection
+from main.selection.selection import Selection
 from matplotlib import pyplot as plt
 import sys
 sys.path.append("..")
@@ -21,7 +22,10 @@ fitness = ReactiveFitness()
 
 # TournamentSelection(0.6),
 selections = [EliteSelection(), RouletteSelection(), 
-RankSelection(),  BoltzmannSelection(25, 100, 0.005), TruncatedSelection(10)]
+RankSelection(),  BoltzmannSelection(25, 100, 0.005), TruncatedSelection(5)]
+
+def selection_str(selection: Selection):
+    return str(selection)
 
 iterators = []
 algorithms = []
@@ -34,7 +38,7 @@ for i in range(q_experiments):
         mutation=UniformMutation(p=0.5, _range=0.1),
         fitness=fitness,
         selection=selections[i],
-        init_pop_size=30
+        init_pop_size=100
     ))
     iterators.append(iter(algorithms[i]))
 
@@ -56,10 +60,11 @@ for k in range(q_experiments):
         t += 1
 
 
-for i in range(5):
-    plt.plot(range(iterations_per_experiment), experiments[i], 'k')
-    plt.plot(range(iterations_per_experiment), experiments_avg[i], 'r')
-    plt.title('Experiment' + str(i))
+for i in range(q_experiments):
+    plt.plot(range(iterations_per_experiment), experiments[i], label="Error minimo")
+    plt.plot(range(iterations_per_experiment), experiments_avg[i], label="Error promedio")
+    plt.title('Selection: ' + selection_str(selections[i]))
+    plt.legend()
     plt.xlabel("Generation")
     plt.ylabel("Error")
     plt.show()

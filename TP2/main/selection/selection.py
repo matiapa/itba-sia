@@ -4,6 +4,9 @@ from typing import List, Set
 
 class Selection:
 
+    def __str__(self):
+        raise NotImplementedError()
+
     """
     Selects half of the individuals for surviving to the next generation
     """

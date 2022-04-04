@@ -6,6 +6,9 @@ import numpy as np
 
 class RouletteSelection(Selection):
 
+    def __str__(self):
+        return "Roulette"
+
     """
     Selects individuals based on their relative fitness
     """
