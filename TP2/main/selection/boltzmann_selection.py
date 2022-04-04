@@ -7,7 +7,7 @@ import numpy as np
 
 class BoltzmannSelection(Selection):
     def __str__(self):
-        return "Boltzmann"
+        return "Boltzmann" + ' (tc=' + str(self.tc) + ',to=' + str(self.to) + ',k=' + str(self.k) + ')'
 
     def __init__(self, tc: float, to: float, k: float): 
         self.tc = tc 
@@ -23,8 +23,8 @@ class BoltzmannSelection(Selection):
     """
     Selects individuals using Boltzmann Method
     """
-    def apply(self, individuals: Set[Individual], fitness: Fitness, replace: bool) -> Set[Individual]:
+    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
         max = sum(np.exp(fitness.apply(individual)/self.temperature) for individual in individuals) 
         probabilities = [np.exp(fitness.apply(individual)/self.temperature) / max for individual in individuals]
-        np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=replace, p=probabilities)
+        np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=False, p=probabilities)
         return set(np_array)

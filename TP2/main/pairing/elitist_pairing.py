@@ -9,6 +9,9 @@ from numpy.random import choice
 
 class ElitistPairing(Pairing):
 
+    def __str__(self):
+        return "Elitist"
+
     """
     Chooses pairs of individuals randomly, but prioritizing those with higher fitness score
     """

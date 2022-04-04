@@ -8,7 +8,7 @@ import numpy as np
 # TODO
 class TournamentSelection(Selection):
     def __str__(self):
-        return "Tournament"
+        return "Tournament" + ' (u=' + str(self.u) + ')'
 
     def __init__(self, u: float): 
         if u < 0.5 or u>1: 
@@ -26,10 +26,10 @@ class TournamentSelection(Selection):
     """
     Selects individuals using Tournament Method
     """
-    def apply(self, individuals: Set[Individual], fitness: Fitness, replace: bool) -> Set[Individual]:
+    def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
         selex = set() 
         while len(selex) < len(individuals)//2: 
-            pairs = np.random.choice(list(individuals), size=4, replace=replace) # PREGUNTA: deberia ser con replace true? 
+            pairs = np.random.choice(list(individuals), size=4, replace=False) # PREGUNTA: deberia ser con replace true? 
             semi1 = self.compete(pairs[0], pairs[1], fitness)
             semi2 = self.compete(pairs[2], pairs[3], fitness)
             winner = self.compete(semi1, semi2, fitness)
