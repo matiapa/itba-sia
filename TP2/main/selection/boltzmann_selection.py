@@ -17,6 +17,7 @@ class BoltzmannSelection(Selection):
 
     @property
     def temperature(self): 
+        # f(t) = tc + (t0-tc) * e^(-k*t)
         return self.tc+(self.to-self.tc)*np.exp(-self.k*self.t)
 
 

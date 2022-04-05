@@ -1,3 +1,4 @@
+from random import random
 from typing import List
 import numpy as np
 
@@ -32,7 +33,6 @@ class ReactiveIndividual(Individual):
     @property
     def w_0(self) -> List[float]:
         return self.genes[9:11]
-
 
 class ReactiveIndividualFactory(IndividualFactory):
     def instantiate(self, genes: List[float]) -> Individual:

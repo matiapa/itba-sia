@@ -1,5 +1,6 @@
 {
-    "populationSize": 100,              // The number of individuals in the population
+    "populationSize": 10,               // The number of individuals in the population
+    "generations": 100,                 // The amount of generations to run for
     "crossing": {
         "method": "uniform",            // Crossing method to use: uniform, multiple
         "uniform": {
@@ -13,21 +14,22 @@
     "mutation": {
         "probability": 0.05,            // Probability of mutating a particular gene
         "params": {                     // Parameters passed to the mutation method
-            "range": 10
+            "range": 0.1,
+            "deviation": 0.1
         }
     },
     "selection": {
         "method": "elite",              // Selection method to use: boltzmann, elite, rank, roulette, softmax, tournament, truncated
         "boltzman": {
-            "tc": 5,                    // Initial temperature
-            "to": 3,                    // Final temperature
-            "k": 1                      // Decay parameter
+            "tc": 10,                   // Initial temperature
+            "t0": 1,                    // Final temperature
+            "k": 0.1                    // Decay parameter
         },
         "tournament": {
             "u": 0.7                    // Probability of choosing the best individual
         },
         "truncated": {
-            "k": 2                      // Number of worst individuals to discard
+            "k": 7                      // Number of worst individuals to discard
         }
     }
 }

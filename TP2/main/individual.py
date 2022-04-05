@@ -1,3 +1,4 @@
+from random import random
 from typing import List
 
 class Individual:
@@ -27,9 +28,11 @@ class Individual:
         raise NotImplementedError
 
     def __eq__(self, __o: object) -> bool:
+        # return False
         return self.genes == __o.genes
 
     def __hash__(self) -> int:
+        # return int(random() * 10e5)
         return hash(str(self.genes))
 
 class IndividualFactory():

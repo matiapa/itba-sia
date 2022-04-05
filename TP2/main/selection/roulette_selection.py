@@ -15,5 +15,5 @@ class RouletteSelection(Selection):
     def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
         max = sum(fitness.apply(individual) for individual in individuals) 
         probabilities = [fitness.apply(individual) / max for individual in individuals]
-        np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=False, p=probabilities)
+        np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=True, p=probabilities)
         return set(np_array)
