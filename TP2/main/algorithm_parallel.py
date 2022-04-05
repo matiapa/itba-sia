@@ -1,4 +1,3 @@
-import multiprocessing
 from main.algorithm import Algorithm
 from main.crossing.cross import Cross
 from main.pairing.pairing import Pairing
@@ -8,31 +7,31 @@ from main.mutation import Mutation
 from main.individual import Individual, IndividualFactory
 
 from multiprocessing import Pool, cpu_count
-from typing import List
+from typing import List, Set
+import numpy as np
 
 class AlgorithmParallel:
 
     def __init__(
         self, ind_factory: IndividualFactory, pairing: Pairing, cross: Cross, mutation: Mutation, \
-        fitness: Fitness, selection: Selection, init_pop_size: int, join_gens: int
+        fitness: Fitness, selection: Selection, init_pop_size: int, generations: int
     ) -> None:
         self.init_pop_size = init_pop_size
         self.pool_size = cpu_count()
         self.algorithms = [
-            Algorithm(ind_factory, pairing, cross, mutation, fitness, selection, init_pop_size) \
-                for i in range(0, init_pop_size // self.pool_size)
+            Algorithm(ind_factory, pairing, cross, mutation, fitness, selection, init_pop_size // self.pool_size) \
+            for i in range(0, init_pop_size // self.pool_size)
         ]
-        self.join_gens = join_gens
+        self.generations = generations
 
     def run_single(self, algorithm: Algorithm) -> List[Individual]:
-        it, sub_pop = iter(algorithm), None
-        for t in range(self.join_gens):
+        it = iter(algorithm)
+        for t in range(self.generations):
             sub_pop = next(it)
-        return sub_pop
+        return list(sub_pop)
 
-    def run_multiple(self):
-        pool = Pool(8)
-        results = [pool.apply(self.run_single(self.algorithms[i])) for i in range(self.pool_size)]
+    def run_multiple(self) -> List[Individual]:
+        pool = Pool(self.pool_size)
+        populations = pool.map(self.run_single, self.algorithms)
         pool.close()
-
-        print(results)
+        return np.array(populations).flatten()
