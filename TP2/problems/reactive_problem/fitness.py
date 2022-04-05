@@ -31,7 +31,7 @@ def E(W, w, w_0):
 # TODO: discutir en filminas
 class ReactiveFitness(Fitness):
     def apply(self, i: ReactiveIndividual):
-        return 3 - E(i.W, i.w, i.w_0)
+        return 1/E(i.W, i.w, i.w_0)
 
     def error(self, i: ReactiveIndividual):
         return E(i.W, i.w, i.w_0)

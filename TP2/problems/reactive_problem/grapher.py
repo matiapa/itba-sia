@@ -23,7 +23,7 @@ fitness = ReactiveFitness()
 #               RankSelection(),  TournamentSelection(0.6), 
 #               BoltzmannSelection(25, 100, 0.005), TruncatedSelection(5)
 # TournamentSelection(0.6),
-selections = [EliteSelection()]
+selections = [RouletteSelection(), BoltzmannSelection(1, 10, 0.1)]
 
 q_experiments = len(selections)
 
