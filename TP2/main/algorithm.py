@@ -1,5 +1,4 @@
 from time import time
-from turtle import back
 from main.crossing.cross import Cross
 from main.pairing.pairing import Pairing
 from main.selection.selection import Selection
