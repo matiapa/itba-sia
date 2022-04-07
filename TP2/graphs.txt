@@ -22,16 +22,16 @@ Hechos:
         Se estudia la efectividad del método de cruza uniforme para distintas probabiliades de mutación de gen
             Plotline donde las abscisas son las probabilidades
 
+    Fitness vs cruza, mutacion, seleccion:  (MATI)
+        Se estudia la efectividad del algoritmo para cada combinación de método de cruza, mutación y selección, tomando los parámetros óptimos para cada uno
+            Grafico candlestick donde se muestran el maximo, minimo y desvio de los fitness obtenidos para cada combinación de metodos planteada
+
 Pendientes:
     Fitness maximo vs generación | Por seleccion, cruza:  (MATI)
         Se estudia como evoluciona el sistema para cada método de seleccion
             Plotline con 6 curvas donde las abscisas son los números de generación
         Se estudia como evoluciona el sistema para cada método de cruza
             Plotline con 3 curvas donde las abscisas son los números de generación
-
-    Fitness maximo vs cruza, mutacion, seleccion:  (MATI)
-        Se estudia la efectividad del algoritmo para cada combinación de método de cruza, mutación y selección, tomando los parámetros óptimos para cada uno
-            Heatmap 3D donde método de cruza, mutación y selección son los ejes
 
     Desvío del fitness local vs generación | Para cada cruza
 

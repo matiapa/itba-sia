@@ -5,7 +5,6 @@ from typing import Set
 import numpy as np 
 
 class SoftmaxSelection(Selection):
-
     
     """
     Selects individuals based on their relative fitness
@@ -13,5 +12,8 @@ class SoftmaxSelection(Selection):
     def apply(self, individuals: Set[Individual], fitness: Fitness) -> Set[Individual]:
         max = sum( np.exp(fitness.apply(individual)) for individual in individuals) 
         probabilities = [ np.exp(fitness.apply(individual)) / max for individual in individuals]
-        np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=False, p=probabilities)
+        np_array = np.random.choice(list(individuals), size=len(individuals)//2, replace=True, p=probabilities)
         return set(np_array)
+
+    def __str__(self):
+        return "Softmax"

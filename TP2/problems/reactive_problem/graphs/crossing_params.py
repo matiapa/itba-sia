@@ -44,36 +44,38 @@ def run(cross):
         max_local_fitness = max([fitness.apply(_) for _ in population])
         max_local_fitnesses.append( max_local_fitness )
 
-    return max(max_local_fitnesses)
+    return max_local_fitnesses
 
 def multiple_graph():
     fitnesses = [run(MultipleCross(npoints=n)) for n in N]
 
-    plt.plot(N, fitnesses)
+    for i in range(len(fitnesses)):
+        n_fitnesses = fitnesses[i]
+        n = N[i]
+        plt.plot(range(len(n_fitnesses)), n_fitnesses, label=f'n={n}')
 
-    plt.xlabel('Number of cutting points (n)')
-    plt.ylabel('Maximum global fitness')
+    plt.xlabel('Generation')
+    plt.ylabel('Maximum fitness')
     plt.title('Multiple cross')
 
-    ax = plt.gca()
-    ax.set_ylim([2.95, 3.05])
-
+    plt.legend()
     plt.grid()
     plt.show()
 
 def uniform_graph():
     fitnesses = [run(UniformCross(p)) for p in P]
 
-    plt.plot(P, fitnesses)
+    for i in range(len(fitnesses)):
+        p_fitnesses = fitnesses[i]
+        p = P[i]
+        plt.plot(range(len(p_fitnesses)), p_fitnesses, label=f'p={p}')
 
-    plt.xlabel('Probability of mutation (p)')
-    plt.ylabel('Maximum global fitness')
+    plt.xlabel('Generation')
+    plt.ylabel('Maximum fitness')
     plt.title('Uniform cross')
+
+    plt.legend()
     plt.grid()
-
-    ax = plt.gca()
-    ax.set_ylim([2.95, 3.05])
-
     plt.show()
 
-uniform_graph()
+multiple_graph()

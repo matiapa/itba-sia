@@ -30,8 +30,8 @@ TC = np.arange(0.1, 1, 0.1)           # Range for final temperature
 K = np.arange(0.01, 0.1, 0.01)        # Range for decayment ration
 U = np.arange(0.50, 1, 0.05)          # Range for probability in tournament selection
 
-ITERATIONS = 100
-POP_SIZE = 10
+ITERATIONS = 500
+POP_SIZE = 50
 
 fitness = ReactiveFitness()
 
@@ -47,44 +47,56 @@ def run(cross, selection, mutation):
     )
     iterator = iter(algorithm)
 
-    max_local_fitnesses = []
+    fitnesses = []
 
     for _ in range(ITERATIONS):
         population = next(iterator)
-        max_local_fitness = max([fitness.apply(_) for _ in population])
-        max_local_fitnesses.append( max_local_fitness )
+        fitnesses += [fitness.apply(_) for _ in population]
 
-    return max(max_local_fitnesses)
+    return fitnesses
+
+short_labels = {
+    UniformCross: "UC", MultipleCross: "MC", BoltzmannSelection: "BS", EliteSelection: "ES", RankSelection: "RaS", RouletteSelection: "RoS",
+    SoftmaxSelection: "SS", TournamentSelection: "ToS", TruncatedSelection: "TrS", UniformMutation: "UM", NormalMutation: "NM"
+}
+
+def worker(args):
+    fitnesses = run(cross=UniformCross(p=0.9), selection=args[0], mutation=args[1])
+    max = np.max(fitnesses)
+    min = np.min(fitnesses)
+    avg = np.average(fitnesses)
+    std = np.std(fitnesses)
+    label = f"{short_labels[type(args[0])]}, {short_labels[type(args[1])]}"
+    print(label)
+    return (max, min, avg, std, label)
+
+def cartesian(A, B):
+    return [(a,b) for a in A for b in B]
 
 def permutation_compare():
-    crossing = [UniformCross(p=0.5), MultipleCross(npoints=5)]
-
     selections = [BoltzmannSelection(tc=10, to=1, k=0.1), EliteSelection(), RankSelection(), \
         RouletteSelection(), SoftmaxSelection(), TournamentSelection(u=0.9), TruncatedSelection(k=7)]
-    
 
-    fitnesses = [run(TournamentSelection(u)) for u in U]
+    mutations = [UniformMutation(p=0.9, _range=0.1), NormalMutation(p=0.9, sigma=0.1)]
 
-    plt.plot(U, fitnesses)
+    pool = Pool(cpu_count())
+    results = pool.map(worker, cartesian(selections, mutations))
+    pool.close()
 
-    plt.xlabel('Probability (u)')
-    plt.ylabel('Maximum global fitness')
-    plt.title('Tournament selection')
+    x, labels = 0, []
+    for res in results:
+        max, min, avg, std, label = res
+        plt.bar(x, height=max-min, width=0.05, bottom=min, color='blue', zorder=3)
+        plt.bar(x, height=std, width=0.4, bottom=avg-std/2, color='blue', zorder=3)
+        labels.append(label)
+        x += 1
 
-    plt.grid()
-    plt.show()
+    plt.grid(zorder=0)
+    plt.xticks(range(len(labels)), labels, rotation=90)
+    plt.ylabel('Fitness')
+    plt.title('Combinations comparison')
 
-def truncated_graph():
-    fitnesses = [run(TruncatedSelection(k)) for k in range(POP_SIZE)]
-
-    plt.plot([k for k in range(POP_SIZE)], fitnesses)
-
-    plt.xlabel('Truncate value (k)')
-    plt.ylabel('Maximum global fitness')
-    plt.title('Truncated selection')
-
-    plt.grid()
     plt.show()
 
 if __name__ == '__main__':
-    truncated_graph()
+    permutation_compare()
