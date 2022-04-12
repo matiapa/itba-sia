@@ -1,0 +1,80 @@
+from turtle import color
+from fitness import ReactiveFitness, ReactiveFitnessConcave, ReactiveFitnessConvex,  F, inputs
+from individual import ReactiveIndividual, ReactiveIndividualFactory
+from typing import List
+from main.algorithm import Algorithm
+from main.crossing.simple_cross import SimpleCross
+from main.mutation import NormalMutation
+from main.pairing.elitist_pairing import ElitistPairing
+from main.selection.tournament_selection import TournamentSelection
+from main.selection.elite_selection import EliteSelection
+from main.selection.rank_selection import RankSelection
+from main.selection.roulette_selection import RouletteSelection
+from main.selection.boltzmann_selection import BoltzmannSelection
+from main.selection.truncated_selection import TruncatedSelection
+from main.selection.selection import Selection
+from matplotlib import pyplot as plt
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
+fitnesses = [ReactiveFitness(), ReactiveFitnessConcave(), ReactiveFitnessConvex()]
+
+
+
+iterators = []
+algorithms = []
+
+for i in range(3):
+    algorithms.append(Algorithm(
+        ind_factory=ReactiveIndividualFactory(),
+        pairing=ElitistPairing(),
+        cross=SimpleCross(),
+        mutation=NormalMutation(p=0.5, sigma=0.3),
+        fitness=fitnesses[i],
+        selection=RouletteSelection(),
+        init_pop_size=60,
+        replace=False
+    ))
+    iterators.append(iter(algorithms[i]))
+
+experiments = []
+experiments_avg = []
+experiments_fitness = []
+iterations_per_experiment = 500
+colors = ['k', 'r', 'c']
+q_experiments = 10
+labels = ["Sin concavidad", "Concavidad negativa / Concava", "Concavidad positiva / Convexa"]
+for p in range(3):
+    print("STARTING CONCAVITY", p)
+    experiments_results_avg = [0 for x in range(500)] 
+    for k in range(q_experiments):
+        print("STARTING EXPERIMENT", k)
+        experiment_results = [] 
+        t = 0
+        iterators[p] = iter(algorithms[p])
+        while t < 200:
+            individuals: List[ReactiveIndividual] = next(iterators[p])
+            experiment_results.append(min([fitnesses[p].error(indi) for indi in individuals]))
+            t += 1
+        print('------------')
+        print('experiment', experiment_results[0])
+        print('experiment_sum_before', experiments_results_avg[0])
+        experiments_results_avg = [experiment_results[i] + experiments_results_avg[i] for i in range(len(experiment_results))]
+        print('experiment_sum_after', experiments_results_avg[0])
+        print('------------')
+        plt.plot(range(200), experiment_results, colors[p], linewidth = 0.05)
+    plt.plot(range(200), [x/q_experiments for x in experiments_results_avg], colors[p], label=labels[p], linewidth = 1.1)
+
+
+#conda activate base
+plt.title('Experimento de concavidad')
+plt.legend()
+plt.xlabel("Generation")
+plt.ylabel("Error")
+plt.show()
+
+
+# Las 6 muestras de Selecciones con 100 individuos y 500 generaciones
+# 1 usando Roulette pero variando la cantidad de individuos (10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
+# Con trazo muy fino, mostrar la convergencia con valores distintos de k (Boltzmann)

@@ -1,0 +1,65 @@
+from turtle import color
+from fitness import ReactiveFitness
+from individual import ReactiveIndividual, ReactiveIndividualFactory
+from typing import List
+from main.algorithm import Algorithm
+from main.crossing.simple_cross import SimpleCross
+from main.mutation import UniformMutation
+from main.pairing.elitist_pairing import ElitistPairing
+from main.selection.tournament_selection import TournamentSelection
+from main.selection.elite_selection import EliteSelection
+from main.selection.rank_selection import RankSelection
+from main.selection.roulette_selection import RouletteSelection
+from main.selection.boltzmann_selection import BoltzmannSelection
+from main.selection.truncated_selection import TruncatedSelection
+from main.selection.selection import Selection
+from matplotlib import pyplot as plt
+import numpy as np 
+import sys
+sys.path.append("..")
+sys.path.append("../..")
+
+fitness = ReactiveFitness() 
+iterators = []
+algorithms = []
+
+tests = 10
+for i in range(50):
+    algorithms.append(Algorithm(
+        ind_factory=ReactiveIndividualFactory(),
+        pairing=ElitistPairing(),
+        cross=SimpleCross(),
+        mutation=UniformMutation(p=0.5, _range=0.3),
+        fitness=fitness,
+        selection=BoltzmannSelection(1, 10, i/tests),
+        init_pop_size=30,
+        replace=False
+    ))
+
+convergence_times = []
+iterly = None 
+
+for p in range(len(algorithms)):
+        print(p)
+        t = 0
+        iterly = iter(algorithms[p])
+        error = np.infty 
+        while t < 500 and error > 0.01:
+            individuals: List[ReactiveIndividual] = next(iterly)
+            error = min([fitness.error(indi) for indi in individuals])
+            t += 1
+        convergence_times.append(t)
+
+
+bar_labels = [str(x/tests) for x in range(50)]
+print("CONVERGENCE TIMES", convergence_times)
+# plt.bar(convergence_times, bar_labels)
+plt.bar(bar_labels, convergence_times, 0.2)
+
+#conda activate base
+plt.title('Experimento de decaimiento')
+plt.legend()
+plt.xticks(rotation=90)
+plt.xlabel("Valor de k")
+plt.ylabel("Generaciones hasta superar 10^-2")
+plt.show()
