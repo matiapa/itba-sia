@@ -36,7 +36,7 @@ class DenseNoBiasLayer(Layer):
         "sigmoid": [lambda x: 1 / (1+np.exp(-x)), lambda x: (1 / (1+np.exp(-x)))*(1-(1 / (1+np.exp(-x))))],
         "id": [lambda x: x, lambda x: 1], 
         "step": [lambda x: np.sign(x), lambda x: 0], 
-        "caca": [lambda x: 2*x, lambda x: 3*x]
+        "caca": [lambda x: 2*x, lambda x: 3*x], 
     }
 
     def __init__(self, units: int, activation: str):
@@ -50,35 +50,34 @@ class DenseNoBiasLayer(Layer):
         self.diagonal_matrix = None 
 
     def build(self, input_shape: int):
-        self.w = np.random.normal( 0, 1, (self.units, input_shape) ) # Perhaps N~(0, 1) is better
+        self.w = np.random.normal( 0, 1, (self.units, input_shape) ) 
     
     def call(self, input: np.ndarray):
         self.last_z = np.matmul(self.w, input)
         self.last_input = np.array([input])
         nonlinear =  self.g[0](self.last_z)
-        # print("Input", input)
-        # print("W", self.w)
-        # print("Z", self.last_z)
-        # print("NONLINEAR", nonlinear)
         return nonlinear 
 
-    
     def update_weights(self, delta: np.ndarray): 
         self.diagonal_matrix = np.zeros((self.units, self.units))
-        # print("EMPTY DIAGONAL", self.diagonal_matrix)
         for i in range(self.units): 
             self.diagonal_matrix[i][i] =  (self.g)[1](self.last_z[i])
-        # print("FULL DIAGONAL", self.diagonal_matrix)
-        # print("DELTA", delta)
-        # print("LAST INPUT", self.last_input)
-        # print("OLD_W", self.w)
         self.w = self.w - 0.1*np.array(np.matmul(np.matmul(self.diagonal_matrix, delta), self.last_input))
-        # print("NEW_W", self.w)
     
     def new_delta(self, delta: np.ndarray): 
-        return np.matmul(np.matmul(np.transpose(self.w), self.diagonal_matrix), delta) 
+        x = np.matmul(np.transpose(self.w), self.diagonal_matrix)
+        return np.matmul(x, delta) 
+
+class DenseBiasLayer(DenseNoBiasLayer): 
+    
+    def __call__(self, input: np.ndarray):
+        dummied_input = np.append(input, [[1]])
+        # print("AAAAAAAAAa", dummied_input)
+        return super().__call__(dummied_input)
+
+    def __init__(self, units: int, activation: str):
+        super().__init__(units, activation)
+        self.units = units+1
 
 
-
-
-
+    

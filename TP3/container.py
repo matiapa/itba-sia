@@ -1,3 +1,5 @@
+from cmath import exp
+from math import e
 from turtle import ycor
 from layer import * 
 import numpy as np 
@@ -13,6 +15,8 @@ class Container:
         self.layers = args
         
     def __call__(self, input: np.ndarray, expected_output: np.ndarray, train: bool):
+        input = np.array(input)
+        expected_output = np.array(expected_output)
         res = self.consume(input)
         if len(res) != len(expected_output): 
             raise Exception('Something went wrong: len(expected_output) != len(res)')
@@ -28,48 +32,54 @@ class Container:
 
     def backpropagation(self, actual_output: np.ndarray, expected_output: np.ndarray): 
         delta = np.array(self.loss[1](expected_output, actual_output))
-        # print("DELTA_0", delta) # ok 
+        print("DELTA_0", delta) # ok 
         for layer in self.layers[::-1]: 
             delta = layer.update(delta)
 
+
+# TODO: Sin Bias, no debería siquiera funcionar 
 container = Container(
     "quadratic", 
-    DenseNoBiasLayer(2, activation="id"), 
-    DenseNoBiasLayer(2, activation="id"), 
+    DenseBiasLayer(100, activation="sigmoid"), 
     DenseNoBiasLayer(1, activation="sigmoid"), 
 )
 
-# t = [ [1, 1], [1, -1], [-1, -1], [-1, 1]]
-# expected = [ [1], [0], [0], [1] ]
 
-# t = [ [1, 1], [1, 2], [3, 4], [-1, -1], [-3, -2]]
-# expected = [ [1], [1], [1], [-1], [-1]]
+# t = np.random.uniform(-1, 1, (20, 2))
+# expected = [ 1.0 if p[0] > 0 and p[1] > 0 else 0.0 for p in t]
+t = [ [1,1], [-1, 1], [1, -1], [-1, -1]]
+expected = [ 0, 1, 1, 0]
 
-t = []
-expected = [] 
-for k in range(1000): 
-    p = np.random.uniform(-1, 1, (2))
-    t.append(p)
-    expected.append([1 if p[0]*p[0]+p[1]*p[1] < 1 else 0]) 
-    # expected.append([1 if p[1] > 3*p[0]+1 else 0])
-    # print(p, 1 if p[0]*p[0]+p[1]*p[1] < 1 else 0)
+i = 0 
+for epoch in range(100): 
+    for x, label in zip(t, expected): 
+        plt.plot(x[0], x[1], 'k+' if label == 1 else 'rx')
+        res, loss = container(x, [label], train=True)
+        print(res)
+
+flag = 1
+for i in range(-10, 10):
+    for j in range(-10, 10): 
+        res = container.consume([i/10, j/10])
+        print("res[0]", res[0])
+        if  not np.isnan(res[0]) and res[0] >= 0.5:
+            plt.plot(i/10, j/10, 'go')
+        # elif not np.isnan(res[0]) and res[0] < 0.5:
+        #     plt.plot(i/100, j/100, 'b.')
+        else: 
+            flag = 0 
+
+# print("OF THE LEFT ZERO", container.consume([-0.10, -0.10]))
+
+# print("OF THE ZERO", container.consume([0, 0]))
+# print("OF THE RIGHT ZERO", container.consume([0.10, 0.10]))
 
 
-total_loss = 0 
-for epoch in range(10):
-    print(epoch)
-    for (s, ex) in zip(t, expected): 
-        res, loss = container(s, ex, True)
-        print(s, res, ex)
-        total_loss += loss
-
-# # print(res, "--", total_loss/100, "%")
-
-for i in range(-100, 100): 
-    for j in range(-100, 100):
-        res = container.consume([i, j]) 
-        plt.plot(i/100, j/100, 'k.' if res > 0.5 else 'r.')
 plt.show()
+
+# container([2, 3], [1], train=True)
+
+
 
 
 
