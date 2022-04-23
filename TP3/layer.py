@@ -72,12 +72,14 @@ class DenseBiasLayer(DenseNoBiasLayer):
     
     def __call__(self, input: np.ndarray):
         dummied_input = np.append(input, [[1]])
-        # print("AAAAAAAAAa", dummied_input)
         return super().__call__(dummied_input)
 
     def __init__(self, units: int, activation: str):
         super().__init__(units, activation)
         self.units = units+1
+
+
+
 
 
     

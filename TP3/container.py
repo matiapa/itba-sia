@@ -4,6 +4,11 @@ from turtle import ycor
 from layer import * 
 import numpy as np 
 
+
+class Perceptron: 
+    
+
+
 class Container: 
 
     losses = {
@@ -40,50 +45,9 @@ class Container:
 # TODO: Sin Bias, no debería siquiera funcionar 
 container = Container(
     "quadratic", 
-    DenseBiasLayer(100, activation="sigmoid"), 
-    DenseNoBiasLayer(1, activation="sigmoid"), 
+    DenseBiasLayer(4, activation="id"), 
+    DenseBiasLayer(2, activation="id"), 
+    DenseNoBiasLayer(2, activation="id"), 
 )
-
-
-# t = np.random.uniform(-1, 1, (20, 2))
-# expected = [ 1.0 if p[0] > 0 and p[1] > 0 else 0.0 for p in t]
-t = [ [1,1], [-1, 1], [1, -1], [-1, -1]]
-expected = [ 0, 1, 1, 0]
-
-i = 0 
-for epoch in range(100): 
-    for x, label in zip(t, expected): 
-        plt.plot(x[0], x[1], 'k+' if label == 1 else 'rx')
-        res, loss = container(x, [label], train=True)
-        print(res)
-
-flag = 1
-for i in range(-10, 10):
-    for j in range(-10, 10): 
-        res = container.consume([i/10, j/10])
-        print("res[0]", res[0])
-        if  not np.isnan(res[0]) and res[0] >= 0.5:
-            plt.plot(i/10, j/10, 'go')
-        # elif not np.isnan(res[0]) and res[0] < 0.5:
-        #     plt.plot(i/100, j/100, 'b.')
-        else: 
-            flag = 0 
-
-# print("OF THE LEFT ZERO", container.consume([-0.10, -0.10]))
-
-# print("OF THE ZERO", container.consume([0, 0]))
-# print("OF THE RIGHT ZERO", container.consume([0.10, 0.10]))
-
-
-plt.show()
-
-# container([2, 3], [1], train=True)
-
-
-
-
-
-
-
 
 
