@@ -29,7 +29,7 @@ def graph_simple_perceptron(container: Container, psi, zeta, i):
     for psi_mu, zeta_mu in zip(psi, zeta): 
         plt.plot(psi_mu[0], psi_mu[1], 'rx' if zeta_mu[0] == 1 else 'ko') 
 
-    plt.savefig('TP3/out/simple_perceptron/{0}'.format(i))
+    plt.savefig('TP3/out/simple_perceptron/{0}.png'.format(i))
     plt.cla() 
 
 

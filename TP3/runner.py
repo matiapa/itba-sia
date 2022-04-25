@@ -1,24 +1,28 @@
 from container import * 
 from grapher import * 
+import sklearn
 
 psi = [ [1, 1], [1, -1], [-1, 1], [-1, -1]]
 zeta = [ [1], [-1], [-1], [-1] ] 
 
-epochs = 15
+epochs = 25
 stop_and_picture = 1
 
 i = 0 
 for epoch in range(epochs): 
+
+    # Feed psis in random order
+    array1_shuffled, array2_shuffled = sklearn.utils.shuffle(psi, zeta)
+
     for psi_mu, zeta_mu in zip(psi, zeta): 
         res, loss = container(psi_mu, zeta_mu, True)
         graph_simple_perceptron(container, psi, zeta, int(i/stop_and_picture))
         print(res, loss)
         i += 1
-    # if epoch % stop_and_picture == 0: 
-        # print("COMPLETED: {0}%".format(epoch*100/epochs))
+
+
         
-to_gif("TP3/out/simple_perceptron/", 35, "simple_perceptron")
+# to_gif("TP3/out/simple_perceptron/", 35, "simple_perceptron")
 
 
-# print(container.layers[0].w)
 
