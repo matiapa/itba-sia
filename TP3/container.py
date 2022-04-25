@@ -5,9 +5,6 @@ from layer import *
 import numpy as np 
 
 
- 
-
-
 class Container: 
 
     losses = {
@@ -23,7 +20,7 @@ class Container:
         expected_output = np.array(expected_output)
         res = self.consume(input)
         if len(res) != len(expected_output): 
-            raise Exception('Something went wrong: len(expected_output) != len(res)')
+            raise Exception('Something went wrong: len(expected_output) ({0}) != len(res) ({1})'.format(len(expected_output), len(res)))
         if train:
             self.backpropagation(res, expected_output) 
         return res, self.loss[0](expected_output, res)
@@ -43,33 +40,13 @@ class Container:
 # TODO: Sin Bias, no debería siquiera funcionar 
 
 
-#               o
-#    .
-#         W1    o    W2    o
-#    .
-#               o
+
 container = Container(
     "quadratic", 
-    DenseBiasLayer(3, activation="relu"), 
-    DenseNoBiasLayer(1, activation="sigmoid"), 
+    DenseBiasLayer(1, activation="id"), 
 )
 
-psi = [ [1, -1], [1, 1], [-1, -1], [-1, 1]]
-zeta = [ [1], [0], [0], [1] ] 
 
-epochs = 1000
-
-for epoch in range(epochs): 
-    for psi_mu, zeta_mu in zip(psi, zeta): 
-        res, loss = container(psi_mu, zeta_mu, True)
-        print(res, loss)
-
-for x in range(-200, 200): 
-    for y in range(-200, 200): 
-        res = container.consume([x/100, y/100])
-        plt.plot( x/100, y/100, 'g.' if res >= 0.5 else 'r,')
-
-plt.show()
 
 
 
