@@ -5,8 +5,7 @@ from layer import *
 import numpy as np 
 
 
-class Perceptron: 
-    
+ 
 
 
 class Container: 
@@ -37,17 +36,40 @@ class Container:
 
     def backpropagation(self, actual_output: np.ndarray, expected_output: np.ndarray): 
         delta = np.array(self.loss[1](expected_output, actual_output))
-        print("DELTA_0", delta) # ok 
         for layer in self.layers[::-1]: 
             delta = layer.update(delta)
 
 
 # TODO: Sin Bias, no debería siquiera funcionar 
+
+
+#               o
+#    .
+#         W1    o    W2    o
+#    .
+#               o
 container = Container(
     "quadratic", 
-    DenseBiasLayer(4, activation="id"), 
-    DenseBiasLayer(2, activation="id"), 
-    DenseNoBiasLayer(2, activation="id"), 
+    DenseBiasLayer(3, activation="relu"), 
+    DenseNoBiasLayer(1, activation="sigmoid"), 
 )
+
+psi = [ [1, -1], [1, 1], [-1, -1], [-1, 1]]
+zeta = [ [1], [0], [0], [1] ] 
+
+epochs = 1000
+
+for epoch in range(epochs): 
+    for psi_mu, zeta_mu in zip(psi, zeta): 
+        res, loss = container(psi_mu, zeta_mu, True)
+        print(res, loss)
+
+for x in range(-200, 200): 
+    for y in range(-200, 200): 
+        res = container.consume([x/100, y/100])
+        plt.plot( x/100, y/100, 'g.' if res >= 0.5 else 'r,')
+
+plt.show()
+
 
 

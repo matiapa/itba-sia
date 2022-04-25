@@ -35,6 +35,7 @@ class DenseNoBiasLayer(Layer):
         "relu": [lambda x: np.maximum(0, x), lambda x: 1 if x > 0 else 0], 
         "sigmoid": [lambda x: 1 / (1+np.exp(-x)), lambda x: (1 / (1+np.exp(-x)))*(1-(1 / (1+np.exp(-x))))],
         "id": [lambda x: x, lambda x: 1], 
+        "tanh": [ lambda x: np.tanh(x), lambda x: 1-np.square(np.tanh(x))],
         "step": [lambda x: np.sign(x), lambda x: 0], 
         "caca": [lambda x: 2*x, lambda x: 3*x], 
     }
@@ -53,7 +54,7 @@ class DenseNoBiasLayer(Layer):
         self.w = np.random.normal( 0, 1, (self.units, input_shape) ) 
     
     def call(self, input: np.ndarray):
-        self.last_z = np.matmul(self.w, input)
+        self.last_z = np.matmul(self.w, input) # z = h 
         self.last_input = np.array([input])
         nonlinear =  self.g[0](self.last_z)
         return nonlinear 
