@@ -37,14 +37,6 @@ class Container:
             delta = layer.update(delta)
 
 
-# TODO: Sin Bias, no debería siquiera funcionar 
-
-
-
-container = Container(
-    "quadratic", 
-    DenseBiasLayer(1, activation="id"), 
-)
 
 
 

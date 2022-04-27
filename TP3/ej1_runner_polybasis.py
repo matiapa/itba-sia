@@ -2,6 +2,12 @@ from container import *
 from grapher import * 
 import sklearn
 
+container = Container(
+    "quadratic", 
+    DenseBiasLayer(1, activation="id"), 
+)
+
+
 psi = [ [1, 1], [1, -1], [-1, 1], [-1, -1]]
 zeta = [ [-1], [1], [1], [-1] ] 
 
