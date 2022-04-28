@@ -1,3 +1,6 @@
+import sys
+sys.path.append("..")
+
 from container import * 
 from grapher import * 
 import sklearn
