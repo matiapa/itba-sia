@@ -6,15 +6,12 @@ import imageio
 
 def graph_simple_perceptron(container: Container, psi, zeta, i): 
     square_len = 2
-    density = 0.05
+    density = 0.2
     point_density = int(square_len / density)
 
     # Enforce limits in axis 
     plt.xlim([-square_len, square_len])
     plt.ylim([-square_len, square_len])
-
-    # Graph metadata 
-    plt.title("XOR Problem - Step activation function")
 
     black_patch = matplotlib.patches.Patch(color='black', label='-1')
     red_patch = matplotlib.patches.Patch(color='red', label='1')
@@ -29,7 +26,7 @@ def graph_simple_perceptron(container: Container, psi, zeta, i):
     for psi_mu, zeta_mu in zip(psi, zeta): 
         plt.plot(psi_mu[0], psi_mu[1], 'rx' if zeta_mu[0] == 1 else 'ko') 
 
-    plt.savefig('TP3/out/simple_perceptron/{0}.png'.format(i))
+    plt.savefig('out/simple_perceptron/{0}.png'.format(i))
     plt.cla() 
 
 
@@ -41,9 +38,6 @@ def graph_polybasis_perceptron(container: Container, psi, zeta, i):
     # Enforce limits in axis 
     plt.xlim([-square_len, square_len])
     plt.ylim([-square_len, square_len])
-
-    # Graph metadata 
-    plt.title("XOR Problem - Step activation function")
 
     black_patch = matplotlib.patches.Patch(color='black', label='-1')
     red_patch = matplotlib.patches.Patch(color='red', label='1')
@@ -59,12 +53,12 @@ def graph_polybasis_perceptron(container: Container, psi, zeta, i):
     for psi_mu, zeta_mu in zip(psi, zeta): 
         plt.plot(psi_mu[0], psi_mu[1], 'rx' if zeta_mu[0] == 1 else 'ko') 
 
-    plt.savefig('TP3/out/simple_perceptron/{0}.png'.format(i))
+    plt.savefig('out/simple_perceptron/{0}.png'.format(i))
     plt.cla() 
 
 
 def to_gif(path: str, qty: int, name: str):
     images = []
     for i in range(qty):
-        images.append( imageio.imread(path+"{0}.png".format(i)))
-    imageio.mimsave('TP3/out/gifs/{0}.gif'.format(name), images) 
+        images.append(imageio.imread(path+"{0}.png".format(i)))
+    imageio.mimsave('out/gifs/{0}.gif'.format(name), images, fps=4)

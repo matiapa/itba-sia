@@ -25,14 +25,13 @@ for epoch in range(epochs):
         error += loss # Accumulates the error of an epoch 
         i += 1  
 
-    graph_simple_perceptron(container, psi, zeta, epoch)  
+    # graph_simple_perceptron(container, psi, zeta, epoch)  
  
     errors.append(error)
     if error == 0: 
         break 
 
-
 plt.plot(range(len(errors)), errors, 'k-')
 plt.show()
     
-to_gif("TP3/out/simple_perceptron/", epochs, "simple_perceptron")
+# to_gif("TP3/out/simple_perceptron/", epochs, "simple_perceptron")

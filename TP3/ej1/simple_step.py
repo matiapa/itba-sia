@@ -7,8 +7,13 @@ container = Container(
     DenseBiasLayer(1, activation="id", eta=0.01), 
 )
 
+# XOR Problem
+# psi = [ [1, 1], [1, -1], [-1, 1], [-1, -1]]
+# zeta = [ [-1], [1], [1], [-1] ]
+
+# AND Problem
 psi = [ [1, 1], [1, -1], [-1, 1], [-1, -1]]
-zeta = [ [-1], [1], [1], [-1] ] 
+zeta = [ [1], [-1], [-1], [-1] ] 
 
 epochs = 10
 errors = [] 
@@ -25,14 +30,13 @@ for epoch in range(epochs):
         error += loss # Accumulates the error of an epoch 
         i += 1  
 
-    graph_simple_perceptron(container, psi, zeta, i)  
+    # graph_simple_perceptron(container, psi, zeta, i)  
  
     errors.append(error)
     if error == 0: 
-        break 
-
+        break
 
 plt.plot(range(len(errors)), errors, 'k-')
 plt.show()
     
-to_gif("TP3/out/simple_perceptron/", i, "simple_perceptron")
+# to_gif("out/simple_perceptron/", i, "simple_perceptron")
