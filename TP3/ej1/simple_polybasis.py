@@ -1,12 +1,14 @@
+import sys
+sys.path.append("..")
+
 from container import * 
 from grapher import * 
 import sklearn
 
 container = Container(
     "quadratic", 
-    DenseBiasLayer(1, activation="id"), 
+    DenseBiasLayer(1, activation="id", eta=0.01), 
 )
-
 
 psi = [ [1, 1], [1, -1], [-1, 1], [-1, -1]]
 zeta = [ [-1], [1], [1], [-1] ] 
@@ -26,8 +28,4 @@ for epoch in range(epochs):
         print(res, loss)
     
 print(container.layers[0].w)
-graph_polybasis_perceptron(container, psi, zeta, epoch)     
-
-
-
-
+graph_polybasis_perceptron(container, psi, zeta, epoch)
