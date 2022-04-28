@@ -26,7 +26,7 @@ def graph_simple_perceptron(container: Container, psi, zeta, i):
     for psi_mu, zeta_mu in zip(psi, zeta): 
         plt.plot(psi_mu[0], psi_mu[1], 'rx' if zeta_mu[0] == 1 else 'ko') 
 
-    plt.savefig('out/simple_perceptron/{0}.png'.format(i))
+    plt.savefig('../out/simple_perceptron/{0}.png'.format(i))
     plt.cla() 
 
 def graph_bound_perceptron(container: Container, psi, zeta, i): 
@@ -86,4 +86,4 @@ def to_gif(path: str, qty: int, name: str):
     images = []
     for i in range(qty):
         images.append(imageio.imread(path+"{0}.png".format(i)))
-    imageio.mimsave('out/gifs/{0}.gif'.format(name), images, fps=4)
+    imageio.mimsave('../out/gifs/{0}.gif'.format(name), images, fps=4)
