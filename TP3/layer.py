@@ -40,10 +40,11 @@ class DenseNoBiasLayer(Layer):
         "caca": [lambda x: 2*x, lambda x: 3*x], 
     }
 
-    def __init__(self, units: int, activation: str):
+    def __init__(self, units: int, activation: str, eta: float):
         super().__init__()
         self.units = units
         self.g = DenseNoBiasLayer.activations[activation]
+        self.eta = eta
 
         # caches 
         self.last_input = None 
@@ -62,8 +63,8 @@ class DenseNoBiasLayer(Layer):
     def update_weights(self, delta: np.ndarray): 
         self.diagonal_matrix = np.zeros((self.units, self.units))
         for i in range(self.units): 
-            self.diagonal_matrix[i][i] =  (self.g)[1](self.last_z[i])
-        self.w = self.w - 0.01*np.array(np.matmul(np.matmul(self.diagonal_matrix, delta), self.last_input))
+            self.diagonal_matrix[i][i] = (self.g)[1](self.last_z[i])
+        self.w -= self.eta * np.array(np.matmul(np.matmul(self.diagonal_matrix, delta), self.last_input))
     
     def new_delta(self, delta: np.ndarray): 
         x = np.matmul(np.transpose(self.w), self.diagonal_matrix)
@@ -75,11 +76,5 @@ class DenseBiasLayer(DenseNoBiasLayer):
         dummied_input = np.append(input, [[1]])
         return super().__call__(dummied_input)
 
-    def __init__(self, units: int, activation: str):
-        super().__init__(units, activation)
-
-
-
-
-
-    
+    def __init__(self, units: int, activation: str, eta: float):
+        super().__init__(units, activation, eta)

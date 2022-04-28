@@ -29,7 +29,7 @@ xi = standarizedf(xi)
 # Create the perceptron container 
 container = Container(
     "quadratic", 
-    DenseBiasLayer(1, activation="id"), 
+    DenseBiasLayer(1, activation="id", eta=0.01), 
 )
 
 # Train the perceptron 

@@ -4,7 +4,7 @@ import sklearn
 
 container = Container(
     "quadratic", 
-    DenseBiasLayer(1, activation="id"), 
+    DenseBiasLayer(1, activation="id", eta=0.01), 
 )
 
 psi = [ [1, 1], [1, -1], [-1, 1], [-1, -1]]
@@ -20,8 +20,8 @@ for epoch in range(epochs):
 
     error = 0
     for psi_mu, zeta_mu in zip(psi, zeta):
-        res, loss = container(psi_mu, zeta_mu, True)
-        loss = (np.sign(res)- zeta_mu)**2
+        res, _ = container(psi_mu, zeta_mu, True)
+        loss = (np.sign(res) - zeta_mu)**2  # Emulation of step activation function
         error += loss # Accumulates the error of an epoch 
         i += 1  
 
@@ -35,8 +35,4 @@ for epoch in range(epochs):
 plt.plot(range(len(errors)), errors, 'k-')
 plt.show()
     
-   
 to_gif("TP3/out/simple_perceptron/", i, "simple_perceptron")
-
-
-

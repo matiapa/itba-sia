@@ -6,8 +6,14 @@ psi = [ [1, 1], [1, -1], [-1, 1], [-1, -1]]
 zeta = [ [-1], [1], [1], [-1] ] 
 
 epochs = 10
-errors = [] 
-i = 0 
+errors = []
+i = 0
+
+container = Container(
+    "quadratic", 
+    DenseBiasLayer(units=1, activation="id", eta=0.01), 
+)
+
 for epoch in range(epochs): 
 
     # Feed psis in random order
@@ -15,11 +21,14 @@ for epoch in range(epochs):
 
     error = 0
     for psi_mu, zeta_mu in zip(psi, zeta):
-        res, loss = container(psi_mu, zeta_mu, True)
-        loss = (np.sign(res)- zeta_mu)**2
+        res, _ = container(psi_mu, zeta_mu, True)
+        loss = (np.sign(res) - zeta_mu)**2  # Emulation of step activation function
         error += loss
-        graph_simple_perceptron(container, psi, zeta, i)  
-        i += 1   
+        # graph_simple_perceptron(container, psi, zeta, i)  
+        i += 1
+
+    print(epoch)
+    print(error)
 
     errors.append(error)
     if error == 0: 
@@ -27,9 +36,5 @@ for epoch in range(epochs):
 
 plt.plot(range(len(errors)), errors, 'k.')
 plt.show()
-    
    
-to_gif("TP3/out/simple_perceptron/", i, "simple_perceptron")
-
-
-
+# to_gif("TP3/out/simple_perceptron/", i, "simple_perceptron")
