@@ -24,22 +24,17 @@ def normalizedf(dataframe):
 xi = pd.read_csv("TP3/inputs/TP3-ej2-Conjunto-entrenamiento.txt", sep="   ").to_numpy() 
 zeta = pd.read_csv("TP3/inputs/TP3-ej2-Salida-deseada.txt", sep="   ").to_numpy() 
 
-xi = normalizedf(xi)
-# zeta = normalizedf(zeta)
-
+# xi = standarizedf(xi)
+zeta = normalizedf(zeta)
 
 # Create the perceptron container 
 container = Container(
     "quadratic", 
-    DenseBiasLayer(1, activation="id"), 
+    DenseBiasLayer(1, activation="sigmoid"), 
 )
 
-# [1, 0, 0, .. 0 ]
-# [1, 0, 0, .. 0 ]
-
-
 # Train the perceptron 
-epochs = 25
+epochs = 100
 errors = [] 
 for epoch in range(epochs): 
 
@@ -57,17 +52,12 @@ for epoch in range(epochs):
     print("Weights:", container.layers[0].w)
     print("--------------------") 
 
+# graph_bound_perceptron(container, xi, zeta, 420)
+# plt.plot(range(len(errors)), errors, 'k-')
+# plt.show()
 
 
-
-# for psi_mu, zeta_mu in zip(xi, zeta):
-#     plt.plot(psi_mu[0], psi_mu[1], 'k.')
-
-# plt.show() 
-
-plt.plot(range(len(errors)), errors, 'k-')
-plt.show()
-
-    
-   
-# to_gif("TP3/out/simple_perceptron/", i, "simple_perceptron")
+# for (x,y,z) in zip(x,y,z):
+#     print(z)
+#     plt.plot(x, y, 'k.', alpha=z, markersize=0.25)
+# plt.show()

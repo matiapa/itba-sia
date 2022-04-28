@@ -5,6 +5,7 @@ import sklearn
 container = Container(
     "quadratic", 
     DenseBiasLayer(1, activation="id"), 
+    DenseBiasLayer(4, activation="relu"), 
 )
 
 psi = [ [1, 1], [1, -1], [-1, 1], [-1, -1]]

@@ -37,7 +37,6 @@ class DenseNoBiasLayer(Layer):
         "id": [lambda x: x, lambda x: 1], 
         "tanh": [ lambda x: np.tanh(x), lambda x: 1-np.square(np.tanh(x))],
         "step": [lambda x: np.sign(x), lambda x: 0], 
-        "caca": [lambda x: 2*x, lambda x: 3*x], 
     }
 
     def __init__(self, units: int, activation: str):
@@ -77,6 +76,10 @@ class DenseBiasLayer(DenseNoBiasLayer):
 
     def __init__(self, units: int, activation: str):
         super().__init__(units, activation)
+
+    def new_delta(self, delta: np.ndarray): 
+        x = np.matmul(np.transpose(self.w), self.diagonal_matrix)
+        return np.matmul(x, delta)[:-1]
 
 
 

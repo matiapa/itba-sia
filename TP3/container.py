@@ -39,6 +39,10 @@ class Container:
 
 
 
-
-
-
+container = Container(
+    "quadratic", 
+    DenseBiasLayer(3, activation="sigmoid"), 
+    DenseNoBiasLayer(3, activation="sigmoid"),
+    DenseBiasLayer(3, activation="sigmoid"),  
+    DenseNoBiasLayer(1, activation="sigmoid"), 
+)
