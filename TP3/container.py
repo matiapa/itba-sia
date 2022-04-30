@@ -27,13 +27,17 @@ class Container:
 
     def consume(self, input: np.ndarray):
         res = input
+        i = 0
         for layer in self.layers: 
             res = layer(res)
+            i += 1
         return res
 
     def backpropagation(self, actual_output: np.ndarray, expected_output: np.ndarray): 
         delta = np.array(self.loss[1](expected_output, actual_output))
-        for layer in self.layers[::-1]: 
+        i = 0
+        for layer in self.layers[::-1]:
             delta = layer.update(delta)
+            i += 1
 
 

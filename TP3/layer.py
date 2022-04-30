@@ -51,7 +51,7 @@ class DenseNoBiasLayer(Layer):
         self.diagonal_matrix = None 
 
     def build(self, input_shape: int):
-        self.w = np.random.uniform( -1, 1, (self.units, input_shape) ) 
+        self.w = np.random.uniform( -1, 1, (self.units, input_shape) )
     
     def call(self, input: np.ndarray):
         self.last_z = np.matmul(self.w, input) # z = h 
@@ -63,7 +63,10 @@ class DenseNoBiasLayer(Layer):
         self.diagonal_matrix = np.zeros((self.units, self.units))
         for i in range(self.units): 
             self.diagonal_matrix[i][i] = (self.g)[1](self.last_z[i])
-        self.w -= self.eta * np.array(np.matmul(np.matmul(self.diagonal_matrix, delta), self.last_input))
+
+        gp_delta = np.matmul(self.diagonal_matrix, delta)
+        gp_delta_input = np.matmul(gp_delta, self.last_input)
+        self.w -= self.eta * np.array(gp_delta_input)
     
     def new_delta(self, delta: np.ndarray): 
         x = np.matmul(np.transpose(self.w), self.diagonal_matrix)
@@ -75,8 +78,8 @@ class DenseBiasLayer(DenseNoBiasLayer):
         dummied_input = np.append(input, [[1]])
         return super().__call__(dummied_input)
 
-    def __init__(self, units: int, activation: str):
-        super().__init__(units, activation)
+    def __init__(self, units: int, activation: str, eta: float):
+        super().__init__(units, activation, eta)
 
     def new_delta(self, delta: np.ndarray): 
         x = np.matmul(np.transpose(self.w), self.diagonal_matrix)
