@@ -15,7 +15,7 @@ xi, zeta = sklearn.utils.shuffle(xi, zeta)
 zeta, zeta_min, zeta_max = scaledf(zeta)
 
 # # Clustering
-k = 10
+k = 2
 kid = 1 
 cluster_size = int(len(zeta)/k)   
 zeta_test = zeta[kid*cluster_size:(kid+1)*cluster_size]
@@ -25,8 +25,8 @@ xi_test = xi[kid*cluster_size:(kid+1)*cluster_size]
 xi_train = np.concatenate((xi[(-k+kid+1)*cluster_size:], xi[:kid*cluster_size]))
 
 # Hyperparameters 
-epochs = 10
-sample = 200
+epochs = 1000
+sample = len(xi_train)
 eta = 0.01
 
 # Plot parameters 
@@ -44,19 +44,25 @@ container = Container(
 )
 
 
-# # Train the perceptron 
-# global_losses = [] 
-# for epoch in range(epochs): 
+# Train the perceptron 
+global_losses = [] 
+for epoch in range(epochs): 
 
-#     # Feed xis in random order
-#     xi, zeta = sklearn.utils.shuffle(xi, zeta)
+    # Feed xis in random order
+    xi_train, zeta_train = sklearn.utils.shuffle(xi, zeta)
 
-#     global_loss = 0
-#     for xi_mu, zeta_mu in zip(xi[:sample], zeta[:sample]):
-#         res, loss = container(xi_mu, zeta_mu, True)
-#         global_loss += loss * ( (zeta_max[0]-zeta_min[0])**2)
-#     global_losses.append(global_loss/len(xi))
+    global_loss = 0
+    for xi_mu, zeta_mu in zip(xi_train[:sample], zeta_train[:sample]):
+        res, loss = container(xi_mu, zeta_mu, True)
+        global_loss += loss * ( (zeta_max[0]-zeta_min[0])**2)
+    global_losses.append(global_loss/len(xi_train))
 
+print(global_loss/len(xi_train))
 
-# plt.plot(range(len(global_losses)), global_losses, 'k-')
-# plt.show()
+# Test the perceptron 
+train_loss = 0
+for xi_mu, zeta_mu in zip(xi_test, zeta_test):
+    res, loss = container(xi_mu, zeta_mu, False)
+    train_loss += loss * ( (zeta_max[0]-zeta_min[0])**2)
+
+print(train_loss/len(xi_test))
