@@ -87,3 +87,22 @@ def to_gif(path: str, qty: int, name: str):
     for i in range(qty):
         images.append(imageio.imread(path+"{0}.png".format(i)))
     imageio.mimsave('../out/gifs/{0}.gif'.format(name), images, fps=4)
+
+
+def graph_confusion_matrix(title, labels, matrix):
+    fig, ax = plt.subplots()
+    ax.imshow(matrix, cmap="YlGn")
+
+    ax.set_xticks(np.arange(len(labels)), labels=labels)
+    ax.set_yticks(np.arange(len(labels)), labels=labels)
+    ax.set_title(title)
+
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+
+    for i in range(len(labels)):
+        for j in range(len(labels)):
+            text = ax.text(j, i, round(matrix[i][j]), ha="center", va="center", color="r")
+
+    
+    fig.tight_layout()
+    plt.show()
