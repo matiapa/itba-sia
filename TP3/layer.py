@@ -36,7 +36,7 @@ class DenseNoBiasLayer(Layer):
         "sigmoid": [lambda x: 1 / (1+np.exp(-x)), lambda x: (1 / (1+np.exp(-x)))*(1-(1 / (1+np.exp(-x))))],
         "id": [lambda x: x, lambda x: 1], 
         "tanh": [ lambda x: np.tanh(x), lambda x: 1-np.square(np.tanh(x))],
-        "step": [lambda x: np.sign(x), lambda x: 0], 
+        "step": [lambda x: np.sign(x), lambda x: 0],
     }
 
     def __init__(self, units: int, activation: str, eta: float):
