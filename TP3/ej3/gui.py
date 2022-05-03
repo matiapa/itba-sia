@@ -96,6 +96,12 @@ title2 = tk.Text(output_frame, height=1, width=20)
 title2.insert(tk.INSERT, "Prediction:")
 title2.pack(side="top")
 
+results_frame = tk.Frame(root)
+results_frame.pack(side = tk.LEFT)
+results_title = tk.Text(results_frame, height=1, width=20)
+results_title.insert(tk.INSERT, "Results:")
+results_title.pack(side="top")
+
 canvas.pack(fill="both", expand=True)
 
 # Read training data from file
