@@ -35,6 +35,11 @@ class DrawableGrid(tk.Frame):
                 map.append(value)
         print(map)
 
+    def clear(self):
+        for row in range(self.height):
+            for column in range(self.width):
+                self.canvas.itemconfigure(self._tag(row, column), fill="white")
+
     def paint(self, event):
         cell = self.canvas.find_closest(event.x, event.y)
         self.canvas.itemconfigure(cell, fill="black")
@@ -50,10 +55,10 @@ input_frame.pack(side = tk.LEFT)
 title = tk.Text(input_frame, height=1, width=20)
 title.insert(tk.INSERT, "Input:")
 title.pack()
-canvas = DrawableGrid(input_frame, width=8, height=8, size=70)
+canvas = DrawableGrid(input_frame, width=5, height=7, size=25)
 apply_button = tk.Button(input_frame, text="Apply", command=canvas.get_pixels, fg="green")
 apply_button.pack(side="bottom")
-clear_button = tk.Button(input_frame, text="Clear", command=canvas.get_pixels, fg="red")
+clear_button = tk.Button(input_frame, text="Clear", command=canvas.clear, fg="red")
 clear_button.pack(side="bottom")
 
 output_frame = tk.Frame(root)
