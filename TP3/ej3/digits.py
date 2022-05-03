@@ -6,61 +6,62 @@ from grapher import *
 import numpy
 import sklearn
 
-# Read data from file
 
-psi = [[],[],[],[],[],[],[],[],[],[]]   # 10 x 35
-zeta = numpy.identity(10).tolist()
+def train(psi, zeta, plot_error):
+    epochs = 50
 
-with open("../inputs/digits_map_train_set.txt", "r") as f:
-    line_num = 0 
-    for line in f.readlines():
-        psi_num = line_num // 7
-        for pixel in line.split(" "):
-            psi[psi_num].append(int(pixel))
-        line_num +=1
+    container = Container(
+        "quadratic", 
+        DenseBiasLayer(50, activation="sigmoid", eta=0.01),
+        DenseBiasLayer(10, activation="id", eta=0.01),
+    )
 
-for p in psi:
-    print(len(p))
+    errors = [] 
+    i = 0
 
-epochs = 50
+    for epoch in range(epochs): 
+        print(f'---------------- Epoch {epoch} ----------------')
 
-container = Container(
-    "quadratic", 
-    DenseBiasLayer(50, activation="sigmoid", eta=0.01),
-    DenseBiasLayer(10, activation="id", eta=0.01),
-)
+        # Feed psis in random order
+        array1_shuffled, array2_shuffled = sklearn.utils.shuffle(psi, zeta)
 
-errors = [] 
-i = 0
+        error = 0
+        psi_num = 0
+        for psi_mu, zeta_mu in zip(psi, zeta):
+            res, loss = container(psi_mu, zeta_mu, True)
+            error += loss
+            
+            print(f'Num: {psi_num}')
+            print(f'Out: {[round(x) for x in res]}')
+            print(f'Expected: {[round(x) for x in zeta_mu]}')
+            print('--------------')
+            psi_num += 1
 
-for epoch in range(epochs): 
-    print(f'---------------- Epoch {epoch} ----------------')
+        i += 1
+    
+        errors.append(error)
+        if error < 1e-9: 
+            break
 
-    # Feed psis in random order
-    array1_shuffled, array2_shuffled = sklearn.utils.shuffle(psi, zeta)
+    if plot_error:
+        plt.plot(range(len(errors)), errors, 'k-')
+        plt.yscale("log")
+        plt.show()
 
-    error = 0
-    psi_num = 0
-    for psi_mu, zeta_mu in zip(psi, zeta):
-        res, loss = container(psi_mu, zeta_mu, True)
-        error += loss
+    return container
 
-        # res = [round(x) for x in res]
-        # error += sum(np.square(np.subtract(res, zeta_mu)))
-        
-        # print(psi_mu)
-        print(f'Num: {psi_num}')
-        print([round(x) for x in res])
-        print([round(x) for x in zeta_mu])
-        print('-------')
-        psi_num += 1
+if __name__ == "__main__":
+    # Read training data from file
 
-    i += 1
- 
-    errors.append(error)
-    if error < 1e-9: 
-        break 
+    psi = [[],[],[],[],[],[],[],[],[],[]]   # 10 x 35
+    zeta = numpy.identity(10).tolist()
 
-plt.plot(range(len(errors)), errors, 'k-')
-plt.yscale("log")
-plt.show()
+    with open("../inputs/digits_map_train_set.txt", "r") as f:
+        line_num = 0 
+        for line in f.readlines():
+            psi_num = line_num // 7
+            for pixel in line.split(" "):
+                psi[psi_num].append(int(pixel))
+            line_num +=1
+
+    train(psi, zeta, True)
