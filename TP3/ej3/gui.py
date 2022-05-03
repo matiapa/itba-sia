@@ -51,6 +51,11 @@ class DrawableGrid(tk.Frame):
 
         print('------------------------------------')
 
+    def clear(self):
+        for row in range(self.height):
+            for column in range(self.width):
+                self.canvas.itemconfigure(self._tag(row, column), fill="white")
+
     def paint(self, event):
         cell = self.canvas.find_closest(event.x, event.y)
         color = self.canvas.itemcget(cell, "fill")
