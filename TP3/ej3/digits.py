@@ -100,6 +100,6 @@ if __name__ == "__main__":
 
     # Train the network
 
-    container = train(psi, zeta, True)
+    container = train(psi, zeta, False)
 
     # confusion_matrix()

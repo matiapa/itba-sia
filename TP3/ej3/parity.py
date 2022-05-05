@@ -1,3 +1,4 @@
+from random import random
 import sys
 sys.path.append("..")
 
@@ -39,7 +40,7 @@ def train(psi, zeta, plot_error):
             psi_num += 1
 
         i += 1
-    
+
         errors.append(error)
         if error < 1e-9: 
             break
@@ -47,9 +48,43 @@ def train(psi, zeta, plot_error):
     if plot_error:
         plt.plot(range(len(errors)), errors, 'k-')
         plt.yscale("log")
+        plt.xlabel('Epoch')
+        plt.ylabel('Error')
         plt.show()
 
     return container
+
+def confusion_matrix():
+    matrix = np.zeros((2, 2)).tolist()
+
+    for s in range(10):
+        # Add some noise to inputs
+
+        noised_input = psi.copy()
+        for input in noised_input:
+            for num in range(len(input)):
+                if random() < 0.02:
+                    input[num] = 0 if input[num]==1 else 0
+
+        print("Evaluating with noise")
+
+        # Evaluate them
+
+        for num in range(len(noised_input)):
+            input = noised_input[num]
+            output = container.consume(input)
+            
+            input_parity = 1 if num % 2 == 0 else 0
+            output_parity = min(1, round(output[0]))
+            
+            print(f'Input num: {num}')
+            print(f'Input parity: {input_parity}')
+            print(f'Output parity: {output_parity}')
+            print('--------------')
+
+            matrix[input_parity][output_parity] += 1
+    
+    graph_confusion_matrix('Digit parity confusion matrix', ['Even', 'Odd'], matrix)
 
 if __name__ == "__main__":
     # Read training data from file
@@ -65,4 +100,6 @@ if __name__ == "__main__":
                 psi[psi_num].append(int(pixel))
             line_num +=1
 
-    train(psi, zeta, True)
+    container = train(psi, zeta, True)
+
+    confusion_matrix()
