@@ -1,9 +1,9 @@
 import tkinter as tk
-
 import numpy
 import sklearn
-
+import numpy as np
 from digits import train
+from mnist import get_mnist_container
 
 class DrawableGrid(tk.Frame):
     def __init__(self, parent, width, height, size=5):
@@ -49,6 +49,10 @@ class DrawableGrid(tk.Frame):
 
         print(f"Output: {output}")
 
+        result_num = tk.Text(output_frame, height=1, width=20)
+        result_num.insert(tk.INSERT, np.argmax(res))
+        result_num.pack()
+
         print('------------------------------------')
 
     def clear(self):
@@ -59,8 +63,12 @@ class DrawableGrid(tk.Frame):
     def paint(self, event):
         cell = self.canvas.find_closest(event.x, event.y)
         color = self.canvas.itemcget(cell, "fill")
-        new_color = "black" if color=="white" else "white"
+
+        new_color = "black"
         self.canvas.itemconfigure(cell, fill=new_color)
+
+        # new_color = "black" if color=="white" else "white"
+        # self.canvas.itemconfigure(cell, fill=new_color)
 
     def paint_xy(self, x, y):
         cell = self.canvas.find_closest(x*PIXEL_SIZE, y*PIXEL_SIZE)
@@ -68,9 +76,9 @@ class DrawableGrid(tk.Frame):
 
 # Prepare GUI
 
-WIDTH = 5
-HEIGHT = 7
-PIXEL_SIZE = 70
+WIDTH = 28
+HEIGHT = 28
+PIXEL_SIZE = 30
 
 root = tk.Tk()
 
@@ -86,7 +94,7 @@ canvas = DrawableGrid(input_frame, width=WIDTH, height=HEIGHT, size=PIXEL_SIZE)
 apply_button = tk.Button(input_frame, text="Apply", command=canvas.get_pixels, fg="green")
 apply_button.pack(side="bottom")
 
-clear_button = tk.Button(input_frame, text="Clear", command=canvas.get_pixels, fg="red")
+clear_button = tk.Button(input_frame, text="Clear", command=canvas.clear, fg="red")
 clear_button.pack(side="bottom")
 
 output_frame = tk.Frame(root)
@@ -117,13 +125,15 @@ with open("../inputs/digits_map_train_set.txt", "r") as f:
             psi[psi_num].append(int(pixel))
         line_num +=1
 
-i = 0
-for pixel in psi[0]:
-    if pixel:
-        cell = canvas.paint_xy(i%5, i//5)
-    i += 1
+# i = 0
+# for pixel in psi[0]:
+#     if pixel:
+#         cell = canvas.paint_xy(i%5, i//5)
+#     i += 1
 
-container = train(psi, zeta, False)
+# container = train(psi, zeta, False)
+
+container = get_mnist_container()
 
 # Run GUI
 
