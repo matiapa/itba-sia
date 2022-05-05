@@ -49,7 +49,8 @@ class DrawableGrid(tk.Frame):
 
         print(f"Output: {output}")
 
-        result_num = tk.Text(output_frame, height=1, width=20)
+        
+        result_num.delete(1.0, "end")
         result_num.insert(tk.INSERT, np.argmax(res))
         result_num.pack()
 
@@ -109,6 +110,8 @@ results_frame.pack(side = tk.LEFT)
 results_title = tk.Text(results_frame, height=1, width=20)
 results_title.insert(tk.INSERT, "Results:")
 results_title.pack(side="top")
+
+result_num = tk.Text(output_frame, height=1, width=20)
 
 canvas.pack(fill="both", expand=True)
 

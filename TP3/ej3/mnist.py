@@ -6,8 +6,8 @@ from container import *
 import sklearn
 
 def get_mnist_container():
-    items_size = 30000
-    train_size = 29500
+    items_size = 10000
+    train_size = 9900
     test_size = items_size - train_size
     f = gzip.open('../train-images-idx3-ubyte.gz','r')
     labels_f = gzip.open('../train-labels-idx1-ubyte.gz','r')
@@ -57,7 +57,7 @@ def get_mnist_container():
     zeta = np.array(zeta)
 
     print(zeta)
-    epochs = 50
+    epochs = 35
 
     for epoch in range(epochs):
         print("epoch", epoch)
