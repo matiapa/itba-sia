@@ -9,12 +9,13 @@ import sklearn
 
 
 def train(psi, zeta, plot_error):
-    epochs = 50
+    epochs = 25
 
     container = Container(
         "quadratic", 
-        DenseBiasLayer(50, activation="sigmoid", eta=0.01),
-        DenseBiasLayer(10, activation="id", eta=0.01),
+        DenseBiasLayer(16, activation="sigmoid", eta=0.01),
+        DenseBiasLayer(16, activation="sigmoid", eta=0.01),
+        DenseNoBiasLayer(10, activation="id", eta=0.01)
     )
 
     errors = [] 
