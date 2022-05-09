@@ -10,28 +10,12 @@ epochs = 100
 
 def train(psi, zeta, plot_error):
 
-
-
-    # Opcion doble plano de separacion
-    # container = Container(
-    #     "quadratic", 
-    #     DenseBiasLayer(2, activation="step", eta=0.01),
-    #     DenseBiasLayer(1, activation="step", eta=0.01),
-    # )
-
-    # Opcion incremento de dimension
     container = Container(
         "quadratic", 
-        DenseBiasLayer(3, activation="id", eta=0.01),
-        DenseBiasLayer(1, activation="step", eta=0.01),
+        DenseBiasLayer(50, activation="id", eta=0.01),
+        DenseBiasLayer(50, activation="sigmoid", eta=0.01),
+        DenseBiasLayer(1, activation="id", eta=0.01),
     )
-
-    # Opcion chanta (da al reves)
-    # container = Container(
-    #     "quadratic", 
-    #     DenseBiasLayer(3, activation="id", eta=0.01),
-    #     DenseBiasLayer(1, activation="id", eta=0.01),
-    # )
 
     errors = [] 
     i = 0
