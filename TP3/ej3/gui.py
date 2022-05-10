@@ -4,6 +4,8 @@ import sklearn
 import numpy as np
 from digits import train
 from mnist import get_mnist_container
+from container import *
+import os
 
 class DrawableGrid(tk.Frame):
     def __init__(self, parent, width, height, size=5):
@@ -136,8 +138,37 @@ with open("../inputs/digits_map_train_set.txt", "r") as f:
 
 # container = train(psi, zeta, False)
 
-container = get_mnist_container()
+container = Container('quadratic',
+    DenseBiasLayer(16, activation="sigmoid", eta=0.01), 
+    DenseBiasLayer(16, activation="sigmoid", eta=0.01),
+    DenseNoBiasLayer(10, activation="sigmoid", eta=0.01)
+)
+
+i = 0
+for x in container.layers: 
+    print("Deserializing layer {}".format(i))
+    x.w = np.load("layer{}.npy".format(i))
+    print(x.w)
+    x.born = True
+    i += 1
+
+
+get_mnist_container(
+    container, 
+    items_size=10000, 
+    train_size=9900
+)
+
 
 # Run GUI
-
 root.mainloop()
+
+
+i = 0
+for x in container.layers: 
+    print("Serializing layer {}".format(i))
+    # os.remove("layer{}.npy".format(i))
+    np.save("layer{}".format(i), x.w)
+    i += 1
+
+

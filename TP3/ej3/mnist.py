@@ -5,9 +5,7 @@ sys.path.append("..")
 from container import *
 import sklearn
 
-def get_mnist_container():
-    items_size = 10000
-    train_size = 9900
+def get_mnist_container(container: Container, items_size, train_size):
     test_size = items_size - train_size
     f = gzip.open('../train-images-idx3-ubyte.gz','r')
     labels_f = gzip.open('../train-labels-idx1-ubyte.gz','r')
@@ -40,11 +38,6 @@ def get_mnist_container():
         # plt.show()
 
 
-    container = Container('quadratic',
-    DenseBiasLayer(16, activation="sigmoid", eta=0.01), 
-    DenseBiasLayer(16, activation="sigmoid", eta=0.01),
-    DenseNoBiasLayer(10, activation="sigmoid", eta=0.01))
-
     xi = data.reshape((-1, 784))
 
     labels = np.array(labels)
@@ -55,8 +48,6 @@ def get_mnist_container():
         zeta.append(label_array)
 
     zeta = np.array(zeta)
-
-    print(zeta)
     epochs = 35
 
     for epoch in range(epochs):
