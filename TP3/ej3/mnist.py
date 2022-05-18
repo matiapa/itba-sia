@@ -1,12 +1,15 @@
-import gzip
-import numpy as np
 import sys
+sys.path.append(".")
 sys.path.append("..")
+
+from grapher import graph_confusion_matrix
 from container import *
-import sklearn
+import matplotlib.pyplot as plt
+import numpy as np
+import gzip
+
 
 def get_mnist_container(container: Container, items_size, train_size):
-    test_size = items_size - train_size
     f = gzip.open('../train-images-idx3-ubyte.gz','r')
     labels_f = gzip.open('../train-labels-idx1-ubyte.gz','r')
     labels = []
@@ -28,15 +31,11 @@ def get_mnist_container(container: Container, items_size, train_size):
             for j in range(28):
                 ex[i][j][0] = 0 if ex[i][j][0] == 0 else 1
 
-
-    import matplotlib.pyplot as plt
-
-    for example, label in zip(data, labels):
-        image = np.asarray(example).squeeze()
-        plt.imshow(image)
-        plt.title("Label: {}".format(label[0]))
-        # plt.show()
-
+    # for example, label in zip(data, labels):
+    #     image = np.asarray(example).squeeze()
+    #     plt.imshow(image)
+    #     plt.title("Label: {}".format(label[0]))
+    #     plt.show()
 
     xi = data.reshape((-1, 784))
 
@@ -48,21 +47,100 @@ def get_mnist_container(container: Container, items_size, train_size):
         zeta.append(label_array)
 
     zeta = np.array(zeta)
-    epochs = 35
+    epochs = 20
 
+    losses, train_accuracy, test_accuracy = [], [], []
     for epoch in range(epochs):
-        print("epoch", epoch)
+        print("Epoch", epoch)
 
+        print('Training...')
+        global_loss = 0
         for xi_mu, zeta_mu in zip(xi[:train_size], zeta[:train_size]):
             res, loss = container(xi_mu, zeta_mu, True)
+            global_loss += loss
+        losses.append(global_loss)
 
-    for xi_mu, zeta_mu in zip(xi[train_size:], zeta[train_size:]):
-        res = container.consume(xi_mu)
-        print("Expected: {} --- Got: {}".format(np.argmax(zeta_mu), np.argmax(res)))
+        print('Evaluating training accuracy...')
+        true_vals = 0
+        for xi_mu, zeta_mu in zip(xi[:train_size], zeta[:train_size]):
+            res = container.consume(xi_mu)
+            if np.argmax(zeta_mu) == np.argmax(res):
+                true_vals += 1
+            # print("Expected: {} --- Got: {}".format(np.argmax(zeta_mu), np.argmax(res)))
+        train_accuracy.append(true_vals / len(xi[:train_size]))
 
-    return container
+        print('Evaluating test accuracy...')
+        true_vals = 0
+        for xi_mu, zeta_mu in zip(xi[train_size:], zeta[train_size:]):
+            res = container.consume(xi_mu)
+            if np.argmax(zeta_mu) == np.argmax(res):
+                true_vals += 1
+            # print("Expected: {} --- Got: {}".format(np.argmax(zeta_mu), np.argmax(res)))
+        test_accuracy.append(true_vals / len(xi[train_size:]))
 
-# get_mnist_container()
+    plt.plot([i for i in range(epochs)], losses)
+    plt.xlabel('Epoch')
+    plt.ylabel('Error')
+    plt.yscale('log')
+    plt.show()
+
+    # plt.plot([i for i  in range(epochs)], train_accuracy, label='Train')
+    # plt.plot([i for i  in range(epochs)], test_accuracy, label='Test')
+    # plt.xlabel('Epoch')
+    # plt.ylabel('Accuracy')
+    # plt.yscale('log')
+    # plt.legend()
+    # plt.show()
+
+    return container, xi, zeta
+
+# ----------------- ANALISIS -------------------------------
+
+def confusion_matrix(xi, zeta, container):
+    matrix = np.zeros((10, 10)).tolist()
+
+    i=0
+    for xi_mu, zeta_mu in zip(xi, zeta):
+        if i % 10 == 0:
+            print(f'{i}/{len(xi)}')
+        psi_mu = container.consume(xi_mu)
+        
+        expected_num = np.argmax(zeta_mu)
+        output_num = np.argmax(psi_mu)
+        
+        matrix[expected_num][output_num] += 1
+
+        # print(f'Expected: {expected_num}')
+        # print(f'Output: {output_num}')
+        # print('--------------')
+        i += 1
+    
+    return matrix
+
+
+container = Container('quadratic',
+    DenseBiasLayer(16, activation="sigmoid", eta=0.01), 
+    DenseBiasLayer(16, activation="sigmoid", eta=0.01),
+    DenseNoBiasLayer(10, activation="sigmoid", eta=0.01)
+)
+
+i = 0
+for x in container.layers: 
+    print("Deserializing layer {}".format(i))
+    x.w = np.load("layer{}.npy".format(i))
+    # print(x.w)
+    x.born = True
+    i += 1
+
+container, xi, zeta = get_mnist_container(
+    container, 
+    items_size=10000, 
+    train_size=9900
+)
+
+matrix = confusion_matrix(xi[9900:], zeta[9900:], container)
+
+# graph_confusion_matrix('Digit recognition confusion matrix', [f'{n}' for n in range(10)], matrix)
 
 # i = 0
 # a = []

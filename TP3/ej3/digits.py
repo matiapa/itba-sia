@@ -8,8 +8,8 @@ import numpy
 import sklearn
 
 
-def train(psi, zeta, plot_error):
-    epochs = 25
+def train(psi, zeta):
+    epochs = 100
 
     container = Container(
         "quadratic", 
@@ -18,46 +18,71 @@ def train(psi, zeta, plot_error):
         DenseNoBiasLayer(10, activation="id", eta=0.01)
     )
 
-    errors = [] 
+    errors, train_accuracy, test_accuracy = [], [], []
     i = 0
 
     for epoch in range(epochs): 
         print(f'---------------- Epoch {epoch} ----------------')
 
         # Feed psis in random order
-        array1_shuffled, array2_shuffled = sklearn.utils.shuffle(psi, zeta)
+        psi, zeta = sklearn.utils.shuffle(psi, zeta)
 
         error = 0
         psi_num = 0
         for psi_mu, zeta_mu in zip(psi, zeta):
             res, loss = container(psi_mu, zeta_mu, True)
             error += loss
-            
             print(f'Num: {psi_num}')
             print(f'Out: {[round(x) for x in res]}')
             print(f'Expected: {[round(x) for x in zeta_mu]}')
             print('--------------')
             psi_num += 1
-
-        i += 1
-    
         errors.append(error)
-        if error < 1e-9: 
-            break
 
-    if plot_error:
-        plt.plot(range(len(errors)), errors, 'k-')
-        plt.yscale("log")
-        plt.xlabel('Epoch')
-        plt.ylabel('Error')
-        plt.show()
+        print('Evaluating training accuracy...')
 
+        true_vals = 0
+        for xi_mu, zeta_mu in zip(psi, zeta):
+            res = container.consume(xi_mu)
+            if np.argmax(zeta_mu) == np.argmax(res):
+                true_vals += 1
+        train_accuracy.append(true_vals / len(psi))
+
+        print('Evaluating test accuracy...')
+
+        # noised_input = list(psi)
+        # for input in noised_input:
+        #     for num in range(len(input)):
+        #         if random() < 0.02:
+        #             input[num] = 0 if input[num]==1 else 0
+
+        # true_vals = 0
+        # for xi_mu, zeta_mu in zip(noised_input, zeta):
+        #     res = container.consume(xi_mu)
+        #     if np.argmax(zeta_mu) == np.argmax(res):
+        #         true_vals += 1
+        # test_accuracy.append(true_vals / len(noised_input))
+
+    plt.plot(range(len(errors)), errors, 'k-')
+    # plt.yscale("log")
+    plt.xlabel('Epoch')
+    plt.ylabel('Error')
+    plt.show()
+
+    plt.plot([i for i  in range(epochs)], train_accuracy, label='Train')
+    # plt.plot([i for i  in range(epochs)], test_accuracy, label='Test')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    # plt.yscale('log')
+    plt.legend()
+    plt.show()
+       
     return container
 
 def confusion_matrix():
     matrix = np.zeros((10, 10)).tolist()
 
-    for s in range(100):
+    for s in range(10):
         # Add some noise to inputs
 
         noised_input = psi.copy()
@@ -101,6 +126,6 @@ if __name__ == "__main__":
 
     # Train the network
 
-    container = train(psi, zeta, False)
+    container = train(psi, zeta)
 
     # confusion_matrix()

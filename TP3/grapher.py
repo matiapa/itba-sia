@@ -101,8 +101,7 @@ def graph_confusion_matrix(title, labels, matrix):
 
     for i in range(len(labels)):
         for j in range(len(labels)):
-            text = ax.text(j, i, round(matrix[i][j]), ha="center", va="center", color="r")
-
+            ax.text(j, i, round(matrix[i][j]), ha="center", va="center", color="r")
     
     fig.tight_layout()
     plt.show()
