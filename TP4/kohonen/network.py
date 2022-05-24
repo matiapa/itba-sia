@@ -2,7 +2,6 @@ from math import hypot
 from random import random
 from typing import Tuple
 import numpy as np
-from pyrsistent import b
 from kohonen.neuron import Neuron
 
 
@@ -20,9 +19,10 @@ class Kohonen:
 
         for y in range(self.k):
             for x in range(self.k):
-                rand_input = inputs[int(random()*(len(inputs)-1))]
-                self.network[y][x] = Neuron(weights=rand_input)
-
+                # rand_input = inputs[int(random()*(len(inputs)-1))]
+                rand_input = inputs[y*x % len(inputs)]
+                self.network[y][x] = Neuron(weights=list(rand_input))
+        
         T = 500 * len(inputs[0])
 
         # Start iteration
@@ -33,7 +33,9 @@ class Kohonen:
         while t < T:
             print(f'Iteration {t}/{T}')
 
-            rand_input = inputs[int(random()*(len(inputs)-1))]
+            # i = int(random()*(len(inputs)-1))
+            i = t % len(inputs)
+            rand_input = inputs[i]
 
             # Find the best neuron
 
@@ -60,4 +62,5 @@ class Kohonen:
                 if distance < best_dist:
                     best_dist = distance
                     best_coords = [x,y]
+            # print(f"({x},{y})={self.network[x][y].weights}")
         return best_coords
