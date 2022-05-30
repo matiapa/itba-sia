@@ -1,21 +1,23 @@
 import sys
-
-from sklearn.preprocessing import StandardScaler
 sys.path.append("..")
 
 from kohonen.neuron import Neuron
 from kohonen.network import Kohonen
-import pandas
-import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 import numpy as np
+import pandas
+from matplotlib import cm
+import matplotlib.pyplot as plt
 from adjustText import adjust_text
+
+# Parameters definition
 
 k = 5
 r0 = 10
 n0 = 1
 numeric_columns = ["Area","GDP","Inflation","Life.expect","Military","Pop.growth","Unemployment"]
 
-kohonen = Kohonen(k, r0, n0)
+# Read the data
 
 df = pandas.read_csv('../in/europe.csv')
 labels = df["Country"].to_numpy()
@@ -23,7 +25,13 @@ labels = df["Country"].to_numpy()
 df.drop("Country", axis=1, inplace=True)
 inputs = StandardScaler().fit_transform(df.values)
 
+# Train the network
+
+kohonen = Kohonen(k, r0, n0)
+
 kohonen.train(inputs)
+
+# Show the results
 
 def label_plot():
     xs, ys = [], []
@@ -65,7 +73,7 @@ def var_avg_plot():
     _, axes = plt.subplots(2,4)
     for v in range(len(numeric_columns)):
         axes[v//4][v%4].set_title(numeric_columns[v])
-        axes[v//4][v%4].imshow(vars_avg_matrix[v])
+        axes[v//4][v%4].imshow(vars_avg_matrix[v], cmap=cm.gray)
     plt.show()
 
 def u_matrix_plot():
@@ -88,11 +96,11 @@ def u_matrix_plot():
             heatmap[y][x] = avg_neigh_dist / valid_neighs
     print(f"Avg {sum(heatmap[y][x] for y in range(k) for x in range(k))/k**2}")
 
-    plt.imshow(heatmap)
+    plt.imshow(heatmap, cmap=cm.gray)
     plt.colorbar()
     plt.show()
 
-# label_plot()
-# count_plot()
-# u_matrix_plot()
-# var_avg_plot()
+label_plot()
+count_plot()
+u_matrix_plot()
+var_avg_plot()
