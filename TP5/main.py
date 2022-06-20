@@ -41,10 +41,20 @@ def plot_latent_space(vae, n=30, figsize=15):
     plt.imshow(figure, cmap="Greys_r")
     plt.show()
 
+def plot_label_clusters(vae, data, labels):
+    # display a 2D plot of the digit classes in the latent space
+    z_mean, _, _ = vae.encoder.predict(data)
+    plt.figure(figsize=(12, 10))
+    plt.scatter(z_mean[:, 0], z_mean[:, 1], c=labels)
+    plt.colorbar()
+    plt.xlabel("z[0]")
+    plt.ylabel("z[1]")
+    plt.show()
+
 
 # Train the VAE
 
-(x_train, _), (x_test, _) = keras.datasets.mnist.load_data()
+(x_train, y_train), (x_test, _) = keras.datasets.fashion_mnist.load_data()
 mnist_digits = np.concatenate([x_train, x_test], axis=0)
 mnist_digits = np.expand_dims(mnist_digits, -1).astype("float32") / 255
 
@@ -53,3 +63,7 @@ vae.compile(optimizer=keras.optimizers.Adam())
 vae.fit(mnist_digits, epochs=30, batch_size=128)
 
 plot_latent_space(vae)
+
+x_train = np.expand_dims(x_train, -1).astype("float32") / 255
+
+plot_label_clusters(vae, x_train, y_train)
